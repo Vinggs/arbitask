@@ -1,112 +1,110 @@
 # Arbitask: Database Architecture & ERD
 
 **Project:** Arbitask (Offerwall Aggregator & Arbitrage Tracker)  
-**Author:** Farrell Shaan Deandra  
-**Status:** Initial Draft
+**Document Type:** Database Schema & Data Dictionary  
+**Status:** Architecture Planning
 
-## 📌 Ringkasan
+## 📌 Deskripsi Sistem
 
-File ini berisi rancangan arsitektur database buat sistem **Arbitask**. Intinya, skema ini dipakai buat narik data, nyamain kurs, dan ngebandingin nilai task dari berbagai situs GPT (Get Paid To). Strukturnya udah dibikin pakai standar normalisasi (3NF) biar datanya rapi, nggak tumpang tindih, dan gampang di-scale ke depannya.
+Dokumen ini mendefinisikan arsitektur basis data relasional untuk sistem **Arbitask**. Sistem ini dirancang untuk menangani agregasi data offerwall, standardisasi nilai tukar (fiat/crypto), dan pelacakan komparasi arbitrase. Skema ini telah dinormalisasi hingga tahap _Third Normal Form (3NF)_ untuk memastikan integritas data dan mengoptimalkan performansi kueri.
 
 ---
 
-## 🗄️ Struktur Tabel (Data Dictionary)
+## 🗄️ Kamus Data (Data Dictionary)
 
 ### 1. `users`
 
-Tabel buat nyimpen data akun pengguna yang mau pakai fitur tracker.
-| Kolom | Tipe Data | Key | Keterangan |
+Entitas untuk manajemen akun dan otentikasi pengguna.
+| Kolom | Tipe Data | Key | Deskripsi |
 | :--- | :--- | :--- | :--- |
-| `id` | INT | PK | ID unik user |
-| `username` | VARCHAR(50) | | Nama tampilan |
-| `email` | VARCHAR(100) | | Email user (Unique) |
-| `created_at` | TIMESTAMP | | Waktu daftar akun |
+| `id` | INT | PK | Unique identifier |
+| `username` | VARCHAR(50) | | Display name pengguna |
+| `email` | VARCHAR(100) | | Email pengguna (Unique Constraint) |
+| `created_at` | TIMESTAMP | | Waktu registrasi akun |
 
 ### 2. `platforms_and_offerwalls`
 
-Daftar situs GPT dan offerwall-nya, plus data mata uang bawaan web tersebut buat keperluan konversi.
-| Kolom | Tipe Data | Key | Keterangan |
+Entitas master untuk menyimpan data penyedia layanan GPT dan parameter konversi mata uang asli (native currency).
+| Kolom | Tipe Data | Key | Deskripsi |
 | :--- | :--- | :--- | :--- |
-| `id` | INT | PK | ID unik platform |
-| `site_name` | VARCHAR(50) | | Contoh: Freecash, Swagbucks |
-| `offerwall_name` | VARCHAR(50) | | Contoh: RevU, ToroX |
-| `currency_name` | VARCHAR(50) | | Contoh: FC Coins, SB Points |
-| `base_fiat_currency`| VARCHAR(10) | | Contoh: USD, EUR |
-| `coin_to_fiat_rate` | DECIMAL | | Rasio konversi koin ke fiat |
+| `id` | INT | PK | Unique platform ID |
+| `site_name` | VARCHAR(50) | | Nama platform (Contoh: Freecash, Swagbucks) |
+| `offerwall_name` | VARCHAR(50) | | Nama penyedia offer (Contoh: RevU, ToroX) |
+| `currency_name` | VARCHAR(50) | | Nama mata uang virtual (Contoh: FC Coins) |
+| `base_fiat_currency`| VARCHAR(10) | | Mata uang dasar (Contoh: USD, EUR) |
+| `coin_to_fiat_rate` | DECIMAL | | Rasio konversi virtual ke fiat |
 
 ### 3. `payment_methods`
 
-Master data buat opsi narik cuan (withdraw).
-| Kolom | Tipe Data | Key | Keterangan |
+Entitas master untuk opsi penarikan dana (withdrawal).
+| Kolom | Tipe Data | Key | Deskripsi |
 | :--- | :--- | :--- | :--- |
-| `id` | INT | PK | ID unik metode pembayaran |
-| `method_name` | VARCHAR(50) | | Contoh: PayPal, Bitcoin, Amazon GC |
-| `logo_url` | VARCHAR(255)| | Link aset gambar logonya |
+| `id` | INT | PK | Unique payment method ID |
+| `method_name` | VARCHAR(50) | | Nama metode (Contoh: PayPal, BTC) |
+| `logo_url` | VARCHAR(255)| | Path URL untuk aset visual |
 
-### 4. `platform_cashouts` (Pivot Table)
+### 4. `platform_cashouts`
 
-Tabel relasi buat ngehubungin platform sama metode penarikan uangnya, lengkap sama batas minimal withdraw.
-| Kolom | Tipe Data | Key | Keterangan |
+Tabel pivot (_Many-to-Many_) yang merelasikan platform dengan metode penarikan beserta limitasi transaksinya.
+| Kolom | Tipe Data | Key | Deskripsi |
 | :--- | :--- | :--- | :--- |
-| `id` | INT | PK | ID unik relasi |
-| `platform_id` | INT | FK | Nyambung ke `platforms_and_offerwalls.id` |
-| `payment_method_id` | INT | FK | Nyambung ke `payment_methods.id` |
-| `min_withdrawal` | DECIMAL | | Minimal narik, contoh: 5.00 |
+| `id` | INT | PK | Unique relation ID |
+| `platform_id` | INT | FK | Relasi ke `platforms_and_offerwalls.id` |
+| `payment_method_id` | INT | FK | Relasi ke `payment_methods.id` |
+| `min_withdrawal` | DECIMAL | | Batas minimum penarikan |
 
 ### 5. `tasks_master`
 
-Katalog utama buat game atau misi yang lagi ada promonya.
-| Kolom | Tipe Data | Key | Keterangan |
+Katalog sentral untuk entitas task, aplikasi, atau survei.
+| Kolom | Tipe Data | Key | Deskripsi |
 | :--- | :--- | :--- | :--- |
-| `id` | INT | PK | ID unik task |
-| `task_name` | VARCHAR(255)| | Contoh: Main Monopoly Go Level 50 |
-| `category` | VARCHAR(50) | | Game, Survey, Sign-up |
-| `device_type` | VARCHAR(50) | | Android, iOS, Desktop |
-| `thumbnail_url` | VARCHAR(255)| | Link gambar icon gamenya |
+| `id` | INT | PK | Unique task ID |
+| `task_name` | VARCHAR(255)| | Nama spesifik task |
+| `category` | VARCHAR(50) | | Kategori (Contoh: Game, Survey) |
+| `device_type` | VARCHAR(50) | | Kompatibilitas OS (Android, iOS, Desktop) |
+| `thumbnail_url` | VARCHAR(255)| | Path URL untuk aset gambar task |
 
-### 6. `payout_arbitrage` (Core Engine)
+### 6. `payout_arbitrage`
 
-Ini tabel mesin arbitrasenya. Fungsinya nyambungin task sama offerwall, terus ngitung nilai aslinya ke standar USD biar gampang disortir.
-| Kolom | Tipe Data | Key | Keterangan |
+Mesin komparasi utama (_Core Engine_) yang memetakan task dengan offerwall dan menstandardisasi nilai arbitrase untuk keperluan penyortiran data.
+| Kolom | Tipe Data | Key | Deskripsi |
 | :--- | :--- | :--- | :--- |
-| `id` | INT | PK | ID unik komparasi |
-| `task_id` | INT | FK | Nyambung ke `tasks_master.id` |
-| `offerwall_id` | INT | FK | Nyambung ke `platforms_and_offerwalls.id` |
-| `reward_coins` | INT | | Jumlah koin mentah dari web |
-| `reward_native` | DECIMAL | | Nilai dalam bentuk mata uang asli web (misal EUR) |
-| `reward_standard` | DECIMAL | | Nilai yang udah dikonversi ke standar USD |
-| `last_updated` | TIMESTAMP | | Waktu terakhir data disinkronkan |
+| `id` | INT | PK | Unique arbitrage ID |
+| `task_id` | INT | FK | Relasi ke `tasks_master.id` |
+| `offerwall_id` | INT | FK | Relasi ke `platforms_and_offerwalls.id` |
+| `reward_coins` | INT | | Nilai raw asset (koin virtual) |
+| `reward_native` | DECIMAL | | Konversi nilai dalam bentuk fiat/crypto asli |
+| `reward_standard` | DECIMAL | | Nilai terstandardisasi (USD) untuk agregasi |
+| `last_updated` | TIMESTAMP | | Waktu sinkronisasi data terakhir |
 
 ### 7. `user_tracked_tasks`
 
-Buat nyatet progres tiap user kalau mereka nge-track task tertentu di dashboard personalnya.
-| Kolom | Tipe Data | Key | Keterangan |
+Entitas _state management_ untuk melacak progres pengerjaan task oleh masing-masing pengguna.
+| Kolom | Tipe Data | Key | Deskripsi |
 | :--- | :--- | :--- | :--- |
-| `id` | INT | PK | ID unik tracking |
-| `user_id` | INT | FK | Nyambung ke `users.id` |
-| `payout_id` | INT | FK | Nyambung ke `payout_arbitrage.id` |
-| `status` | ENUM | | 'In Progress', 'Completed', 'Expired' |
-| `deadline_date` | DATE | | Batas waktu pengerjaan task |
-| `progress_notes`| TEXT | | Catatan progres dari user |
+| `id` | INT | PK | Unique tracking ID |
+| `user_id` | INT | FK | Relasi ke `users.id` |
+| `payout_id` | INT | FK | Relasi ke `payout_arbitrage.id` |
+| `status` | ENUM | | Status pengerjaan ('In Progress', 'Completed', 'Expired') |
+| `deadline_date` | DATE | | Tenggat waktu penyelesaian task |
+| `progress_notes`| TEXT | | _Log_ catatan progres harian pengguna |
 
 ---
 
 ## 📊 Entity Relationship Diagram (ERD)
 
-_Copy kode Mermaid di bawah ini buat nampilin diagram visualnya di Markdown previewer atau Mermaid Live._
-
 ```mermaid
 erDiagram
-    USERS ||--o{ USER_TRACKED_TASKS : "punya"
+    USERS ||--o{ USER_TRACKED_TASKS : "has"
 
-    PLATFORMS_AND_OFFERWALLS ||--o{ PAYOUT_ARBITRAGE : "nyediain"
-    PLATFORMS_AND_OFFERWALLS ||--o{ PLATFORM_CASHOUTS : "support"
+    PLATFORMS_AND_OFFERWALLS ||--o{ PAYOUT_ARBITRAGE : "provides"
+    PLATFORMS_AND_OFFERWALLS ||--o{ PLATFORM_CASHOUTS : "supports"
 
-    PAYMENT_METHODS ||--o{ PLATFORM_CASHOUTS : "tersedia di"
+    PAYMENT_METHODS ||--o{ PLATFORM_CASHOUTS : "available_via"
 
-    TASKS_MASTER ||--o{ PAYOUT_ARBITRAGE : "masuk list"
+    TASKS_MASTER ||--o{ PAYOUT_ARBITRAGE : "listed_as"
 
-    PAYOUT_ARBITRAGE ||--o{ USER_TRACKED_TASKS : "dilacak di"
+    PAYOUT_ARBITRAGE ||--o{ USER_TRACKED_TASKS : "tracked_in"
 
     USERS {
         int id PK
