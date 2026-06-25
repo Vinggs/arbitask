@@ -11,7 +11,7 @@ datasource db {
 model Task {
   id           String      @id @default(cuid())
   name         String
-  platform     String
+  imageUrl     String?     
   offerwall    String
   targetValue  Float
   currentValue Float       @default(0)
@@ -20,44 +20,39 @@ model Task {
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
   
-  // Relasi: 1 Task bisa punya BANYAK Milestone
   milestones   Milestone[] 
 }
 
 model Milestone {
   id          String   @id @default(cuid())
-  description String   // Contoh: "Level 10", "Level 20"
-  reward      Float    // Contoh: 2.00, 1.00
+  description String   
+  reward      Float    
   isClaimed   Boolean  @default(false)
   
-  // Relasi balik ke Task
   taskId      String
   task        Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
 }
 
 model CatalogOffer {
   id          String   @id @default(cuid())
-  gameName    String   // Contoh: "Monopoly GO"
-  category    String   @default("Games") // <--- INI KOLOM BARU YANG DITAMBAHKAN
-  platform    String   // Contoh: "Android", "iOS"
-  offerwall   String   // Contoh: "RevU", "ToroX"
-  rawCoins    Int      // Contoh: 5250
-  usdValue    Float    // Contoh: 52.50
-  requirement String   // Contoh: "Level 71 requirement"
-  isHighest   Boolean  @default(false) // Untuk nampilin badge "Highest"
+  gameName    String   
+  imageUrl    String?  
+  category    String   @default("Games") 
+  offerwall   String   
+  rawCoins    Int      
+  usdValue    Float    
+  requirement String   
+  isHighest   Boolean  @default(false) 
   createdAt   DateTime @default(now())
 
-  // Relasi BARU: 1 Katalog Offer bisa punya BANYAK tier/milestone bawaan
   milestones  CatalogMilestone[]
 }
 
-// Model BARU: Menyimpan daftar tier/level dari masing-masing game di etalase
 model CatalogMilestone {
   id             String       @id @default(cuid())
-  description    String       // Contoh: "Level 10", "Board 42"
-  reward         Float        // Contoh: 5.00, 10.00
+  description    String       
+  reward         Float        
   
-  // Relasi balik ke CatalogOffer
   catalogOfferId String
   catalogOffer   CatalogOffer @relation(fields: [catalogOfferId], references: [id], onDelete: Cascade)
 }

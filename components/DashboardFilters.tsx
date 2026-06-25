@@ -8,9 +8,8 @@ export default function DashboardFilters() {
   const searchParams = useSearchParams();
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Baca parameter dari URL, kalau kosong set ke "All" atau ""
+  // Baca parameter dari URL, platform udah kita hapus
   const currentCategory = searchParams.get("category") || "All";
-  const currentPlatform = searchParams.get("platform") || "All";
   const currentSearch = searchParams.get("q") || "";
 
   // Handle Dropdown Kategori
@@ -24,18 +23,7 @@ export default function DashboardFilters() {
     router.push(`/?${params.toString()}`);
   };
 
-  // Handle Dropdown Platform (Android Only)
-  const handlePlatformChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value;
-    const params = new URLSearchParams(searchParams.toString());
-
-    if (value === "All") params.delete("platform");
-    else params.set("platform", value);
-
-    router.push(`/?${params.toString()}`);
-  };
-
-  // Handle Search dengan Debounce biar server nggak jebol
+  // Handle Search dengan Debounce
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const term = e.target.value;
 
@@ -61,16 +49,6 @@ export default function DashboardFilters() {
         <span className="font-semibold text-gray-500 uppercase tracking-wider text-xs">
           Filters
         </span>
-
-        {/* Dropdown Platform: Sudah bersih, tinggal All & Android */}
-        <select
-          value={currentPlatform}
-          onChange={handlePlatformChange}
-          className="border border-gray-200 rounded-full px-4 py-1.5 bg-white text-gray-700 outline-none focus:border-blue-500"
-        >
-          <option value="All">Platform: All</option>
-          <option value="Android">Android</option>
-        </select>
 
         {/* Dropdown Kategori */}
         <select
