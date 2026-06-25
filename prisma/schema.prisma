@@ -38,6 +38,7 @@ model Milestone {
 model CatalogOffer {
   id          String   @id @default(cuid())
   gameName    String   // Contoh: "Monopoly GO"
+  category    String   @default("Games") // <--- INI KOLOM BARU YANG DITAMBAHKAN
   platform    String   // Contoh: "Android", "iOS"
   offerwall   String   // Contoh: "RevU", "ToroX"
   rawCoins    Int      // Contoh: 5250

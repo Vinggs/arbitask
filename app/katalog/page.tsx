@@ -1,7 +1,19 @@
 import Sidebar from "../../components/Sidebar";
 import Header from "../../components/Header";
+import Link from "next/link";
+import { prisma } from "../../lib/prisma";
 
-export default function KatalogPage() {
+// Ubah function jadi 'async' buat narik data
+export default async function KatalogPage() {
+  // Hitung jumlah tugas yang ada di database secara dinamis
+  const revuCount = await prisma.catalogOffer.count({
+    where: { offerwall: "RevU" },
+  });
+
+  const toroxCount = await prisma.catalogOffer.count({
+    where: { offerwall: "ToroX" },
+  });
+
   return (
     <div className="flex min-h-screen bg-background">
       {/* Sidebar */}
@@ -39,65 +51,72 @@ export default function KatalogPage() {
           {/* Grid Katalog Offerwall */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter mb-margin-desktop">
             {/* Offerwall Card 1: RevU */}
-            <article className="bg-surface-container-lowest border border-outline-variant rounded-2xl p-6 flex flex-col hover:shadow-md transition-all hover:border-primary-container cursor-pointer group">
-              <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-bold text-xl">
-                  RU
+            {/* Dibungkus Link biar bisa diklik ke halaman detail */}
+            <Link href="/katalog/revu" className="block">
+              <article className="bg-surface-container-lowest border border-outline-variant rounded-2xl p-6 flex flex-col h-full hover:shadow-md transition-all hover:border-primary-container cursor-pointer group">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-bold text-xl">
+                    RU
+                  </div>
+                  <span className="bg-emerald-100 text-emerald-800 font-label-sm text-[10px] px-2 py-0.5 rounded-full flex items-center gap-1 border border-emerald-200">
+                    <span className="material-symbols-outlined text-[12px]">
+                      link
+                    </span>{" "}
+                    Connected
+                  </span>
                 </div>
-                <span className="bg-emerald-100 text-emerald-800 font-label-sm text-[10px] px-2 py-0.5 rounded-full flex items-center gap-1 border border-emerald-200">
-                  <span className="material-symbols-outlined text-[12px]">
-                    link
-                  </span>{" "}
-                  Connected
-                </span>
-              </div>
-              <h3 className="font-headline-md text-[20px] text-primary mb-1">
-                RevU
-              </h3>
-              <p className="text-on-surface-variant font-body-md mb-6 flex-1">
-                Premium surveys and high-paying game tracking tasks.
-              </p>
-              <div className="flex items-center justify-between pt-4 border-t border-outline-variant">
-                <span className="font-label-sm text-on-surface-variant">
-                  142 Active Tasks
-                </span>
-                <span className="material-symbols-outlined text-primary group-hover:translate-x-1 transition-transform">
-                  arrow_forward
-                </span>
-              </div>
-            </article>
+                <h3 className="font-headline-md text-[20px] text-primary mb-1">
+                  RevU
+                </h3>
+                <p className="text-on-surface-variant font-body-md mb-6 flex-1">
+                  Premium surveys and high-paying game tracking tasks.
+                </p>
+                <div className="flex items-center justify-between pt-4 border-t border-outline-variant">
+                  {/* Angka statis diganti jadi dinamis dari database */}
+                  <span className="font-label-sm text-on-surface-variant">
+                    {revuCount} Active Tasks
+                  </span>
+                  <span className="material-symbols-outlined text-primary group-hover:translate-x-1 transition-transform">
+                    arrow_forward
+                  </span>
+                </div>
+              </article>
+            </Link>
 
             {/* Offerwall Card 2: ToroX */}
-            <article className="bg-surface-container-lowest border border-outline-variant rounded-2xl p-6 flex flex-col hover:shadow-md transition-all hover:border-primary-container cursor-pointer group">
-              <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 rounded-lg bg-surface-container border border-outline-variant flex items-center justify-center text-on-surface font-bold text-xl">
-                  TX
+            <Link href="/katalog/torox" className="block">
+              <article className="bg-surface-container-lowest border border-outline-variant rounded-2xl p-6 flex flex-col h-full hover:shadow-md transition-all hover:border-primary-container cursor-pointer group">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 rounded-lg bg-surface-container border border-outline-variant flex items-center justify-center text-on-surface font-bold text-xl">
+                    TX
+                  </div>
+                  <span className="bg-emerald-100 text-emerald-800 font-label-sm text-[10px] px-2 py-0.5 rounded-full flex items-center gap-1 border border-emerald-200">
+                    <span className="material-symbols-outlined text-[12px]">
+                      link
+                    </span>{" "}
+                    Connected
+                  </span>
                 </div>
-                <span className="bg-emerald-100 text-emerald-800 font-label-sm text-[10px] px-2 py-0.5 rounded-full flex items-center gap-1 border border-emerald-200">
-                  <span className="material-symbols-outlined text-[12px]">
-                    link
-                  </span>{" "}
-                  Connected
-                </span>
-              </div>
-              <h3 className="font-headline-md text-[20px] text-primary mb-1">
-                ToroX
-              </h3>
-              <p className="text-on-surface-variant font-body-md mb-6 flex-1">
-                Fast payouts with a focus on mobile app installations.
-              </p>
-              <div className="flex items-center justify-between pt-4 border-t border-outline-variant">
-                <span className="font-label-sm text-on-surface-variant">
-                  89 Active Tasks
-                </span>
-                <span className="material-symbols-outlined text-primary group-hover:translate-x-1 transition-transform">
-                  arrow_forward
-                </span>
-              </div>
-            </article>
+                <h3 className="font-headline-md text-[20px] text-primary mb-1">
+                  ToroX
+                </h3>
+                <p className="text-on-surface-variant font-body-md mb-6 flex-1">
+                  Fast payouts with a focus on mobile app installations.
+                </p>
+                <div className="flex items-center justify-between pt-4 border-t border-outline-variant">
+                  {/* Angka statis diganti jadi dinamis dari database */}
+                  <span className="font-label-sm text-on-surface-variant">
+                    {toroxCount} Active Tasks
+                  </span>
+                  <span className="material-symbols-outlined text-primary group-hover:translate-x-1 transition-transform">
+                    arrow_forward
+                  </span>
+                </div>
+              </article>
+            </Link>
 
             {/* Offerwall Card 3: Freecash (Not Connected) */}
-            <article className="bg-surface-container-lowest border border-outline-variant rounded-2xl p-6 flex flex-col hover:shadow-md transition-all hover:border-primary-container cursor-pointer group relative overflow-hidden">
+            <article className="bg-surface-container-lowest border border-outline-variant rounded-2xl p-6 flex flex-col h-full hover:shadow-md transition-all hover:border-primary-container cursor-pointer group relative overflow-hidden">
               <div className="flex items-center justify-between mb-4">
                 <div className="w-12 h-12 rounded-lg bg-surface-container border border-outline-variant flex items-center justify-center text-on-surface font-bold text-xl opacity-60">
                   FC
@@ -123,7 +142,7 @@ export default function KatalogPage() {
             </article>
 
             {/* Offerwall Card 4: AdGem (Not Connected) */}
-            <article className="bg-surface-container-lowest border border-outline-variant rounded-2xl p-6 flex flex-col hover:shadow-md transition-all hover:border-primary-container cursor-pointer group relative overflow-hidden">
+            <article className="bg-surface-container-lowest border border-outline-variant rounded-2xl p-6 flex flex-col h-full hover:shadow-md transition-all hover:border-primary-container cursor-pointer group relative overflow-hidden">
               <div className="flex items-center justify-between mb-4">
                 <div className="w-12 h-12 rounded-lg bg-surface-container border border-outline-variant flex items-center justify-center text-on-surface font-bold text-xl opacity-60">
                   AG

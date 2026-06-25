@@ -3,10 +3,34 @@ import Header from "../components/Header";
 import { prisma } from "@/lib/prisma";
 import { autoTrackTask } from "@/app/actions";
 import TrackButton from "../components/TrackButton";
+import DashboardFilters from "../components/DashboardFilters";
 
-export default async function DashboardPage() {
-  // 1. Tarik data Katalog
+export default async function DashboardPage({
+  searchParams,
+}: {
+  searchParams: { category?: string; q?: string };
+}) {
+  const currentCategory = searchParams.category;
+  const searchQuery = searchParams.q;
+
+  // 1. Tarik data Katalog dengan filter kategori DAN pencarian nama
   const offers = await prisma.catalogOffer.findMany({
+    where: {
+      // Filter kategori
+      category:
+        currentCategory && currentCategory !== "All"
+          ? currentCategory
+          : undefined,
+      // Filter pencarian nama game (case-insensitive)
+      ...(searchQuery
+        ? {
+            gameName: {
+              contains: searchQuery,
+              mode: "insensitive",
+            },
+          }
+        : {}),
+    },
     orderBy: { usdValue: "desc" },
     include: { milestones: true },
   });
@@ -14,7 +38,7 @@ export default async function DashboardPage() {
   // 2. Tarik angka statistik
   const totalTasks = await prisma.task.count();
 
-  // 3. FITUR BARU: Ambil daftar game yang lagi di-track (status In Progress)
+  // 3. Ambil daftar game yang lagi di-track (In Progress)
   const activeTasks = await prisma.task.findMany({
     where: { status: "In Progress" },
     select: { name: true, offerwall: true },
@@ -57,6 +81,9 @@ export default async function DashboardPage() {
             </div>
           </div>
 
+          {/* FILTER & SEARCH SECTION */}
+          <DashboardFilters />
+
           {/* TABLE SECTION */}
           <div className="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden">
             <table className="w-full text-left border-collapse min-w-[800px]">
@@ -76,12 +103,13 @@ export default async function DashboardPage() {
                       colSpan={5}
                       className="p-8 text-center text-on-surface-variant"
                     >
-                      Katalog masih kosong.
+                      {searchQuery
+                        ? `Tidak ada tugas yang cocok dengan pencarian "${searchQuery}".`
+                        : "Katalog masih kosong atau tidak ada tugas di kategori ini."}
                     </td>
                   </tr>
                 ) : (
                   offers.map((offer) => {
-                    // LOGIKA PINTAR: Cek apakah offer ini ada di dalam daftar activeTasks
                     const isTracked = activeTasks.some(
                       (task) =>
                         task.name === offer.gameName &&
@@ -115,7 +143,7 @@ export default async function DashboardPage() {
                         </td>
                         <td className="p-4">
                           <span className="px-2.5 py-1 bg-surface-container border border-outline-variant rounded text-xs font-medium text-on-surface">
-                            {offer.offerwall === "RevU" ? "RU" : "TX"}{" "}
+                            {offer.offerwall === "RevU" ? "RU " : "TX "}
                             {offer.offerwall}
                           </span>
                         </td>
@@ -136,7 +164,6 @@ export default async function DashboardPage() {
                           )}
                         </td>
                         <td className="p-4 text-center">
-                          {/* RENDER KONDISIONAL: Kalau udah dilacak, tampilin tombol mati. Kalau belum, tampilin form +Track */}
                           {isTracked ? (
                             <button
                               disabled
@@ -176,7 +203,6 @@ export default async function DashboardPage() {
                                 name="milestones"
                                 value={JSON.stringify(offer.milestones)}
                               />
-
                               <TrackButton />
                             </form>
                           )}
