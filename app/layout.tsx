@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
+import { Providers } from "./providers";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const jakarta = Plus_Jakarta_Sans({
@@ -29,7 +30,8 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${jakarta.variable} font-body-md text-body-md antialiased min-h-screen bg-background text-on-surface`}
       >
-        {children}
+        {/* Di sini kita bungkus seluruh aplikasi pakai Providers */}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

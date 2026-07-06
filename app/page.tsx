@@ -3,15 +3,20 @@ import Header from "../components/Header";
 import { prisma } from "@/lib/prisma";
 import DashboardFilters from "../components/DashboardFilters";
 import OfferRow from "../components/OfferRow";
+import { getServerSession } from "next-auth"; // Ambil session buat ngecek user
+import { authOptions } from "./api/auth/[...nextauth]/route";
 
 export default async function DashboardPage({
   searchParams,
 }: {
-  // Hapus platform dari tipe data biar rapi
-  searchParams: { category?: string; q?: string };
+  searchParams: Promise<{ category?: string; q?: string }>;
 }) {
-  const currentCategory = searchParams.category;
-  const searchQuery = searchParams.q;
+  const session = await getServerSession(authOptions);
+  const userEmail = session?.user?.email || "";
+
+  const params = await searchParams;
+  const currentCategory = params.category;
+  const searchQuery = params.q;
 
   // 1. Tarik data Katalog tanpa filter platform
   const offers = await prisma.catalogOffer.findMany({
@@ -33,13 +38,15 @@ export default async function DashboardPage({
     include: { milestones: true },
   });
 
-  // 2. Tarik angka statistik
-  const totalTasks = await prisma.task.count();
+  // 2. Tarik angka statistik untuk user ini
+  const totalTasks = await prisma.task.count({
+    where: { user: { email: userEmail } },
+  });
 
-  // 3. Ambil daftar game yang lagi di-track (In Progress)
-  const activeTasks = await prisma.task.findMany({
-    where: { status: "In Progress" },
-    select: { name: true, offerwall: true },
+  // 3. Ambil DAFTAR SEMUA GAME yang pernah di-track user ini (nggak cuma In Progress)
+  const trackedTasks = await prisma.task.findMany({
+    where: { user: { email: userEmail } },
+    select: { name: true, offerwall: true, status: true }, // Ambil statusnya juga!
   });
 
   return (
@@ -108,17 +115,24 @@ export default async function DashboardPage({
                   </tr>
                 ) : (
                   offers.map((offer) => {
-                    const isTracked = activeTasks.some(
+                    // Cari status spesifiknya (cari seluruh object task)
+                    const existingTask = trackedTasks.find(
                       (task) =>
                         task.name === offer.gameName &&
                         task.offerwall === offer.offerwall,
                     );
 
+                    // Kirim statusnya ke OfferRow
+                    const taskStatus = existingTask
+                      ? existingTask.status
+                      : null;
+
                     return (
                       <OfferRow
                         key={offer.id}
                         offer={offer}
-                        isTracked={isTracked}
+                        taskStatus={taskStatus} // Kirim props baru!
+                        userEmail={userEmail}
                       />
                     );
                   })

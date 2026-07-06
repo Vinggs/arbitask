@@ -55,6 +55,17 @@ export default function Sidebar() {
             <span className="font-label-md whitespace-nowrap">Tracking</span>
           )}
         </Link>
+
+        {/* --- TAMBAHAN MENU LOG HISTORY --- */}
+        <Link
+          href="/logs"
+          className={`flex items-center gap-4 transition-colors rounded-lg px-3 py-3 ${pathname === "/logs" ? "text-primary bg-primary-fixed/20 font-bold border-l-4 border-primary rounded-r-lg" : "text-on-surface hover:bg-surface-container-low"}`}
+        >
+          <span className="material-symbols-outlined text-lg">history</span>
+          {isSidebarOpen && (
+            <span className="font-label-md whitespace-nowrap">Log History</span>
+          )}
+        </Link>
       </nav>
     </aside>
   );
