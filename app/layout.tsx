@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
+import { ThemeProvider } from "@/components/ThemeProvider"; // <-- Import Provider dari next-themes
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const jakarta = Plus_Jakarta_Sans({
@@ -20,18 +21,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    // Tambahin suppressHydrationWarning biar nggak error pas reload di Next.js
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
           rel="stylesheet"
         />
       </head>
+      {/* Hapus bg-background dan text-on-surface biar settingan globals.css kita jalan */}
       <body
-        className={`${inter.variable} ${jakarta.variable} font-body-md text-body-md antialiased min-h-screen bg-background text-on-surface`}
+        className={`${inter.variable} ${jakarta.variable} font-body-md text-body-md antialiased min-h-screen`}
       >
-        {/* Di sini kita bungkus seluruh aplikasi pakai Providers */}
-        <Providers>{children}</Providers>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <Providers>{children}</Providers>
+        </ThemeProvider>
       </body>
     </html>
   );

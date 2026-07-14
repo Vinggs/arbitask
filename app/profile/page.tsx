@@ -100,8 +100,8 @@ export default function ProfilePage() {
 
   if (status === "loading") {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <span className="material-symbols-outlined animate-spin text-4xl text-primary">
+      <div className="min-h-screen flex items-center justify-center bg-background dark:bg-[#0B1120] transition-colors duration-300">
+        <span className="material-symbols-outlined animate-spin text-4xl text-primary dark:text-blue-500">
           progress_activity
         </span>
       </div>
@@ -116,7 +116,7 @@ export default function ProfilePage() {
   const unreadCount = notifications.filter((n) => !n.isRead).length;
 
   return (
-    <div className="flex min-h-screen bg-background text-on-surface">
+    <div className="flex min-h-screen bg-background dark:bg-[#0B1120] text-on-surface dark:text-slate-200 transition-colors duration-300">
       <Sidebar />
 
       <div className="flex-1 flex flex-col min-w-0">
@@ -124,28 +124,28 @@ export default function ProfilePage() {
 
         <main className="flex-1 p-6 max-w-[1200px] w-full mx-auto space-y-6">
           {/* HERO BANNER */}
-          <div className="bg-surface-container-lowest rounded-[24px] p-6 border border-outline-variant/60 shadow-sm flex flex-col md:flex-row items-center gap-6 relative overflow-hidden">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent pointer-events-none"></div>
+          <div className="bg-surface-container-lowest dark:bg-slate-900 rounded-[24px] p-6 border border-outline-variant/60 dark:border-slate-800 shadow-sm flex flex-col md:flex-row items-center gap-6 relative overflow-hidden transition-colors duration-300">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,_var(--tw-gradient-stops))] from-primary/5 dark:from-blue-900/20 via-transparent to-transparent pointer-events-none"></div>
             <div className="relative group w-24 h-24 flex-shrink-0">
               <img
                 src={profileImage}
                 alt="Profile"
-                className="w-full h-full rounded-full object-cover border-4 border-background shadow-md bg-surface-container"
+                className="w-full h-full rounded-full object-cover border-4 border-background dark:border-slate-800 shadow-md bg-surface-container dark:bg-slate-700 transition-colors"
               />
             </div>
             <div className="flex-1 text-center md:text-left space-y-2 relative z-10">
               <div className="flex flex-col md:flex-row md:items-center gap-2 justify-center md:justify-start">
-                <h2 className="text-2xl font-bold text-slate-900">
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 transition-colors">
                   {fullName}
                 </h2>
-                <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold w-fit mx-auto md:mx-0">
+                <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-800/50 text-emerald-700 dark:text-emerald-400 text-xs font-semibold w-fit mx-auto md:mx-0 transition-colors">
                   <span className="material-symbols-outlined text-[14px]">
                     verified
                   </span>
                   Elite Arbitrager
                 </div>
               </div>
-              <p className="text-sm text-on-surface-variant max-w-2xl leading-relaxed">
+              <p className="text-sm text-on-surface-variant dark:text-slate-400 max-w-2xl leading-relaxed transition-colors">
                 Akun terverifikasi Arbitask. Saat ini melacak dan mengoptimalkan
                 yield secara real-time dari berbagai offerwall.
               </p>
@@ -154,43 +154,45 @@ export default function ProfilePage() {
 
           {/* STATS GRID ROW */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="p-5 bg-surface-container-lowest rounded-2xl border border-outline-variant/60 shadow-sm flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+            <div className="p-5 bg-surface-container-lowest dark:bg-slate-900 rounded-2xl border border-outline-variant/60 dark:border-slate-800 shadow-sm flex items-center gap-4 transition-colors duration-300">
+              <div className="w-12 h-12 rounded-xl bg-primary/10 dark:bg-blue-900/30 text-primary dark:text-blue-400 flex items-center justify-center transition-colors">
                 <span className="material-symbols-outlined">monitoring</span>
               </div>
               <div>
-                <p className="text-xs font-medium text-on-surface-variant uppercase tracking-wider">
+                <p className="text-xs font-medium text-on-surface-variant dark:text-slate-400 uppercase tracking-wider transition-colors">
                   Potensi Yield Tracked
                 </p>
-                <p className="text-2xl font-bold text-primary">
+                <p className="text-2xl font-bold text-primary dark:text-slate-100 transition-colors">
                   ${stats.totalYield.toFixed(2)}
                 </p>
               </div>
             </div>
-            <div className="p-5 bg-surface-container-lowest rounded-2xl border border-outline-variant/60 shadow-sm flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center">
+            <div className="p-5 bg-surface-container-lowest dark:bg-slate-900 rounded-2xl border border-outline-variant/60 dark:border-slate-800 shadow-sm flex items-center gap-4 transition-colors duration-300">
+              <div className="w-12 h-12 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 flex items-center justify-center transition-colors">
                 <span className="material-symbols-outlined">task_alt</span>
               </div>
               <div>
-                <p className="text-xs font-medium text-on-surface-variant uppercase tracking-wider">
+                <p className="text-xs font-medium text-on-surface-variant dark:text-slate-400 uppercase tracking-wider transition-colors">
                   Tasks Tracked
                 </p>
-                <p className="text-2xl font-bold text-slate-900">
+                <p className="text-2xl font-bold text-slate-900 dark:text-slate-100 transition-colors">
                   {stats.taskCount}
                 </p>
               </div>
             </div>
-            <div className="p-5 bg-surface-container-lowest rounded-2xl border border-outline-variant/60 shadow-sm flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center">
+            <div className="p-5 bg-surface-container-lowest dark:bg-slate-900 rounded-2xl border border-outline-variant/60 dark:border-slate-800 shadow-sm flex items-center gap-4 transition-colors duration-300">
+              <div className="w-12 h-12 rounded-xl bg-orange-50 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 flex items-center justify-center transition-colors">
                 <span className="material-symbols-outlined">
                   local_fire_department
                 </span>
               </div>
               <div>
-                <p className="text-xs font-medium text-on-surface-variant uppercase tracking-wider">
+                <p className="text-xs font-medium text-on-surface-variant dark:text-slate-400 uppercase tracking-wider transition-colors">
                   Current Streak
                 </p>
-                <p className="text-2xl font-bold text-orange-600">Active</p>
+                <p className="text-2xl font-bold text-orange-600 dark:text-orange-400 transition-colors">
+                  Active
+                </p>
               </div>
             </div>
           </div>
@@ -198,10 +200,10 @@ export default function ProfilePage() {
           {/* TABS & SETTINGS SECTION */}
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
             {/* SUB-TABS NAVIGATION */}
-            <div className="flex lg:flex-col overflow-x-auto lg:overflow-x-visible gap-1 pb-2 lg:pb-0 border-b lg:border-b-0 border-outline-variant/50">
+            <div className="flex lg:flex-col overflow-x-auto lg:overflow-x-visible gap-1 pb-2 lg:pb-0 border-b lg:border-b-0 border-outline-variant/50 dark:border-slate-800">
               <button
                 onClick={() => setActiveTab("personal")}
-                className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-colors whitespace-nowrap w-full text-left ${activeTab === "personal" ? "bg-slate-900 text-white shadow-sm" : "text-on-surface-variant hover:bg-surface-container"}`}
+                className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-colors whitespace-nowrap w-full text-left ${activeTab === "personal" ? "bg-slate-900 dark:bg-slate-800 text-white shadow-sm" : "text-on-surface-variant dark:text-slate-400 hover:bg-surface-container dark:hover:bg-slate-800/50"}`}
               >
                 <span className="material-symbols-outlined text-[20px]">
                   person
@@ -210,7 +212,7 @@ export default function ProfilePage() {
               </button>
               <button
                 onClick={() => setActiveTab("security")}
-                className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-colors whitespace-nowrap w-full text-left ${activeTab === "security" ? "bg-slate-900 text-white shadow-sm" : "text-on-surface-variant hover:bg-surface-container"}`}
+                className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-colors whitespace-nowrap w-full text-left ${activeTab === "security" ? "bg-slate-900 dark:bg-slate-800 text-white shadow-sm" : "text-on-surface-variant dark:text-slate-400 hover:bg-surface-container dark:hover:bg-slate-800/50"}`}
               >
                 <span className="material-symbols-outlined text-[20px]">
                   shield
@@ -219,7 +221,7 @@ export default function ProfilePage() {
               </button>
               <button
                 onClick={() => setActiveTab("inbox")}
-                className={`flex items-center justify-between px-4 py-3 rounded-xl font-medium text-sm transition-colors whitespace-nowrap w-full text-left ${activeTab === "inbox" ? "bg-slate-900 text-white shadow-sm" : "text-on-surface-variant hover:bg-surface-container"}`}
+                className={`flex items-center justify-between px-4 py-3 rounded-xl font-medium text-sm transition-colors whitespace-nowrap w-full text-left ${activeTab === "inbox" ? "bg-slate-900 dark:bg-slate-800 text-white shadow-sm" : "text-on-surface-variant dark:text-slate-400 hover:bg-surface-container dark:hover:bg-slate-800/50"}`}
               >
                 <div className="flex items-center gap-3">
                   <span className="material-symbols-outlined text-[20px]">
@@ -229,7 +231,7 @@ export default function ProfilePage() {
                 </div>
                 {unreadCount > 0 && (
                   <span
-                    className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${activeTab === "inbox" ? "bg-white/20 text-white" : "bg-primary text-on-primary"}`}
+                    className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${activeTab === "inbox" ? "bg-white/20 text-white" : "bg-primary dark:bg-blue-600 text-on-primary dark:text-white"}`}
                   >
                     {unreadCount}
                   </span>
@@ -240,45 +242,45 @@ export default function ProfilePage() {
             {/* CONTENT VIEWS */}
             <div className="lg:col-span-3 space-y-6">
               {activeTab === "personal" && (
-                <div className="bg-surface-container-lowest rounded-[24px] p-6 border border-outline-variant/60 shadow-sm space-y-4">
+                <div className="bg-surface-container-lowest dark:bg-slate-900 rounded-[24px] p-6 border border-outline-variant/60 dark:border-slate-800 shadow-sm space-y-4 transition-colors duration-300">
                   <div>
-                    <h3 className="text-lg font-bold text-slate-900">
+                    <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 transition-colors">
                       Personal Information
                     </h3>
-                    <p className="text-xs text-on-surface-variant">
+                    <p className="text-xs text-on-surface-variant dark:text-slate-400 transition-colors">
                       Kelola detail informasi dasar akun lu.
                     </p>
                   </div>
-                  <div className="h-px bg-outline-variant/40"></div>
+                  <div className="h-px bg-outline-variant/40 dark:bg-slate-800 transition-colors"></div>
 
                   <form className="space-y-4" onSubmit={handleSaveChanges}>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="space-y-1.5">
-                        <label className="text-xs font-semibold text-on-surface-variant">
+                        <label className="text-xs font-semibold text-on-surface-variant dark:text-slate-400 transition-colors">
                           First Name
                         </label>
                         <input
                           type="text"
                           value={firstName}
                           onChange={(e) => setFirstName(e.target.value)}
-                          className="w-full px-4 py-2.5 rounded-xl border border-outline-variant bg-surface-container-lowest text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
+                          className="w-full px-4 py-2.5 rounded-xl border border-outline-variant dark:border-slate-700 bg-surface-container-lowest dark:bg-slate-900 text-sm text-slate-900 dark:text-slate-100 focus:border-primary dark:focus:border-blue-500 focus:ring-1 focus:ring-primary dark:focus:ring-blue-500 outline-none transition-all"
                         />
                       </div>
                       <div className="space-y-1.5">
-                        <label className="text-xs font-semibold text-on-surface-variant">
+                        <label className="text-xs font-semibold text-on-surface-variant dark:text-slate-400 transition-colors">
                           Last Name
                         </label>
                         <input
                           type="text"
                           value={lastName}
                           onChange={(e) => setLastName(e.target.value)}
-                          className="w-full px-4 py-2.5 rounded-xl border border-outline-variant bg-surface-container-lowest text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
+                          className="w-full px-4 py-2.5 rounded-xl border border-outline-variant dark:border-slate-700 bg-surface-container-lowest dark:bg-slate-900 text-sm text-slate-900 dark:text-slate-100 focus:border-primary dark:focus:border-blue-500 focus:ring-1 focus:ring-primary dark:focus:ring-blue-500 outline-none transition-all"
                         />
                       </div>
                     </div>
 
                     <div className="space-y-1.5">
-                      <label className="text-xs font-semibold text-on-surface-variant">
+                      <label className="text-xs font-semibold text-on-surface-variant dark:text-slate-400 transition-colors">
                         Email Address
                       </label>
                       <div className="relative">
@@ -286,16 +288,16 @@ export default function ProfilePage() {
                           type="email"
                           value={userEmail}
                           disabled
-                          className="w-full pl-4 pr-10 py-2.5 rounded-xl border border-outline-variant bg-slate-50 text-on-surface-variant/70 text-sm cursor-not-allowed outline-none"
+                          className="w-full pl-4 pr-10 py-2.5 rounded-xl border border-outline-variant dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 text-on-surface-variant/70 dark:text-slate-500 text-sm cursor-not-allowed outline-none transition-colors"
                         />
-                        <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-emerald-600 text-[20px]">
+                        <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-emerald-600 dark:text-emerald-400 text-[20px] transition-colors">
                           check_circle
                         </span>
                       </div>
                     </div>
 
                     <div className="space-y-1.5">
-                      <label className="text-xs font-semibold text-on-surface-variant">
+                      <label className="text-xs font-semibold text-on-surface-variant dark:text-slate-400 transition-colors">
                         Phone Number
                       </label>
                       <input
@@ -303,20 +305,20 @@ export default function ProfilePage() {
                         placeholder="+62 8xx-xxxx-xxxx"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
-                        className="w-full px-4 py-2.5 rounded-xl border border-outline-variant bg-surface-container-lowest text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
+                        className="w-full px-4 py-2.5 rounded-xl border border-outline-variant dark:border-slate-700 bg-surface-container-lowest dark:bg-slate-900 text-sm text-slate-900 dark:text-slate-100 focus:border-primary dark:focus:border-blue-500 focus:ring-1 focus:ring-primary dark:focus:ring-blue-500 outline-none transition-all"
                       />
                     </div>
 
                     <div className="flex items-center justify-end gap-3 pt-2">
                       {saveMessage && (
-                        <span className="text-xs font-medium text-emerald-600">
+                        <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400">
                           {saveMessage}
                         </span>
                       )}
                       <button
                         type="submit"
                         disabled={isSaving}
-                        className="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 disabled:opacity-70 text-white font-bold text-sm rounded-xl transition-colors shadow-sm flex items-center gap-2"
+                        className="px-5 py-2.5 bg-slate-900 dark:bg-blue-600 hover:bg-slate-800 dark:hover:bg-blue-700 disabled:opacity-70 text-white font-bold text-sm rounded-xl transition-colors shadow-sm flex items-center gap-2"
                       >
                         {isSaving ? (
                           <span className="material-symbols-outlined animate-spin text-[16px]">
@@ -331,27 +333,27 @@ export default function ProfilePage() {
               )}
 
               {activeTab === "security" && (
-                <div className="bg-surface-container-lowest rounded-[24px] p-6 border border-outline-variant/60 shadow-sm space-y-4">
+                <div className="bg-surface-container-lowest dark:bg-slate-900 rounded-[24px] p-6 border border-outline-variant/60 dark:border-slate-800 shadow-sm space-y-4 transition-colors duration-300">
                   <div>
-                    <h3 className="text-lg font-bold text-slate-900">
+                    <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 transition-colors">
                       Security & Protection
                     </h3>
-                    <p className="text-xs text-on-surface-variant font-medium">
+                    <p className="text-xs text-on-surface-variant dark:text-slate-400 font-medium transition-colors">
                       Proteksi akses masuk akun pelacakan lu.
                     </p>
                   </div>
-                  <div className="h-px bg-outline-variant/40"></div>
+                  <div className="h-px bg-outline-variant/40 dark:bg-slate-800 transition-colors"></div>
 
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl bg-surface-container/40 border border-outline-variant/30">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl bg-surface-container/40 dark:bg-slate-800/40 border border-outline-variant/30 dark:border-slate-700/50 transition-colors">
                     <div>
-                      <p className="text-sm font-bold text-slate-900">
+                      <p className="text-sm font-bold text-slate-900 dark:text-slate-100 transition-colors">
                         Password
                       </p>
-                      <p className="text-xs text-on-surface-variant mt-0.5">
+                      <p className="text-xs text-on-surface-variant dark:text-slate-400 mt-0.5 transition-colors">
                         Atur kata sandi untuk login manual lewat form email.
                       </p>
                     </div>
-                    <button className="px-4 py-2 border border-outline-variant hover:bg-surface-container font-semibold text-xs rounded-xl transition-all">
+                    <button className="px-4 py-2 border border-outline-variant dark:border-slate-700 hover:bg-surface-container dark:hover:bg-slate-800 text-slate-900 dark:text-slate-200 font-semibold text-xs rounded-xl transition-all">
                       Set New Password
                     </button>
                   </div>
@@ -359,41 +361,41 @@ export default function ProfilePage() {
               )}
 
               {activeTab === "inbox" && (
-                <div className="bg-surface-container-lowest rounded-[24px] p-6 border border-outline-variant/60 shadow-sm space-y-4">
+                <div className="bg-surface-container-lowest dark:bg-slate-900 rounded-[24px] p-6 border border-outline-variant/60 dark:border-slate-800 shadow-sm space-y-4 transition-colors duration-300">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h3 className="text-lg font-bold text-slate-900">
+                      <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 transition-colors">
                         System Inbox
                       </h3>
-                      <p className="text-xs text-on-surface-variant">
+                      <p className="text-xs text-on-surface-variant dark:text-slate-400 transition-colors">
                         Pesan dan notifikasi seputar akun lu.
                       </p>
                     </div>
                     {unreadCount > 0 && (
                       <button
                         onClick={handleMarkAllRead}
-                        className="text-xs font-bold text-primary hover:underline"
+                        className="text-xs font-bold text-primary dark:text-blue-400 hover:underline transition-colors"
                       >
                         Mark all as read
                       </button>
                     )}
                   </div>
-                  <div className="h-px bg-outline-variant/40"></div>
+                  <div className="h-px bg-outline-variant/40 dark:bg-slate-800 transition-colors"></div>
 
                   <div className="space-y-3">
                     {/* INI BAGIAN DINAMIS YANG NARIK DARI DB */}
                     {notifications.length === 0 ? (
-                      <div className="p-8 text-center text-on-surface-variant text-sm">
+                      <div className="p-8 text-center text-on-surface-variant dark:text-slate-400 text-sm transition-colors">
                         Belum ada notifikasi masuk.
                       </div>
                     ) : (
                       notifications.map((notif) => (
                         <div
                           key={notif.id}
-                          className={`p-4 rounded-xl border flex gap-4 items-start transition-colors ${!notif.isRead ? "border-primary/20 bg-primary/5" : "border-outline-variant/50 opacity-70"}`}
+                          className={`p-4 rounded-xl border flex gap-4 items-start transition-colors ${!notif.isRead ? "border-primary/20 dark:border-blue-900/50 bg-primary/5 dark:bg-blue-900/10" : "border-outline-variant/50 dark:border-slate-800 opacity-70"}`}
                         >
                           <div
-                            className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${!notif.isRead ? "bg-primary/20 text-primary" : "bg-surface-container-high text-on-surface-variant"}`}
+                            className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${!notif.isRead ? "bg-primary/20 dark:bg-blue-900/30 text-primary dark:text-blue-400" : "bg-surface-container-high dark:bg-slate-800 text-on-surface-variant dark:text-slate-400"}`}
                           >
                             <span className="material-symbols-outlined text-[20px]">
                               {notif.type === "SYSTEM"
@@ -405,17 +407,17 @@ export default function ProfilePage() {
                           </div>
                           <div className="flex-1">
                             <div className="flex justify-between items-start mb-1">
-                              <p className="text-sm font-bold text-slate-900">
+                              <p className="text-sm font-bold text-slate-900 dark:text-slate-100 transition-colors">
                                 {notif.title}
                               </p>
-                              <span className="text-[10px] font-medium text-on-surface-variant">
+                              <span className="text-[10px] font-medium text-on-surface-variant dark:text-slate-500 transition-colors">
                                 {formatDistanceToNow(
                                   new Date(notif.createdAt),
                                   { addSuffix: true, locale: id },
                                 )}
                               </span>
                             </div>
-                            <p className="text-xs text-on-surface-variant leading-relaxed">
+                            <p className="text-xs text-on-surface-variant dark:text-slate-400 leading-relaxed transition-colors">
                               {notif.message}
                             </p>
                           </div>

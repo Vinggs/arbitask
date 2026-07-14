@@ -9,14 +9,14 @@ export default function Sidebar() {
 
   return (
     <aside
-      className={`${isSidebarOpen ? "w-64" : "w-20"} transition-all duration-300 h-screen sticky top-0 bg-surface-container-lowest border-r border-outline-variant flex flex-col shrink-0 z-50`}
+      className={`${isSidebarOpen ? "w-64" : "w-20"} transition-all duration-300 h-screen sticky top-0 bg-surface-container-lowest dark:bg-[#0B1120] border-r border-outline-variant dark:border-slate-800 flex flex-col shrink-0 z-50`}
     >
-      {/* KOTAK LOGO: Dikunci mati di 80px (max-h dan shrink-0) */}
+      {/* KOTAK LOGO */}
       <div
-        className="flex items-center h-[80px] min-h-[80px] max-h-[80px] shrink-0 px-6 border-b border-outline-variant cursor-pointer box-border overflow-hidden"
+        className="flex items-center h-[80px] min-h-[80px] max-h-[80px] shrink-0 px-6 border-b border-outline-variant dark:border-slate-800 cursor-pointer box-border overflow-hidden"
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
       >
-        <div className="font-display-lg text-[24px] font-bold text-primary tracking-tight select-none">
+        <div className="font-display-lg text-[24px] font-bold text-primary dark:text-slate-100 tracking-tight select-none">
           {isSidebarOpen ? "Arbitask." : "A."}
         </div>
       </div>
@@ -24,7 +24,7 @@ export default function Sidebar() {
       <nav className="flex-1 flex flex-col gap-2 px-3 mt-6">
         <Link
           href="/"
-          className={`flex items-center gap-4 transition-colors rounded-lg px-3 py-3 ${pathname === "/" ? "text-primary bg-primary-fixed/20 font-bold border-l-4 border-primary rounded-r-lg" : "text-on-surface hover:bg-surface-container-low"}`}
+          className={`flex items-center gap-4 transition-colors rounded-lg px-3 py-3 ${pathname === "/" ? "text-primary dark:text-white bg-primary-fixed/20 dark:bg-slate-800 font-bold border-l-4 border-primary dark:border-slate-400 rounded-r-lg" : "text-on-surface dark:text-slate-400 hover:bg-surface-container-low dark:hover:bg-slate-800"}`}
         >
           <span className="material-symbols-outlined text-lg">dashboard</span>
           {isSidebarOpen && (
@@ -36,7 +36,7 @@ export default function Sidebar() {
 
         <Link
           href="/katalog"
-          className={`flex items-center gap-4 transition-colors rounded-lg px-3 py-3 ${pathname === "/katalog" ? "text-primary bg-primary-fixed/20 font-bold border-l-4 border-primary rounded-r-lg" : "text-on-surface hover:bg-surface-container-low"}`}
+          className={`flex items-center gap-4 transition-colors rounded-lg px-3 py-3 ${pathname === "/katalog" ? "text-primary dark:text-white bg-primary-fixed/20 dark:bg-slate-800 font-bold border-l-4 border-primary dark:border-slate-400 rounded-r-lg" : "text-on-surface dark:text-slate-400 hover:bg-surface-container-low dark:hover:bg-slate-800"}`}
         >
           <span className="material-symbols-outlined text-lg">list_alt</span>
           {isSidebarOpen && (
@@ -48,7 +48,7 @@ export default function Sidebar() {
 
         <Link
           href="/tracking"
-          className={`flex items-center gap-4 transition-colors rounded-lg px-3 py-3 ${pathname === "/tracking" ? "text-primary bg-primary-fixed/20 font-bold border-l-4 border-primary rounded-r-lg" : "text-on-surface hover:bg-surface-container-low"}`}
+          className={`flex items-center gap-4 transition-colors rounded-lg px-3 py-3 ${pathname === "/tracking" ? "text-primary dark:text-white bg-primary-fixed/20 dark:bg-slate-800 font-bold border-l-4 border-primary dark:border-slate-400 rounded-r-lg" : "text-on-surface dark:text-slate-400 hover:bg-surface-container-low dark:hover:bg-slate-800"}`}
         >
           <span className="material-symbols-outlined text-lg">monitoring</span>
           {isSidebarOpen && (
@@ -59,7 +59,7 @@ export default function Sidebar() {
         {/* --- TAMBAHAN MENU LOG HISTORY --- */}
         <Link
           href="/logs"
-          className={`flex items-center gap-4 transition-colors rounded-lg px-3 py-3 ${pathname === "/logs" ? "text-primary bg-primary-fixed/20 font-bold border-l-4 border-primary rounded-r-lg" : "text-on-surface hover:bg-surface-container-low"}`}
+          className={`flex items-center gap-4 transition-colors rounded-lg px-3 py-3 ${pathname === "/logs" ? "text-primary dark:text-white bg-primary-fixed/20 dark:bg-slate-800 font-bold border-l-4 border-primary dark:border-slate-400 rounded-r-lg" : "text-on-surface dark:text-slate-400 hover:bg-surface-container-low dark:hover:bg-slate-800"}`}
         >
           <span className="material-symbols-outlined text-lg">history</span>
           {isSidebarOpen && (

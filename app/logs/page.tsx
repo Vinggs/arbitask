@@ -2,20 +2,20 @@ import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
 import { prisma } from "@/lib/prisma";
 
-// Fungsi pintar buat nentuin warna badge sesuai status
+// Fungsi pintar buat nentuin warna badge sesuai status, udah disupport dark mode
 const getStatusBadge = (status: string) => {
   switch (status) {
     case "Success":
     case "Completed":
-      return "bg-[#059669]/10 text-[#059669]";
+      return "bg-[#059669]/10 text-[#059669] dark:bg-green-900/30 dark:text-green-400";
     case "Processing":
     case "In Progress":
-      return "bg-blue-100 text-blue-800";
-    case "Dropped": // <-- Tambahan warna buat Dropped
+      return "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400";
+    case "Dropped":
     case "Alert":
-      return "bg-red-100 text-red-800";
+      return "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400";
     default:
-      return "bg-gray-100 text-gray-800";
+      return "bg-gray-100 text-gray-800 dark:bg-slate-800 dark:text-slate-300";
   }
 };
 
@@ -60,7 +60,8 @@ export default async function LogHistoryPage() {
   });
 
   return (
-    <div className="flex min-h-screen bg-background">
+    // Transisi latar belakang utama
+    <div className="flex min-h-screen bg-background dark:bg-[#0B1120] text-on-surface dark:text-slate-200 transition-colors duration-300">
       <Sidebar />
 
       <div className="flex-1 flex flex-col min-w-0">
@@ -69,47 +70,47 @@ export default async function LogHistoryPage() {
         <main className="flex-1 p-margin-desktop max-w-container-max mx-auto w-full">
           {/* Header Section */}
           <header className="mb-6">
-            <h2 className="text-3xl font-semibold text-primary mb-2">
+            <h2 className="text-3xl font-semibold text-primary dark:text-slate-100 mb-2 transition-colors">
               Log History
             </h2>
-            <p className="text-base text-on-surface-variant max-w-2xl">
+            <p className="text-base text-on-surface-variant dark:text-slate-400 max-w-2xl transition-colors">
               Track your recent activities, task status updates, and payout
               history.
             </p>
           </header>
 
           {/* Filters & Search Toolbar */}
-          <div className="flex flex-col md:flex-row gap-4 justify-between items-center mb-4 bg-surface-container-lowest p-4 rounded-xl border border-outline-variant shadow-sm">
+          <div className="flex flex-col md:flex-row gap-4 justify-between items-center mb-4 bg-surface-container-lowest dark:bg-slate-900 p-4 rounded-xl border border-outline-variant dark:border-slate-800 shadow-sm transition-colors duration-300">
             <div className="w-full md:w-1/3 relative">
-              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">
+              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant dark:text-slate-500 text-[20px] transition-colors">
                 search
               </span>
               <input
                 type="text"
                 placeholder="Search logs by task or detail..."
-                className="w-full pl-10 pr-4 py-2 bg-background border border-outline-variant rounded-lg text-sm text-on-surface focus:outline-none focus:border-blue-500 transition-colors"
+                className="w-full pl-10 pr-4 py-2 bg-background dark:bg-slate-800/50 border border-outline-variant dark:border-slate-700 rounded-lg text-sm text-on-surface dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 focus:ring-1 focus:ring-blue-500 transition-colors"
               />
             </div>
             <div className="flex gap-3 w-full md:w-auto">
               <div className="relative w-full md:w-auto">
-                <select className="w-full md:w-48 appearance-none bg-background border border-outline-variant rounded-lg pl-4 pr-10 py-2 text-sm font-semibold text-on-surface focus:outline-none focus:border-blue-500 transition-colors cursor-pointer">
+                <select className="w-full md:w-48 appearance-none bg-background dark:bg-slate-800/50 border border-outline-variant dark:border-slate-700 rounded-lg pl-4 pr-10 py-2 text-sm font-semibold text-on-surface dark:text-slate-200 focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors cursor-pointer">
                   <option value="">All Activity Types</option>
                   <option value="payout">Payouts</option>
                   <option value="status">Status Updates</option>
                   <option value="start">Task Started</option>
                 </select>
-                <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">
+                <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant dark:text-slate-500 pointer-events-none transition-colors">
                   arrow_drop_down
                 </span>
               </div>
               <div className="relative w-full md:w-auto">
-                <select className="w-full md:w-40 appearance-none bg-background border border-outline-variant rounded-lg pl-4 pr-10 py-2 text-sm font-semibold text-on-surface focus:outline-none focus:border-blue-500 transition-colors cursor-pointer">
+                <select className="w-full md:w-40 appearance-none bg-background dark:bg-slate-800/50 border border-outline-variant dark:border-slate-700 rounded-lg pl-4 pr-10 py-2 text-sm font-semibold text-on-surface dark:text-slate-200 focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors cursor-pointer">
                   <option value="30">Last 30 Days</option>
                   <option value="7">Last 7 Days</option>
                   <option value="90">Last 90 Days</option>
                   <option value="all">All Time</option>
                 </select>
-                <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">
+                <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant dark:text-slate-500 pointer-events-none transition-colors">
                   arrow_drop_down
                 </span>
               </div>
@@ -117,34 +118,34 @@ export default async function LogHistoryPage() {
           </div>
 
           {/* Data Table Container */}
-          <div className="bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden shadow-sm">
+          <div className="bg-surface-container-lowest dark:bg-slate-900 rounded-xl border border-outline-variant dark:border-slate-800 overflow-hidden shadow-sm transition-colors duration-300">
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse min-w-[800px]">
-                <thead className="bg-surface-container-low border-b border-outline-variant">
+                <thead className="bg-surface-container-low dark:bg-slate-800/50 border-b border-outline-variant dark:border-slate-800 transition-colors">
                   <tr>
-                    <th className="px-6 py-4 text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    <th className="px-6 py-4 text-xs font-semibold text-on-surface-variant dark:text-slate-400 uppercase tracking-wider">
                       Date & Time
                     </th>
-                    <th className="px-6 py-4 text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    <th className="px-6 py-4 text-xs font-semibold text-on-surface-variant dark:text-slate-400 uppercase tracking-wider">
                       Task Name
                     </th>
-                    <th className="px-6 py-4 text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    <th className="px-6 py-4 text-xs font-semibold text-on-surface-variant dark:text-slate-400 uppercase tracking-wider">
                       Activity
                     </th>
-                    <th className="px-6 py-4 text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    <th className="px-6 py-4 text-xs font-semibold text-on-surface-variant dark:text-slate-400 uppercase tracking-wider">
                       Details
                     </th>
-                    <th className="px-6 py-4 text-xs font-semibold text-on-surface-variant uppercase tracking-wider text-center">
+                    <th className="px-6 py-4 text-xs font-semibold text-on-surface-variant dark:text-slate-400 uppercase tracking-wider text-center">
                       Status
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-outline-variant text-sm">
+                <tbody className="divide-y divide-outline-variant dark:divide-slate-800 text-sm transition-colors">
                   {dynamicLogs.length === 0 ? (
                     <tr>
                       <td
                         colSpan={5}
-                        className="px-6 py-8 text-center text-on-surface-variant italic"
+                        className="px-6 py-8 text-center text-on-surface-variant dark:text-slate-500 italic"
                       >
                         Belum ada riwayat aktivitas yang tercatat.
                       </td>
@@ -153,29 +154,29 @@ export default async function LogHistoryPage() {
                     dynamicLogs.map((log) => (
                       <tr
                         key={log.id}
-                        className="hover:bg-surface-container/30 transition-colors"
+                        className="hover:bg-surface-container/30 dark:hover:bg-slate-800/50 transition-colors"
                       >
-                        <td className="px-6 py-4 whitespace-nowrap text-on-surface-variant">
+                        <td className="px-6 py-4 whitespace-nowrap text-on-surface-variant dark:text-slate-400">
                           {log.date}
                         </td>
-                        <td className="px-6 py-4 font-medium text-primary">
+                        <td className="px-6 py-4 font-medium text-primary dark:text-slate-200">
                           {log.taskName}
                         </td>
-                        <td className="px-6 py-4 text-on-surface">
+                        <td className="px-6 py-4 text-on-surface dark:text-slate-300">
                           {log.activity}
                         </td>
                         <td
-                          className={`px-6 py-4 ${
+                          className={`px-6 py-4 transition-colors ${
                             log.details.includes("+")
-                              ? "text-[#059669] font-semibold"
-                              : "text-on-surface-variant"
+                              ? "text-[#059669] dark:text-green-400 font-semibold"
+                              : "text-on-surface-variant dark:text-slate-400"
                           }`}
                         >
                           {log.details}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-center">
                           <span
-                            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusBadge(
+                            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium transition-colors ${getStatusBadge(
                               log.status,
                             )}`}
                           >
@@ -190,23 +191,23 @@ export default async function LogHistoryPage() {
             </div>
 
             {/* Pagination Footer */}
-            <div className="bg-surface-container-lowest border-t border-outline-variant px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
-              <span className="text-sm font-medium text-on-surface-variant">
+            <div className="bg-surface-container-lowest dark:bg-slate-900 border-t border-outline-variant dark:border-slate-800 px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4 transition-colors">
+              <span className="text-sm font-medium text-on-surface-variant dark:text-slate-400">
                 Showing {dynamicLogs.length} entries
               </span>
               <div className="flex gap-2">
                 <button
                   disabled
-                  className="px-3 py-1 border border-outline-variant rounded-md text-sm font-semibold text-on-surface-variant hover:bg-surface transition-colors disabled:opacity-50"
+                  className="px-3 py-1 border border-outline-variant dark:border-slate-700 rounded-md text-sm font-semibold text-on-surface-variant dark:text-slate-400 hover:bg-surface dark:hover:bg-slate-800 transition-colors disabled:opacity-50"
                 >
                   Previous
                 </button>
-                <button className="px-3 py-1 border border-outline-variant rounded-md text-sm font-semibold text-on-surface hover:bg-surface transition-colors bg-surface-container-high">
+                <button className="px-3 py-1 border border-outline-variant dark:border-slate-700 rounded-md text-sm font-semibold text-on-surface dark:text-slate-200 hover:bg-surface dark:hover:bg-slate-800 transition-colors bg-surface-container-high dark:bg-slate-800">
                   1
                 </button>
                 <button
                   disabled
-                  className="px-3 py-1 border border-outline-variant rounded-md text-sm font-semibold text-on-surface-variant hover:bg-surface transition-colors disabled:opacity-50"
+                  className="px-3 py-1 border border-outline-variant dark:border-slate-700 rounded-md text-sm font-semibold text-on-surface-variant dark:text-slate-400 hover:bg-surface dark:hover:bg-slate-800 transition-colors disabled:opacity-50"
                 >
                   Next
                 </button>

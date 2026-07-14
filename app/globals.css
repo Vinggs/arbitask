@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Light mode (default) - Soft Blue Awan */
+body {
+  @apply bg-[#F4F9FF] text-slate-800 antialiased transition-colors duration-300;
+}
+
+/* Dark mode - Midnight / Neo-Fintech Dark */
+.dark body {
+  @apply bg-[#0B1120] text-slate-200;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 dark:bg-slate-700 rounded-full transition-colors;
+}
