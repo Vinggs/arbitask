@@ -12,6 +12,22 @@
 - **Feature:** Implemented gamified notification system.
 - **Logic:** Added task lifecycle management.
 
+## [29 Juni 2026] - History Logging
+- **Feature:** Implemented `LogHistoryPage` to track user activities.
+- **UI:** Added log history table, including dynamic badge status colors and filter toolbars.
+- **Logic:** Integrated dynamic log generation from `Task` database model with date formatting and activity status mapping.
+
+## [28 Juni 2026] - Profile & Settings
+- **Feature:** Implemented `ProfilePage` featuring dynamic tabs for Personal Info, Preferences, Security, and System Inbox.
+- **Logic:** Integrated Server Actions (`actions.ts`) to fetch real-time user statistics (`taskCount`, `totalYield`) and manage notification states.
+- **UX:** Added dynamic profile management form (update name & phone) and persistent notification tracking with "mark all as read" functionality.
+- **Integration:** Integrated `ThemeToggle` within the preferences tab for centralized theme management.
+
+## [27 Juni 2026] - Auth Interface Refinement
+- **UI:** Implemented the `LoginPage`.
+- **Features:** Integrated social login buttons (Google, Twitter, GitHub, Discord) with consistent hover/active states and shadow effects.
+- **UX:** Added Magic Link form powered by **Resend** for email delivery, complete with loading state feedback and integrated back-to-dashboard navigation.
+
 ## [26 Juni 2026] - Data & Search Optimization
 - **Feature:** Implemented dynamic game images.
 - **UX:** Removed platform filtering to simplify UI.
