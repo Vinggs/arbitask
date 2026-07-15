@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { autoTrackTask } from "@/app/actions";
+import { useRouter } from "next/navigation"; // 1. Import useRouter
 
 type Milestone = { id: string; description: string; reward: number };
 type Offer = {
@@ -18,30 +19,27 @@ type Offer = {
 
 export default function OfferRow({
   offer,
-  taskStatus, // Menerima status task dari page.tsx
-  userEmail, // Menerima email dari page.tsx
+  taskStatus,
+  userEmail,
 }: {
   offer: Offer;
-  taskStatus: string | null; // Definisi tipe data baru
-  userEmail: string; // Definisi tipe data baru
+  taskStatus: string | null;
+  userEmail: string;
 }) {
+  const router = useRouter(); // 2. Inisialisasi router
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const imgPlaceholder = `https://ui-avatars.com/api/?name=${encodeURIComponent(
-    offer.gameName,
-  )}&background=0f172a&color=fff&size=128&font-size=0.4&bold=true`;
-
+  const imgPlaceholder = `https://ui-avatars.com/api/?name=${encodeURIComponent(offer.gameName)}&background=000&color=fff&size=128&bold=true`;
   const displayImage = offer.imageUrl ? offer.imageUrl : imgPlaceholder;
 
   return (
     <tr
       onClick={() => setIsModalOpen(true)}
-      className="hover:bg-surface-container/30 transition-colors cursor-pointer group"
+      className="hover:bg-[#FCD34D] dark:hover:bg-slate-800 transition-colors cursor-pointer group border-b-2 border-black dark:border-white border-dashed last:border-b-0"
     >
-      <td className="p-4">
+      <td className="p-4 border-r-2 border-black dark:border-white border-dashed">
         <div className="flex items-center gap-4">
           <div
-            className={`w-12 h-12 rounded-xl bg-surface-container border border-outline-variant flex items-center justify-center shadow-sm overflow-hidden flex-shrink-0 ${taskStatus === "Dropped" ? "grayscale opacity-70" : ""}`}
+            className={`w-12 h-12 bg-white border-2 border-black dark:border-white flex items-center justify-center overflow-hidden flex-shrink-0 ${taskStatus === "Dropped" ? "grayscale opacity-70" : ""}`}
           >
             <img
               src={displayImage}
@@ -51,43 +49,35 @@ export default function OfferRow({
           </div>
           <div>
             <div
-              className={`font-semibold text-base transition-colors ${taskStatus === "Dropped" ? "text-slate-500" : "text-primary group-hover:text-blue-600"}`}
+              className={`font-black uppercase text-base transition-colors ${taskStatus === "Dropped" ? "text-slate-500" : "text-black dark:text-white group-hover:underline"}`}
             >
               {offer.gameName}
             </div>
-            <div className="text-xs text-on-surface-variant mt-0.5 flex items-center gap-1">
-              <span className="material-symbols-outlined text-[12px]">
-                sports_esports
-              </span>
+            <div className="text-xs font-bold text-slate-600 dark:text-slate-400 mt-0.5 uppercase">
               {offer.requirement}
             </div>
           </div>
         </div>
       </td>
 
-      <td className="p-4">
-        <div className="flex flex-col gap-1 items-start">
-          <span className="px-2.5 py-1 bg-surface-container border border-outline-variant rounded text-xs font-medium text-on-surface flex items-center gap-1">
-            <span className="font-bold text-gray-400">
-              {offer.offerwall === "RevU" ? "RU" : "TX"}
-            </span>
-            {offer.offerwall}
-          </span>
-        </div>
+      <td className="p-4 border-r-2 border-black dark:border-white border-dashed">
+        <span className="px-2 py-1 bg-white dark:bg-slate-800 border-2 border-black dark:border-white text-xs font-black uppercase text-black dark:text-white inline-block shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]">
+          {offer.offerwall}
+        </span>
       </td>
 
-      <td className="p-4 text-sm text-on-surface font-medium">
+      <td className="p-4 text-sm text-black dark:text-white font-black border-r-2 border-black dark:border-white border-dashed">
         {offer.rawCoins.toLocaleString()}
       </td>
 
-      <td className="p-4">
-        <div className="font-bold text-green-600 text-lg">
+      <td className="p-4 border-r-2 border-black dark:border-white border-dashed">
+        <div className="font-black text-[#059669] dark:text-green-400 text-lg">
           ${offer.usdValue.toFixed(2)}
         </div>
         {offer.isHighest && (
-          <span className="text-[10px] bg-green-50 text-green-600 border border-green-200 px-2 py-0.5 rounded-full inline-flex items-center gap-1 mt-1 font-semibold">
+          <span className="text-[10px] bg-[#A3E635] text-black border-2 border-black px-2 py-0.5 inline-flex items-center gap-1 mt-1 font-black uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
             Highest{" "}
-            <span className="material-symbols-outlined text-[12px]">
+            <span className="material-symbols-outlined text-[12px] font-black">
               local_fire_department
             </span>
           </span>
@@ -95,27 +85,12 @@ export default function OfferRow({
       </td>
 
       <td className="p-4 text-right">
-        {/* Tombol Action Dinamis */}
         {taskStatus ? (
           <button
             disabled
-            onClick={(e) => e.stopPropagation()} // Biar nggak ngebuka modal kalau diklik
-            className={`px-4 py-2 rounded-xl font-bold text-xs transition-colors inline-flex items-center gap-1.5 shadow-sm cursor-not-allowed
-              ${
-                taskStatus === "Dropped"
-                  ? "bg-red-50 text-red-600 border border-red-200"
-                  : taskStatus === "Completed"
-                    ? "bg-green-50 text-green-600 border border-green-200"
-                    : "bg-surface-container text-on-surface-variant border border-outline-variant"
-              }`}
+            onClick={(e) => e.stopPropagation()}
+            className={`px-4 py-2 border-2 border-black dark:border-white font-black uppercase text-xs inline-flex items-center gap-1.5 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] cursor-not-allowed ${taskStatus === "Dropped" ? "bg-[#FCA5A5] text-black" : taskStatus === "Completed" ? "bg-[#A3E635] text-black" : "bg-white dark:bg-slate-700 text-black dark:text-white"}`}
           >
-            <span className="material-symbols-outlined text-[14px]">
-              {taskStatus === "Dropped"
-                ? "flag"
-                : taskStatus === "Completed"
-                  ? "check_circle"
-                  : "sync"}
-            </span>
             {taskStatus === "Dropped"
               ? "Abandoned"
               : taskStatus === "Completed"
@@ -128,37 +103,36 @@ export default function OfferRow({
               e.stopPropagation();
               setIsModalOpen(true);
             }}
-            className="bg-slate-900 text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-slate-800 transition-colors shadow-md flex items-center gap-1"
+            className="bg-black dark:bg-white text-white dark:text-black border-2 border-black dark:border-white px-5 py-2 text-sm font-black uppercase hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] transition-all flex items-center justify-center gap-1 w-full max-w-[120px] ml-auto"
           >
-            <span className="text-[16px]">+</span> Track
+            Track
           </button>
         )}
 
-        {/* MODAL */}
+        {/* MODAL NEO-BRUTALISM */}
         {isModalOpen && (
           <div
-            className="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm transition-opacity"
+            className="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm"
             onClick={(e) => {
               e.stopPropagation();
               setIsModalOpen(false);
             }}
           >
             <div
-              className="bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden flex flex-col transform transition-transform text-left"
+              className="bg-white dark:bg-slate-900 border-4 border-black dark:border-white w-full max-w-md shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] dark:shadow-[12px_12px_0px_0px_rgba(255,255,255,1)] flex flex-col text-left"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Modal Header */}
-              <div className="p-6 border-b border-gray-100 flex items-start justify-between bg-white">
+              <div className="p-6 border-b-4 border-black dark:border-white flex items-start justify-between bg-[#FCD34D] dark:bg-slate-800">
                 <div className="flex items-center gap-4">
                   <img
                     src={displayImage}
-                    className="w-14 h-14 rounded-xl object-cover border border-gray-200 shadow-sm"
+                    className="w-16 h-16 object-cover border-4 border-black dark:border-white bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]"
                   />
                   <div>
-                    <h3 className="font-bold text-gray-900 text-xl tracking-tight">
+                    <h3 className="font-black text-black dark:text-white text-2xl uppercase tracking-tighter">
                       {offer.gameName}
                     </h3>
-                    <span className="text-[9px] font-bold text-gray-500 uppercase tracking-widest border border-gray-200 px-2 py-0.5 rounded mt-1.5 inline-block">
+                    <span className="text-[10px] font-black text-black dark:text-white uppercase tracking-widest border-2 border-black dark:border-white px-2 py-0.5 bg-white dark:bg-slate-700 mt-1 inline-block">
                       {offer.offerwall} EXCLUSIVE
                     </span>
                   </div>
@@ -168,42 +142,41 @@ export default function OfferRow({
                     e.stopPropagation();
                     setIsModalOpen(false);
                   }}
-                  className="text-gray-400 hover:text-gray-700 bg-gray-50 hover:bg-gray-100 rounded-full p-1 transition-colors"
+                  className="text-black dark:text-white border-2 border-black dark:border-white w-8 h-8 flex items-center justify-center bg-white dark:bg-slate-700 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors"
                 >
-                  <span className="material-symbols-outlined text-[20px]">
+                  <span className="material-symbols-outlined text-[20px] font-black">
                     close
                   </span>
                 </button>
               </div>
 
-              {/* Modal Body */}
-              <div className="p-6 bg-slate-50/50 flex-1 max-h-[50vh] overflow-y-auto">
-                <div className="flex items-center gap-2 text-emerald-600 text-xs font-bold mb-5 bg-emerald-50 w-fit px-3 py-1.5 rounded-full border border-emerald-100">
+              <div className="p-6 bg-[#F4F5F0] dark:bg-slate-900 flex-1 max-h-[50vh] overflow-y-auto">
+                <div className="flex items-center gap-2 text-black dark:text-white text-xs font-black uppercase mb-5 bg-[#A3E635] dark:bg-green-600 w-fit px-3 py-1.5 border-2 border-black dark:border-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]">
                   <span className="material-symbols-outlined text-[16px]">
                     schedule
-                  </span>
-                  Complete within 30 days
+                  </span>{" "}
+                  30 Days Limit
                 </div>
 
-                <h4 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3">
-                  Mission Milestones
+                <h4 className="text-[12px] font-black text-black dark:text-slate-300 uppercase tracking-widest mb-3">
+                  Milestones
                 </h4>
 
-                <div className="space-y-2.5">
+                <div className="space-y-3">
                   {offer.milestones.length === 0 ? (
-                    <p className="text-sm text-gray-500 italic text-center py-4">
-                      Tidak ada milestone spesifik.
+                    <p className="text-sm font-bold text-slate-500 uppercase text-center py-4 border-2 border-dashed border-slate-400">
+                      Tidak ada tier.
                     </p>
                   ) : (
                     offer.milestones.map((m) => (
                       <div
                         key={m.id}
-                        className="bg-white border border-gray-200 rounded-xl p-3.5 flex justify-between items-center shadow-sm hover:border-blue-200 transition-colors"
+                        className="bg-white dark:bg-slate-800 border-2 border-black dark:border-white p-4 flex justify-between items-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]"
                       >
-                        <span className="text-sm font-semibold text-gray-700">
+                        <span className="text-sm font-black uppercase text-black dark:text-white">
                           {m.description}
                         </span>
-                        <span className="text-sm font-bold text-emerald-600">
+                        <span className="text-sm font-black text-[#059669] dark:text-green-400">
                           ${m.reward.toFixed(2)}
                         </span>
                       </div>
@@ -212,33 +185,29 @@ export default function OfferRow({
                 </div>
               </div>
 
-              {/* Modal Footer */}
-              <div className="p-6 border-t border-gray-100 bg-white">
+              <div className="p-6 border-t-4 border-black dark:border-white bg-white dark:bg-slate-800">
                 {taskStatus ? (
                   <button
                     disabled
-                    className={`w-full font-semibold py-3.5 rounded-xl cursor-not-allowed ${
-                      taskStatus === "Dropped"
-                        ? "bg-red-50 text-red-400 border border-red-100"
-                        : "bg-gray-100 text-gray-400"
-                    }`}
+                    className={`w-full font-black uppercase py-4 border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] cursor-not-allowed ${taskStatus === "Dropped" ? "bg-[#FCA5A5] text-black" : "bg-slate-200 dark:bg-slate-700 text-slate-500"}`}
                   >
-                    Task{" "}
-                    {taskStatus === "Dropped"
-                      ? "Abandoned"
-                      : taskStatus === "Completed"
-                        ? "Completed"
-                        : "Already Tracked"}
+                    {taskStatus === "Dropped" ? "Abandoned" : "Already Tracked"}
                   </button>
                 ) : (
                   <form
                     action={autoTrackTask}
                     onSubmit={(e) => {
+                      // 3. Cek form kalau di table row
+                      if (!userEmail) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        router.push("/login");
+                        return;
+                      }
                       e.stopPropagation();
                       setIsModalOpen(false);
                     }}
                   >
-                    {/* Selipin email lu ke dalam form ini */}
                     <input type="hidden" name="userEmail" value={userEmail} />
                     <input
                       type="hidden"
@@ -273,18 +242,15 @@ export default function OfferRow({
 
                     <button
                       type="submit"
-                      className="w-full bg-slate-900 text-white font-semibold py-3.5 rounded-xl hover:bg-slate-800 transition-colors flex justify-center items-center gap-2 shadow-lg shadow-slate-900/20"
+                      className="w-full bg-[#93C5FD] dark:bg-blue-600 text-black dark:text-white font-black uppercase py-4 border-2 border-black dark:border-white hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] transition-all flex justify-center items-center gap-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]"
                     >
                       Start Tracking{" "}
-                      <span className="material-symbols-outlined text-[18px]">
+                      <span className="material-symbols-outlined text-[18px] font-black">
                         arrow_forward
                       </span>
                     </button>
                   </form>
                 )}
-                <p className="text-[9px] text-center text-gray-400 font-semibold uppercase tracking-widest mt-4">
-                  Terms and conditions apply
-                </p>
               </div>
             </div>
           </div>

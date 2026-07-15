@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
-import { Inter, Plus_Jakarta_Sans } from "next/font/google";
+import { Space_Grotesk } from "next/font/google"; // <-- Ganti font ke Space Grotesk
 import "./globals.css";
 import { Providers } from "./providers";
 import { ThemeProvider } from "@/components/ThemeProvider"; // <-- Import Provider dari next-themes
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const jakarta = Plus_Jakarta_Sans({
+// Inisialisasi Space Grotesk buat Neo-Brutalism
+const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
-  variable: "--font-jakarta",
+  variable: "--font-space-grotesk",
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -29,9 +30,9 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      {/* Hapus bg-background dan text-on-surface biar settingan globals.css kita jalan */}
+      {/* Terapin class dari spaceGrotesk ke body */}
       <body
-        className={`${inter.variable} ${jakarta.variable} font-body-md text-body-md antialiased min-h-screen`}
+        className={`${spaceGrotesk.variable} ${spaceGrotesk.className} font-body-md text-body-md antialiased min-h-screen`}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Providers>{children}</Providers>

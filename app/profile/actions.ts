@@ -4,7 +4,6 @@ import { prisma } from "@/lib/prisma";
 
 export async function getProfileStats(email: string) {
   try {
-    // Cari user berdasarkan email beserta semua task-nya
     const user = await prisma.user.findUnique({
       where: { email },
       include: { tasks: true },
@@ -12,10 +11,7 @@ export async function getProfileStats(email: string) {
 
     if (!user) return { taskCount: 0, totalYield: 0 };
 
-    // Hitung jumlah task
     const taskCount = user.tasks.length;
-
-    // Hitung total USD value dari semua targetValue task
     const totalYield = user.tasks.reduce(
       (acc, task) => acc + task.targetValue,
       0,
@@ -28,7 +24,6 @@ export async function getProfileStats(email: string) {
   }
 }
 
-// Tambahin ini di bawah fungsi getProfileStats yang udah ada
 export async function updateUserProfile(
   email: string,
   firstName: string,
@@ -42,7 +37,7 @@ export async function updateUserProfile(
       where: { email },
       data: {
         name: fullName,
-        phone: phone, // Simpen nomor HP ke kolom baru tadi
+        phone: phone,
       },
     });
 
@@ -53,14 +48,11 @@ export async function updateUserProfile(
   }
 }
 
-// --- Tambahin di bawah fungsi updateUserProfile ---
-
 export async function getUserNotifications(email: string) {
   try {
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) return [];
 
-    // Tarik semua pesan, urutkan dari yang paling baru
     return await prisma.notification.findMany({
       where: { userId: user.id },
       orderBy: { createdAt: "desc" },
@@ -76,7 +68,6 @@ export async function markAllNotificationsAsRead(email: string) {
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) return { success: false };
 
-    // Update semua pesan yang belum dibaca jadi terbaca
     await prisma.notification.updateMany({
       where: { userId: user.id, isRead: false },
       data: { isRead: true },

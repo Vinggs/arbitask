@@ -300,3 +300,49 @@ export async function getUserBalance(email: string) {
     return 0;
   }
 }
+
+export async function addGameToCatalog(formData: FormData) {
+  const gameName = formData.get("gameName") as string;
+  const offerwall = formData.get("offerwall") as string;
+  const category = formData.get("category") as string;
+  const requirement = formData.get("requirement") as string;
+  const imageUrl = formData.get("imageUrl") as string;
+  const usdValue = parseFloat(formData.get("usdValue") as string);
+  const rawCoins = parseInt(formData.get("rawCoins") as string, 10);
+  const isHighest = formData.get("isHighest") === "true";
+
+  // Parse milestones (kalau ada)
+  const milestonesRaw = formData.get("milestones") as string;
+  let milestones = [];
+  if (milestonesRaw) {
+    try {
+      milestones = JSON.parse(milestonesRaw);
+    } catch (e) {
+      console.error("Gagal parse milestones");
+    }
+  }
+
+  // Masukin ke Database pakai Prisma
+  await prisma.catalogOffer.create({
+    data: {
+      gameName,
+      offerwall,
+      category,
+      requirement,
+      imageUrl: imageUrl || null,
+      usdValue,
+      rawCoins,
+      isHighest,
+      milestones: {
+        create: milestones.map((m: any) => ({
+          description: m.description,
+          reward: parseFloat(m.reward),
+        })),
+      },
+    },
+  });
+
+  // Refresh halaman katalog biar game baru langsung muncul
+  revalidatePath("/katalog");
+  revalidatePath("/");
+}

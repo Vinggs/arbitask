@@ -8,39 +8,40 @@ export default function AuthButton() {
 
   if (status === "loading") {
     return (
-      <div className="w-10 h-10 bg-surface-container animate-pulse rounded-xl border border-outline-variant"></div>
+      <div className="w-10 h-10 bg-slate-200 dark:bg-slate-700 animate-pulse border-2 border-black dark:border-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]"></div>
     );
   }
 
-  // Tampilan Kotak Avatar
   if (session && session.user) {
-    // LOGIKA BARU: Ambil nama, kalau kosong (karena login email), pakai emailnya.
     const userName = session.user.name || session.user.email || "User";
-
-    // Bikin link avatar otomatis
     const profileImage =
       session.user.image ||
-      `https://ui-avatars.com/api/?name=${userName}&background=0f172a&color=fff&size=128&bold=true`;
+      `https://ui-avatars.com/api/?name=${userName}&background=000&color=fff&size=128&bold=true`;
 
     return (
-      <Link href="/profile" title="View Profile">
+      <Link
+        href="/profile"
+        title="View Profile"
+        className="block w-10 h-10 border-2 border-black dark:border-white bg-white hover:-translate-y-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] transition-all"
+      >
         <img
           src={profileImage}
           alt="Profile"
-          className="w-10 h-10 rounded-xl object-cover border border-outline-variant shadow-sm hover:ring-2 hover:ring-primary/30 transition-all cursor-pointer bg-surface-container"
+          className="w-full h-full object-cover"
         />
       </Link>
     );
   }
 
-  // Tombol Login Universal
   return (
     <button
       onClick={() => signIn()}
-      className="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-900 text-white hover:bg-slate-800 transition-all shadow-md hover:-translate-y-0.5"
+      className="w-10 h-10 flex items-center justify-center bg-black dark:bg-white text-white dark:text-black border-2 border-black dark:border-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] active:translate-y-0 active:shadow-none transition-all"
       title="Sign In"
     >
-      <span className="material-symbols-outlined text-[20px]">login</span>
+      <span className="material-symbols-outlined text-[20px] font-black">
+        login
+      </span>
     </button>
   );
 }

@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
+import ThemeToggle from "@/components/ThemeToggle"; // IMPORT THEMETOGGLE DI SINI
 import {
   getProfileStats,
   updateUserProfile,
@@ -17,46 +18,37 @@ export default function ProfilePage() {
   const { data: session, status, update } = useSession();
   const [activeTab, setActiveTab] = useState("personal");
 
-  // --- TAMBAHIN BLOK KODE INI ---
-  // Fungsi buat ngebaca URL dari lonceng notifikasi
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     if (params.get("tab") === "inbox") {
-      setActiveTab("inbox"); // Langsung buka tab inbox
+      setActiveTab("inbox");
     }
   }, []);
-  // -----------------------------
 
-  // State form
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
 
-  // State loading & data dinamis
   const [stats, setStats] = useState({ taskCount: 0, totalYield: 0 });
-  const [notifications, setNotifications] = useState<any[]>([]); // Menyimpan data notif dari DB
+  const [notifications, setNotifications] = useState<any[]>([]);
   const [isLoadingStats, setIsLoadingStats] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState("");
 
   const userEmail = session?.user?.email || "";
 
-  // Tarik data pas komponen dimuat
   useEffect(() => {
     if (userEmail) {
-      // Tarik stats task
       getProfileStats(userEmail).then((data) => {
         setStats(data);
         setIsLoadingStats(false);
       });
-      // Tarik data notifikasi
       getUserNotifications(userEmail).then((data) => {
         setNotifications(data);
       });
     }
   }, [userEmail]);
 
-  // Set nilai awal form pas data session masuk
   useEffect(() => {
     if (session?.user) {
       const fullName = session.user.name || "";
@@ -66,7 +58,6 @@ export default function ProfilePage() {
     }
   }, [session]);
 
-  // Fungsi simpan perubahan form profile
   const handleSaveChanges = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSaving(true);
@@ -80,28 +71,25 @@ export default function ProfilePage() {
     );
 
     if (result.success) {
-      // Paksa NextAuth buat update session lokal biar nama di pojok kanan atas ikut ganti
       await update({ name: `${firstName} ${lastName}`.trim() });
-      setSaveMessage("Berhasil disimpan!");
+      setSaveMessage("SAVED SUCCESSFULLY!");
     } else {
-      setSaveMessage("Gagal menyimpan data.");
+      setSaveMessage("FAILED TO SAVE.");
     }
 
     setIsSaving(false);
     setTimeout(() => setSaveMessage(""), 3000);
   };
 
-  // Fungsi tandai semua notifikasi terbaca
   const handleMarkAllRead = async () => {
     await markAllNotificationsAsRead(userEmail);
-    // Update state lokal tanpa refresh halaman
     setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
   };
 
   if (status === "loading") {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background dark:bg-[#0B1120] transition-colors duration-300">
-        <span className="material-symbols-outlined animate-spin text-4xl text-primary dark:text-blue-500">
+      <div className="min-h-screen flex items-center justify-center bg-[#F4F5F0] dark:bg-[#0B1120]">
+        <span className="material-symbols-outlined animate-spin text-4xl text-black dark:text-white font-black">
           progress_activity
         </span>
       </div>
@@ -111,86 +99,84 @@ export default function ProfilePage() {
   const fullName = session?.user?.name || userEmail.split("@")[0] || "User";
   const profileImage =
     session?.user?.image ||
-    `https://ui-avatars.com/api/?name=${fullName}&background=0f172a&color=fff&size=128&bold=true`;
-
+    `https://ui-avatars.com/api/?name=${fullName}&background=000&color=fff&size=128&bold=true`;
   const unreadCount = notifications.filter((n) => !n.isRead).length;
 
   return (
-    <div className="flex min-h-screen bg-background dark:bg-[#0B1120] text-on-surface dark:text-slate-200 transition-colors duration-300">
+    <div className="flex min-h-screen bg-[#F4F5F0] dark:bg-[#0B1120] text-black dark:text-white transition-colors duration-300">
       <Sidebar />
 
       <div className="flex-1 flex flex-col min-w-0">
-        <Header title="User Profile - Arbitask" />
+        <Header title="User Profile" />
 
         <main className="flex-1 p-6 max-w-[1200px] w-full mx-auto space-y-6">
-          {/* HERO BANNER */}
-          <div className="bg-surface-container-lowest dark:bg-slate-900 rounded-[24px] p-6 border border-outline-variant/60 dark:border-slate-800 shadow-sm flex flex-col md:flex-row items-center gap-6 relative overflow-hidden transition-colors duration-300">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,_var(--tw-gradient-stops))] from-primary/5 dark:from-blue-900/20 via-transparent to-transparent pointer-events-none"></div>
+          {/* HERO BANNER - BRUTALISM */}
+          <div className="bg-[#FCD34D] dark:bg-slate-800 rounded-md p-6 border-4 border-black dark:border-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)] flex flex-col md:flex-row items-center gap-6 relative transition-colors duration-300">
             <div className="relative group w-24 h-24 flex-shrink-0">
               <img
                 src={profileImage}
                 alt="Profile"
-                className="w-full h-full rounded-full object-cover border-4 border-background dark:border-slate-800 shadow-md bg-surface-container dark:bg-slate-700 transition-colors"
+                className="w-full h-full object-cover border-4 border-black bg-white"
               />
             </div>
             <div className="flex-1 text-center md:text-left space-y-2 relative z-10">
               <div className="flex flex-col md:flex-row md:items-center gap-2 justify-center md:justify-start">
-                <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 transition-colors">
+                <h2 className="text-3xl font-black uppercase text-black dark:text-white">
                   {fullName}
                 </h2>
-                <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-800/50 text-emerald-700 dark:text-emerald-400 text-xs font-semibold w-fit mx-auto md:mx-0 transition-colors">
-                  <span className="material-symbols-outlined text-[14px]">
+                <div className="flex items-center gap-1.5 px-3 py-1 bg-white border-2 border-black text-black text-xs font-black uppercase w-fit mx-auto md:mx-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                  <span className="material-symbols-outlined text-[16px] font-black">
                     verified
                   </span>
                   Elite Arbitrager
                 </div>
               </div>
-              <p className="text-sm text-on-surface-variant dark:text-slate-400 max-w-2xl leading-relaxed transition-colors">
-                Akun terverifikasi Arbitask. Saat ini melacak dan mengoptimalkan
-                yield secara real-time dari berbagai offerwall.
+              <p className="text-sm font-bold text-slate-800 dark:text-slate-300 max-w-2xl">
+                VERIFIED ARBITASK ACCOUNT. TRACKING AND OPTIMIZING YIELD IN
+                REAL-TIME.
               </p>
             </div>
           </div>
 
           {/* STATS GRID ROW */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="p-5 bg-surface-container-lowest dark:bg-slate-900 rounded-2xl border border-outline-variant/60 dark:border-slate-800 shadow-sm flex items-center gap-4 transition-colors duration-300">
-              <div className="w-12 h-12 rounded-xl bg-primary/10 dark:bg-blue-900/30 text-primary dark:text-blue-400 flex items-center justify-center transition-colors">
+            <div className="p-5 bg-[#A3E635] dark:bg-slate-800 rounded-md border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] flex items-center gap-4 hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] transition-all">
+              <div className="w-12 h-12 rounded-sm bg-white dark:bg-slate-700 border-2 border-black dark:border-white text-black dark:text-white flex items-center justify-center font-black">
                 <span className="material-symbols-outlined">monitoring</span>
               </div>
               <div>
-                <p className="text-xs font-medium text-on-surface-variant dark:text-slate-400 uppercase tracking-wider transition-colors">
-                  Potensi Yield Tracked
+                <p className="text-xs font-black uppercase tracking-wider text-black dark:text-slate-300">
+                  Total Yield Tracked
                 </p>
-                <p className="text-2xl font-bold text-primary dark:text-slate-100 transition-colors">
+                <p className="text-3xl font-black text-black dark:text-white">
                   ${stats.totalYield.toFixed(2)}
                 </p>
               </div>
             </div>
-            <div className="p-5 bg-surface-container-lowest dark:bg-slate-900 rounded-2xl border border-outline-variant/60 dark:border-slate-800 shadow-sm flex items-center gap-4 transition-colors duration-300">
-              <div className="w-12 h-12 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 flex items-center justify-center transition-colors">
+            <div className="p-5 bg-white dark:bg-slate-900 rounded-md border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] flex items-center gap-4 hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] transition-all">
+              <div className="w-12 h-12 rounded-sm bg-slate-200 dark:bg-slate-700 border-2 border-black dark:border-white text-black dark:text-white flex items-center justify-center font-black">
                 <span className="material-symbols-outlined">task_alt</span>
               </div>
               <div>
-                <p className="text-xs font-medium text-on-surface-variant dark:text-slate-400 uppercase tracking-wider transition-colors">
+                <p className="text-xs font-black uppercase tracking-wider text-black dark:text-slate-300">
                   Tasks Tracked
                 </p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-slate-100 transition-colors">
+                <p className="text-3xl font-black text-black dark:text-white">
                   {stats.taskCount}
                 </p>
               </div>
             </div>
-            <div className="p-5 bg-surface-container-lowest dark:bg-slate-900 rounded-2xl border border-outline-variant/60 dark:border-slate-800 shadow-sm flex items-center gap-4 transition-colors duration-300">
-              <div className="w-12 h-12 rounded-xl bg-orange-50 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 flex items-center justify-center transition-colors">
+            <div className="p-5 bg-[#FCA5A5] dark:bg-slate-800 rounded-md border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] flex items-center gap-4 hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] transition-all">
+              <div className="w-12 h-12 rounded-sm bg-white dark:bg-slate-700 border-2 border-black dark:border-white text-black dark:text-white flex items-center justify-center font-black">
                 <span className="material-symbols-outlined">
                   local_fire_department
                 </span>
               </div>
               <div>
-                <p className="text-xs font-medium text-on-surface-variant dark:text-slate-400 uppercase tracking-wider transition-colors">
+                <p className="text-xs font-black uppercase tracking-wider text-black dark:text-slate-300">
                   Current Streak
                 </p>
-                <p className="text-2xl font-bold text-orange-600 dark:text-orange-400 transition-colors">
+                <p className="text-3xl font-black text-black dark:text-white uppercase">
                   Active
                 </p>
               </div>
@@ -199,29 +185,39 @@ export default function ProfilePage() {
 
           {/* TABS & SETTINGS SECTION */}
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
-            {/* SUB-TABS NAVIGATION */}
-            <div className="flex lg:flex-col overflow-x-auto lg:overflow-x-visible gap-1 pb-2 lg:pb-0 border-b lg:border-b-0 border-outline-variant/50 dark:border-slate-800">
+            <div className="flex lg:flex-col overflow-x-auto lg:overflow-x-visible gap-2 pb-2 lg:pb-0">
               <button
                 onClick={() => setActiveTab("personal")}
-                className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-colors whitespace-nowrap w-full text-left ${activeTab === "personal" ? "bg-slate-900 dark:bg-slate-800 text-white shadow-sm" : "text-on-surface-variant dark:text-slate-400 hover:bg-surface-container dark:hover:bg-slate-800/50"}`}
+                className={`flex items-center gap-3 px-4 py-3 border-2 border-black dark:border-white font-black uppercase text-sm transition-all w-full text-left ${activeTab === "personal" ? "bg-black dark:bg-white text-white dark:text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)] translate-x-1" : "bg-white dark:bg-slate-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:-translate-y-1"}`}
               >
                 <span className="material-symbols-outlined text-[20px]">
                   person
                 </span>{" "}
-                Personal Information
+                Personal Info
               </button>
+
+              <button
+                onClick={() => setActiveTab("preferences")}
+                className={`flex items-center gap-3 px-4 py-3 border-2 border-black dark:border-white font-black uppercase text-sm transition-all w-full text-left ${activeTab === "preferences" ? "bg-black dark:bg-white text-white dark:text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)] translate-x-1" : "bg-white dark:bg-slate-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:-translate-y-1"}`}
+              >
+                <span className="material-symbols-outlined text-[20px]">
+                  palette
+                </span>{" "}
+                Preferences
+              </button>
+
               <button
                 onClick={() => setActiveTab("security")}
-                className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-colors whitespace-nowrap w-full text-left ${activeTab === "security" ? "bg-slate-900 dark:bg-slate-800 text-white shadow-sm" : "text-on-surface-variant dark:text-slate-400 hover:bg-surface-container dark:hover:bg-slate-800/50"}`}
+                className={`flex items-center gap-3 px-4 py-3 border-2 border-black dark:border-white font-black uppercase text-sm transition-all w-full text-left ${activeTab === "security" ? "bg-black dark:bg-white text-white dark:text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)] translate-x-1" : "bg-white dark:bg-slate-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:-translate-y-1"}`}
               >
                 <span className="material-symbols-outlined text-[20px]">
                   shield
                 </span>{" "}
-                Security Settings
+                Security
               </button>
               <button
                 onClick={() => setActiveTab("inbox")}
-                className={`flex items-center justify-between px-4 py-3 rounded-xl font-medium text-sm transition-colors whitespace-nowrap w-full text-left ${activeTab === "inbox" ? "bg-slate-900 dark:bg-slate-800 text-white shadow-sm" : "text-on-surface-variant dark:text-slate-400 hover:bg-surface-container dark:hover:bg-slate-800/50"}`}
+                className={`flex items-center justify-between px-4 py-3 border-2 border-black dark:border-white font-black uppercase text-sm transition-all w-full text-left ${activeTab === "inbox" ? "bg-black dark:bg-white text-white dark:text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)] translate-x-1" : "bg-white dark:bg-slate-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:-translate-y-1"}`}
               >
                 <div className="flex items-center gap-3">
                   <span className="material-symbols-outlined text-[20px]">
@@ -231,7 +227,7 @@ export default function ProfilePage() {
                 </div>
                 {unreadCount > 0 && (
                   <span
-                    className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${activeTab === "inbox" ? "bg-white/20 text-white" : "bg-primary dark:bg-blue-600 text-on-primary dark:text-white"}`}
+                    className={`px-2 py-0.5 border-2 border-black dark:border-white text-[10px] font-black ${activeTab === "inbox" ? "bg-white text-black dark:bg-black dark:text-white" : "bg-[#FCA5A5] text-black"}`}
                   >
                     {unreadCount}
                   </span>
@@ -239,65 +235,58 @@ export default function ProfilePage() {
               </button>
             </div>
 
-            {/* CONTENT VIEWS */}
             <div className="lg:col-span-3 space-y-6">
+              {/* TAB 1: PERSONAL INFORMATION */}
               {activeTab === "personal" && (
-                <div className="bg-surface-container-lowest dark:bg-slate-900 rounded-[24px] p-6 border border-outline-variant/60 dark:border-slate-800 shadow-sm space-y-4 transition-colors duration-300">
+                <div className="bg-white dark:bg-slate-900 rounded-md p-6 border-2 border-black dark:border-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] space-y-4">
                   <div>
-                    <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 transition-colors">
+                    <h3 className="text-2xl font-black uppercase text-black dark:text-white">
                       Personal Information
                     </h3>
-                    <p className="text-xs text-on-surface-variant dark:text-slate-400 transition-colors">
-                      Kelola detail informasi dasar akun lu.
+                    <p className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">
+                      Manage basic account details.
                     </p>
                   </div>
-                  <div className="h-px bg-outline-variant/40 dark:bg-slate-800 transition-colors"></div>
+                  <div className="h-0.5 bg-black dark:bg-white w-full"></div>
 
                   <form className="space-y-4" onSubmit={handleSaveChanges}>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="space-y-1.5">
-                        <label className="text-xs font-semibold text-on-surface-variant dark:text-slate-400 transition-colors">
+                        <label className="text-xs font-black uppercase text-black dark:text-white">
                           First Name
                         </label>
                         <input
                           type="text"
                           value={firstName}
                           onChange={(e) => setFirstName(e.target.value)}
-                          className="w-full px-4 py-2.5 rounded-xl border border-outline-variant dark:border-slate-700 bg-surface-container-lowest dark:bg-slate-900 text-sm text-slate-900 dark:text-slate-100 focus:border-primary dark:focus:border-blue-500 focus:ring-1 focus:ring-primary dark:focus:ring-blue-500 outline-none transition-all"
+                          className="w-full px-4 py-3 rounded-sm border-2 border-black dark:border-white bg-[#F4F5F0] dark:bg-slate-800 text-sm font-bold text-black dark:text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] focus:-translate-y-1 transition-all outline-none"
                         />
                       </div>
                       <div className="space-y-1.5">
-                        <label className="text-xs font-semibold text-on-surface-variant dark:text-slate-400 transition-colors">
+                        <label className="text-xs font-black uppercase text-black dark:text-white">
                           Last Name
                         </label>
                         <input
                           type="text"
                           value={lastName}
                           onChange={(e) => setLastName(e.target.value)}
-                          className="w-full px-4 py-2.5 rounded-xl border border-outline-variant dark:border-slate-700 bg-surface-container-lowest dark:bg-slate-900 text-sm text-slate-900 dark:text-slate-100 focus:border-primary dark:focus:border-blue-500 focus:ring-1 focus:ring-primary dark:focus:ring-blue-500 outline-none transition-all"
+                          className="w-full px-4 py-3 rounded-sm border-2 border-black dark:border-white bg-[#F4F5F0] dark:bg-slate-800 text-sm font-bold text-black dark:text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] focus:-translate-y-1 transition-all outline-none"
                         />
                       </div>
                     </div>
-
                     <div className="space-y-1.5">
-                      <label className="text-xs font-semibold text-on-surface-variant dark:text-slate-400 transition-colors">
+                      <label className="text-xs font-black uppercase text-black dark:text-white">
                         Email Address
                       </label>
-                      <div className="relative">
-                        <input
-                          type="email"
-                          value={userEmail}
-                          disabled
-                          className="w-full pl-4 pr-10 py-2.5 rounded-xl border border-outline-variant dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 text-on-surface-variant/70 dark:text-slate-500 text-sm cursor-not-allowed outline-none transition-colors"
-                        />
-                        <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-emerald-600 dark:text-emerald-400 text-[20px] transition-colors">
-                          check_circle
-                        </span>
-                      </div>
+                      <input
+                        type="email"
+                        value={userEmail}
+                        disabled
+                        className="w-full px-4 py-3 rounded-sm border-2 border-black dark:border-white bg-slate-200 dark:bg-slate-700 text-sm font-bold text-slate-500 dark:text-slate-400 cursor-not-allowed shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] outline-none"
+                      />
                     </div>
-
                     <div className="space-y-1.5">
-                      <label className="text-xs font-semibold text-on-surface-variant dark:text-slate-400 transition-colors">
+                      <label className="text-xs font-black uppercase text-black dark:text-white">
                         Phone Number
                       </label>
                       <input
@@ -305,23 +294,23 @@ export default function ProfilePage() {
                         placeholder="+62 8xx-xxxx-xxxx"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
-                        className="w-full px-4 py-2.5 rounded-xl border border-outline-variant dark:border-slate-700 bg-surface-container-lowest dark:bg-slate-900 text-sm text-slate-900 dark:text-slate-100 focus:border-primary dark:focus:border-blue-500 focus:ring-1 focus:ring-primary dark:focus:ring-blue-500 outline-none transition-all"
+                        className="w-full px-4 py-3 rounded-sm border-2 border-black dark:border-white bg-[#F4F5F0] dark:bg-slate-800 text-sm font-bold text-black dark:text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] focus:-translate-y-1 transition-all outline-none"
                       />
                     </div>
 
-                    <div className="flex items-center justify-end gap-3 pt-2">
+                    <div className="flex items-center justify-end gap-3 pt-4">
                       {saveMessage && (
-                        <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400">
+                        <span className="text-xs font-black uppercase text-[#A3E635]">
                           {saveMessage}
                         </span>
                       )}
                       <button
                         type="submit"
                         disabled={isSaving}
-                        className="px-5 py-2.5 bg-slate-900 dark:bg-blue-600 hover:bg-slate-800 dark:hover:bg-blue-700 disabled:opacity-70 text-white font-bold text-sm rounded-xl transition-colors shadow-sm flex items-center gap-2"
+                        className="px-6 py-3 bg-[#A3E635] dark:bg-[#A3E635] text-black border-2 border-black font-black uppercase text-sm rounded-sm shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] active:translate-y-0 active:shadow-none transition-all flex items-center gap-2"
                       >
                         {isSaving ? (
-                          <span className="material-symbols-outlined animate-spin text-[16px]">
+                          <span className="material-symbols-outlined animate-spin text-[16px] font-black">
                             progress_activity
                           </span>
                         ) : null}
@@ -332,72 +321,102 @@ export default function ProfilePage() {
                 </div>
               )}
 
-              {activeTab === "security" && (
-                <div className="bg-surface-container-lowest dark:bg-slate-900 rounded-[24px] p-6 border border-outline-variant/60 dark:border-slate-800 shadow-sm space-y-4 transition-colors duration-300">
+              {/* TAB 2: PREFERENCES (THEME) */}
+              {activeTab === "preferences" && (
+                <div className="bg-white dark:bg-slate-900 rounded-md p-6 border-2 border-black dark:border-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] space-y-4">
                   <div>
-                    <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 transition-colors">
-                      Security & Protection
+                    <h3 className="text-2xl font-black uppercase text-black dark:text-white">
+                      Theme Preferences
                     </h3>
-                    <p className="text-xs text-on-surface-variant dark:text-slate-400 font-medium transition-colors">
-                      Proteksi akses masuk akun pelacakan lu.
+                    <p className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">
+                      Manage your viewing experience.
                     </p>
                   </div>
-                  <div className="h-px bg-outline-variant/40 dark:bg-slate-800 transition-colors"></div>
+                  <div className="h-0.5 bg-black dark:bg-white w-full"></div>
 
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl bg-surface-container/40 dark:bg-slate-800/40 border border-outline-variant/30 dark:border-slate-700/50 transition-colors">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-sm bg-[#F4F5F0] dark:bg-slate-800 border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
                     <div>
-                      <p className="text-sm font-bold text-slate-900 dark:text-slate-100 transition-colors">
-                        Password
+                      <p className="text-base font-black uppercase text-black dark:text-white">
+                        Dark / Light Mode
                       </p>
-                      <p className="text-xs text-on-surface-variant dark:text-slate-400 mt-0.5 transition-colors">
-                        Atur kata sandi untuk login manual lewat form email.
+                      <p className="text-xs font-bold text-slate-500 dark:text-slate-400 mt-0.5 uppercase">
+                        Switch between dark and light themes for the dashboard.
                       </p>
                     </div>
-                    <button className="px-4 py-2 border border-outline-variant dark:border-slate-700 hover:bg-surface-container dark:hover:bg-slate-800 text-slate-900 dark:text-slate-200 font-semibold text-xs rounded-xl transition-all">
-                      Set New Password
+
+                    {/* MEMANGGIL KOMPONEN THEME TOGGLE */}
+                    <ThemeToggle />
+                  </div>
+                </div>
+              )}
+
+              {/* TAB 3: SECURITY */}
+              {activeTab === "security" && (
+                <div className="bg-white dark:bg-slate-900 rounded-md p-6 border-2 border-black dark:border-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] space-y-4">
+                  <div>
+                    <h3 className="text-2xl font-black uppercase text-black dark:text-white">
+                      Security & Protection
+                    </h3>
+                    <p className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">
+                      Protect your tracking account access.
+                    </p>
+                  </div>
+                  <div className="h-0.5 bg-black dark:bg-white w-full"></div>
+
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-sm bg-[#F4F5F0] dark:bg-slate-800 border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
+                    <div>
+                      <p className="text-base font-black uppercase text-black dark:text-white">
+                        Password
+                      </p>
+                      <p className="text-xs font-bold text-slate-500 dark:text-slate-400 mt-0.5 uppercase">
+                        Set password for manual email login.
+                      </p>
+                    </div>
+                    <button className="px-4 py-2 bg-white dark:bg-slate-700 border-2 border-black dark:border-white text-black dark:text-white font-black uppercase text-xs rounded-sm hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] active:translate-y-0 active:shadow-none transition-all">
+                      Set Password
                     </button>
                   </div>
                 </div>
               )}
 
+              {/* TAB 4: INBOX */}
               {activeTab === "inbox" && (
-                <div className="bg-surface-container-lowest dark:bg-slate-900 rounded-[24px] p-6 border border-outline-variant/60 dark:border-slate-800 shadow-sm space-y-4 transition-colors duration-300">
+                <div className="bg-white dark:bg-slate-900 rounded-md p-6 border-2 border-black dark:border-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] space-y-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 transition-colors">
+                      <h3 className="text-2xl font-black uppercase text-black dark:text-white">
                         System Inbox
                       </h3>
-                      <p className="text-xs text-on-surface-variant dark:text-slate-400 transition-colors">
-                        Pesan dan notifikasi seputar akun lu.
+                      <p className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">
+                        Messages & Notifications.
                       </p>
                     </div>
                     {unreadCount > 0 && (
                       <button
                         onClick={handleMarkAllRead}
-                        className="text-xs font-bold text-primary dark:text-blue-400 hover:underline transition-colors"
+                        className="text-xs font-black uppercase text-black dark:text-white border-b-2 border-black dark:border-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                       >
                         Mark all as read
                       </button>
                     )}
                   </div>
-                  <div className="h-px bg-outline-variant/40 dark:bg-slate-800 transition-colors"></div>
+                  <div className="h-0.5 bg-black dark:bg-white w-full"></div>
 
-                  <div className="space-y-3">
-                    {/* INI BAGIAN DINAMIS YANG NARIK DARI DB */}
+                  <div className="space-y-4">
                     {notifications.length === 0 ? (
-                      <div className="p-8 text-center text-on-surface-variant dark:text-slate-400 text-sm transition-colors">
-                        Belum ada notifikasi masuk.
+                      <div className="p-8 text-center text-slate-500 dark:text-slate-400 font-bold uppercase text-sm border-2 border-dashed border-black dark:border-white">
+                        NO NEW MESSAGES.
                       </div>
                     ) : (
                       notifications.map((notif) => (
                         <div
                           key={notif.id}
-                          className={`p-4 rounded-xl border flex gap-4 items-start transition-colors ${!notif.isRead ? "border-primary/20 dark:border-blue-900/50 bg-primary/5 dark:bg-blue-900/10" : "border-outline-variant/50 dark:border-slate-800 opacity-70"}`}
+                          className={`p-4 rounded-sm border-2 border-black dark:border-white flex gap-4 items-start shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] transition-colors ${!notif.isRead ? "bg-[#FCD34D] dark:bg-slate-700" : "bg-[#F4F5F0] dark:bg-slate-800 opacity-80"}`}
                         >
                           <div
-                            className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${!notif.isRead ? "bg-primary/20 dark:bg-blue-900/30 text-primary dark:text-blue-400" : "bg-surface-container-high dark:bg-slate-800 text-on-surface-variant dark:text-slate-400"}`}
+                            className={`w-12 h-12 rounded-sm border-2 border-black dark:border-white flex items-center justify-center flex-shrink-0 ${!notif.isRead ? "bg-white text-black dark:bg-slate-900 dark:text-white" : "bg-slate-200 dark:bg-slate-900 text-slate-500"}`}
                           >
-                            <span className="material-symbols-outlined text-[20px]">
+                            <span className="material-symbols-outlined text-[24px] font-black">
                               {notif.type === "SYSTEM"
                                 ? "settings"
                                 : notif.type === "ACHIEVEMENT"
@@ -407,17 +426,17 @@ export default function ProfilePage() {
                           </div>
                           <div className="flex-1">
                             <div className="flex justify-between items-start mb-1">
-                              <p className="text-sm font-bold text-slate-900 dark:text-slate-100 transition-colors">
+                              <p className="text-base font-black uppercase text-black dark:text-white">
                                 {notif.title}
                               </p>
-                              <span className="text-[10px] font-medium text-on-surface-variant dark:text-slate-500 transition-colors">
+                              <span className="text-[10px] font-black text-slate-500 uppercase border-2 border-slate-500 px-1">
                                 {formatDistanceToNow(
                                   new Date(notif.createdAt),
                                   { addSuffix: true, locale: id },
                                 )}
                               </span>
                             </div>
-                            <p className="text-xs text-on-surface-variant dark:text-slate-400 leading-relaxed transition-colors">
+                            <p className="text-xs font-bold text-slate-700 dark:text-slate-300 leading-relaxed uppercase">
                               {notif.message}
                             </p>
                           </div>

@@ -8,32 +8,24 @@ export default function DashboardFilters() {
   const searchParams = useSearchParams();
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Baca parameter dari URL, platform udah kita hapus
   const currentCategory = searchParams.get("category") || "All";
   const currentSearch = searchParams.get("q") || "";
 
-  // Handle Dropdown Kategori
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
     const params = new URLSearchParams(searchParams.toString());
-
     if (value === "All") params.delete("category");
     else params.set("category", value);
-
     router.push(`/?${params.toString()}`);
   };
 
-  // Handle Search dengan Debounce
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const term = e.target.value;
-
     if (debounceRef.current) clearTimeout(debounceRef.current);
-
     debounceRef.current = setTimeout(() => {
       const params = new URLSearchParams(searchParams.toString());
       if (term) params.set("q", term);
       else params.delete("q");
-
       router.push(`/?${params.toString()}`);
     }, 300);
   };
@@ -43,18 +35,15 @@ export default function DashboardFilters() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-      {/* Kiri: Dropdown Filters */}
+    <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-6">
       <div className="flex flex-wrap items-center gap-4 text-sm">
-        <span className="font-semibold text-gray-500 uppercase tracking-wider text-xs">
+        <span className="font-black text-black dark:text-white uppercase tracking-wider text-xs">
           Filters
         </span>
-
-        {/* Dropdown Kategori */}
         <select
           value={currentCategory}
           onChange={handleCategoryChange}
-          className="border border-gray-200 rounded-full px-4 py-1.5 bg-white text-gray-700 outline-none focus:border-blue-500"
+          className="border-2 border-black dark:border-white px-4 py-2 bg-white dark:bg-slate-800 text-black dark:text-white outline-none font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] hover:-translate-y-px transition-all cursor-pointer"
         >
           <option value="All">Category: All</option>
           <option value="Games">Games</option>
@@ -63,10 +52,9 @@ export default function DashboardFilters() {
         </select>
       </div>
 
-      {/* Kanan: Search Bar & Clear Button */}
       <div className="flex items-center gap-4 w-full md:w-auto">
-        <div className="relative flex-1 md:w-64">
-          <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-[18px]">
+        <div className="relative flex-1 md:w-72">
+          <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-black dark:text-white text-[20px] font-black">
             search
           </span>
           <input
@@ -74,15 +62,15 @@ export default function DashboardFilters() {
             defaultValue={currentSearch}
             onChange={handleSearchChange}
             placeholder="Search game name..."
-            className="w-full pl-9 pr-4 py-1.5 border border-gray-200 rounded-full text-sm focus:outline-none focus:border-blue-500 transition-colors bg-white text-gray-700"
+            className="w-full pl-10 pr-4 py-2.5 border-2 border-black dark:border-white text-sm focus:outline-none bg-white dark:bg-slate-800 text-black dark:text-white font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] focus:-translate-y-px transition-all placeholder-slate-500"
           />
         </div>
 
         <button
           onClick={handleClearFilters}
-          className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-800 transition-colors whitespace-nowrap"
+          className="flex items-center gap-1 text-sm font-black text-black dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black border-2 border-transparent hover:border-black dark:hover:border-white px-3 py-2 transition-all uppercase whitespace-nowrap"
         >
-          <span className="material-symbols-outlined text-[16px]">
+          <span className="material-symbols-outlined text-[18px] font-black">
             clear_all
           </span>
           Clear

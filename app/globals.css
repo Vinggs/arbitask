@@ -2,22 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Light mode (default) - Soft Blue Awan */
+/* Light mode (default) - Neo Brutalism Base (Kertas / Off-White) */
 body {
-  @apply bg-[#F4F9FF] text-slate-800 antialiased transition-colors duration-300;
+  @apply bg-[#F4F5F0] text-black antialiased transition-colors duration-300;
+  font-family: 'Space Grotesk', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
-/* Dark mode - Midnight / Neo-Fintech Dark */
+/* Dark mode - Midnight Solid */
 .dark body {
-  @apply bg-[#0B1120] text-slate-200;
+  @apply bg-[#0B1120] text-white;
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 12px; /* Lebih tebal ala brutalism */
 }
 ::-webkit-scrollbar-track {
-  background: transparent;
+  @apply bg-[#F4F5F0] dark:bg-[#0B1120] border-l-2 border-black dark:border-white;
 }
 ::-webkit-scrollbar-thumb {
-  @apply bg-slate-300 dark:bg-slate-700 rounded-full transition-colors;
+  @apply bg-black dark:bg-white rounded-none border-l-2 border-black dark:border-white;
+}
+
+/* Optional: Bikin seleksi teks jadi kuning stabilo */
+::selection {
+  @apply bg-[#A3E635] text-black;
+}
+.dark ::selection {
+  @apply bg-[#FCD34D] text-black;
 }

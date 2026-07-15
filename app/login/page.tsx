@@ -17,71 +17,68 @@ export default function LoginPage() {
   };
 
   return (
-    // Tambahin dark:bg-[#0B1120] dan transisi
-    <div className="min-h-screen flex items-center justify-center p-4 bg-surface-container-lowest dark:bg-[#0B1120] transition-colors duration-300">
-      {/* Background Aksen */}
-      <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary-fixed/20 dark:from-blue-900/20 via-surface-container-lowest dark:via-[#0B1120] to-surface-container-lowest dark:to-[#0B1120] transition-colors duration-300"></div>
-
-      <div className="relative z-10 w-full max-w-md bg-surface-container-lowest dark:bg-slate-900 rounded-[32px] p-8 shadow-sm border border-outline-variant/50 dark:border-slate-800 transition-colors duration-300">
+    // Background Solid Clean Neo-Brutalism
+    <div className="min-h-screen flex items-center justify-center p-4 bg-[#F4F5F0] dark:bg-[#0B1120] transition-colors duration-300">
+      <div className="relative z-10 w-full max-w-md bg-white dark:bg-slate-900 border-4 border-black dark:border-white p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)] transition-colors duration-300">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-primary dark:bg-blue-600 mx-auto rounded-2xl flex items-center justify-center mb-4 shadow-md shadow-primary/20 dark:shadow-blue-900/20 transition-colors">
-            <span className="material-symbols-outlined text-3xl text-on-primary dark:text-white">
+          <div className="w-16 h-16 bg-[#A3E635] dark:bg-green-500 mx-auto border-4 border-black dark:border-white flex items-center justify-center mb-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] transition-colors">
+            <span className="material-symbols-outlined text-4xl text-black font-black">
               task_alt
             </span>
           </div>
-          <h1 className="font-headline-md text-primary dark:text-slate-100 font-bold mb-1 transition-colors">
-            Masuk ke Arbitask
+          <h1 className="text-3xl font-black uppercase text-black dark:text-white mb-1 transition-colors">
+            Login Arbitask
           </h1>
-          <p className="text-on-surface-variant dark:text-slate-400 text-sm transition-colors">
-            Pilih metode login untuk melanjutkan
+          <p className="font-bold text-slate-700 dark:text-slate-400 text-sm uppercase transition-colors">
+            Pilih metode akses untuk masuk
           </p>
         </div>
 
-        {/* Tombol Sosmed */}
-        <div className="space-y-3">
+        {/* Tombol Sosmed - Neo Brutalism */}
+        <div className="space-y-4">
           <button
             onClick={() => signIn("google", { callbackUrl: "/" })}
-            className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-xl bg-surface-container dark:bg-slate-800 hover:bg-surface-container-high dark:hover:bg-slate-700 border border-outline-variant/50 dark:border-slate-700 transition-all font-medium text-on-surface dark:text-slate-200"
+            className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-[#FCD34D] border-4 border-black text-black font-black uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] active:translate-y-0 active:shadow-none transition-all"
           >
             <img
               src="https://www.svgrepo.com/show/475656/google-color.svg"
               alt="Google"
               className="w-5 h-5"
             />
-            Lanjutkan dengan Google
+            Login with Google
           </button>
 
           <button
             onClick={() => signIn("twitter", { callbackUrl: "/" })}
-            className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-xl bg-surface-container dark:bg-slate-800 hover:bg-surface-container-high dark:hover:bg-slate-700 border border-outline-variant/50 dark:border-slate-700 transition-all font-medium text-on-surface dark:text-slate-200"
+            className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-white dark:bg-slate-800 border-4 border-black dark:border-white text-black dark:text-white font-black uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] active:translate-y-0 active:shadow-none transition-all"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
               viewBox="0 0 16 16"
-              className="w-5 h-5 text-on-surface dark:text-slate-200"
+              className="w-5 h-5 text-black dark:text-white"
             >
               <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z" />
             </svg>
-            Lanjutkan dengan X (Twitter)
+            Login with X (Twitter)
           </button>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-4">
             <button
               onClick={() => signIn("github", { callbackUrl: "/" })}
-              className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-surface-container dark:bg-slate-800 hover:bg-surface-container-high dark:hover:bg-slate-700 border border-outline-variant/50 dark:border-slate-700 transition-all font-medium text-sm text-on-surface dark:text-slate-200"
+              className="flex items-center justify-center gap-2 px-4 py-3 bg-black dark:bg-slate-700 text-white border-4 border-black dark:border-white font-black uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] active:translate-y-0 active:shadow-none transition-all"
             >
               <img
                 src="https://www.svgrepo.com/show/512317/github-142.svg"
                 alt="GitHub"
-                className="w-4 h-4 dark:invert"
+                className="w-4 h-4 invert dark:invert-0"
               />
               GitHub
             </button>
             <button
               onClick={() => signIn("discord", { callbackUrl: "/" })}
-              className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-surface-container dark:bg-slate-800 hover:bg-surface-container-high dark:hover:bg-slate-700 border border-outline-variant/50 dark:border-slate-700 transition-all font-medium text-sm text-on-surface dark:text-slate-200"
+              className="flex items-center justify-center gap-2 px-4 py-3 bg-[#93C5FD] border-4 border-black text-black font-black uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] active:translate-y-0 active:shadow-none transition-all"
             >
               <img
                 src="https://www.svgrepo.com/show/353655/discord-icon.svg"
@@ -93,13 +90,13 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* Pemisah */}
-        <div className="my-6 flex items-center gap-4">
-          <div className="h-px bg-outline-variant/50 dark:bg-slate-700 flex-1 transition-colors"></div>
-          <span className="text-xs text-on-surface-variant dark:text-slate-500 font-medium transition-colors">
-            ATAU LINK
+        {/* Pemisah Brutalist */}
+        <div className="my-8 flex items-center gap-4">
+          <div className="h-1 bg-black dark:bg-white flex-1 transition-colors"></div>
+          <span className="text-xs text-black dark:text-white font-black uppercase transition-colors">
+            OR MAGIC LINK
           </span>
-          <div className="h-px bg-outline-variant/50 dark:bg-slate-700 flex-1 transition-colors"></div>
+          <div className="h-1 bg-black dark:bg-white flex-1 transition-colors"></div>
         </div>
 
         {/* Form Email Magic Link */}
@@ -110,25 +107,25 @@ export default function LoginPage() {
               placeholder="email@kamu.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-outline-variant dark:border-slate-700 bg-surface-container-lowest dark:bg-slate-900 focus:border-primary dark:focus:border-blue-500 focus:ring-1 focus:ring-primary dark:focus:ring-blue-500 outline-none transition-all text-on-surface dark:text-slate-200 placeholder:text-on-surface-variant/50 dark:placeholder:text-slate-500"
+              className="w-full px-4 py-3 bg-white dark:bg-slate-800 border-4 border-black dark:border-white font-bold text-black dark:text-white focus:outline-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] focus:-translate-y-1 transition-all placeholder-slate-500"
               required
             />
           </div>
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-3 rounded-xl bg-primary dark:bg-blue-600 text-on-primary dark:text-white font-bold hover:bg-primary/90 dark:hover:bg-blue-700 transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full py-4 bg-black dark:bg-white text-white dark:text-black font-black uppercase border-4 border-black dark:border-white hover:-translate-y-1 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] active:translate-y-0 active:shadow-none transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {isLoading ? (
-              <span className="material-symbols-outlined animate-spin text-[20px]">
+              <span className="material-symbols-outlined animate-spin text-[20px] font-black">
                 progress_activity
               </span>
             ) : (
-              <span className="material-symbols-outlined text-[20px]">
+              <span className="material-symbols-outlined text-[20px] font-black">
                 mail
               </span>
             )}
-            Kirim Link Login
+            Send Login Link
           </button>
         </form>
 
@@ -136,12 +133,12 @@ export default function LoginPage() {
         <div className="mt-8 text-center">
           <Link
             href="/"
-            className="text-sm text-on-surface-variant dark:text-slate-400 hover:text-primary dark:hover:text-slate-200 transition-colors flex items-center justify-center gap-1 inline-flex"
+            className="text-xs font-black uppercase text-slate-700 dark:text-slate-400 hover:text-black dark:hover:text-white transition-colors flex items-center justify-center gap-1 inline-flex border-b-2 border-transparent hover:border-black dark:hover:border-white"
           >
-            <span className="material-symbols-outlined text-[16px]">
+            <span className="material-symbols-outlined text-[16px] font-black">
               arrow_back
             </span>
-            Kembali ke Beranda
+            Back to Dashboard
           </Link>
         </div>
       </div>
