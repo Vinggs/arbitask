@@ -52,9 +52,9 @@ export default function HeaderNotification() {
         )}
       </button>
 
-      {/* DROPDOWN MENU KECIL - NEO BRUTALISM */}
+      {/* DROPDOWN MENU KECIL - NEO BRUTALISM (Udah responsif) */}
       {isOpen && (
-        <div className="absolute right-0 mt-4 w-80 bg-white dark:bg-slate-900 border-4 border-black dark:border-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)] z-50 transition-all">
+        <div className="absolute right-[-40px] sm:right-0 mt-4 w-[300px] sm:w-80 bg-white dark:bg-slate-900 border-4 border-black dark:border-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)] z-50 transition-all">
           <div className="p-4 border-b-4 border-black dark:border-white flex justify-between items-center bg-[#FCD34D] dark:bg-slate-800">
             <h3 className="font-black text-black dark:text-white uppercase text-sm">
               Notifikasi

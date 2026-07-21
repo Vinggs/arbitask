@@ -301,8 +301,12 @@ export async function getUserBalance(email: string) {
   }
 }
 
+// -------------------------------------------------
+// 7. FITUR BARU: Tambah Game ke Katalog
+// -------------------------------------------------
 export async function addGameToCatalog(formData: FormData) {
   const gameName = formData.get("gameName") as string;
+  const platform = formData.get("platform") as string; // ✅ Tangkapan data platform baru
   const offerwall = formData.get("offerwall") as string;
   const category = formData.get("category") as string;
   const requirement = formData.get("requirement") as string;
@@ -326,6 +330,7 @@ export async function addGameToCatalog(formData: FormData) {
   await prisma.catalogOffer.create({
     data: {
       gameName,
+      platform, // ✅ Masukin platform ke database
       offerwall,
       category,
       requirement,
@@ -345,4 +350,56 @@ export async function addGameToCatalog(formData: FormData) {
   // Refresh halaman katalog biar game baru langsung muncul
   revalidatePath("/katalog");
   revalidatePath("/");
+}
+
+// -------------------------------------------------
+// 8. FITUR BARU: Update Game di Katalog (Dari Admin)
+// -------------------------------------------------
+export async function updateOfferAction(formData: FormData) {
+  const id = formData.get("id") as string;
+  const gameName = formData.get("gameName") as string;
+  const platform = formData.get("platform") as string;
+  const offerwall = formData.get("offerwall") as string;
+  const requirement = formData.get("requirement") as string;
+  const imageUrl = formData.get("imageUrl") as string;
+  const usdValue = parseFloat(formData.get("usdValue") as string);
+  const rawCoins = parseInt(formData.get("rawCoins") as string, 10);
+
+  // Parse milestones dari input hidden
+  const milestonesRaw = formData.get("milestones") as string;
+  let milestones = [];
+  if (milestonesRaw) {
+    try {
+      milestones = JSON.parse(milestonesRaw);
+    } catch (e) {
+      console.error("Gagal parse milestones di fitur update");
+    }
+  }
+
+  // Update data ke Database pakai Prisma
+  await prisma.catalogOffer.update({
+    where: { id: id },
+    data: {
+      gameName,
+      platform,
+      offerwall,
+      requirement,
+      imageUrl: imageUrl || null,
+      usdValue,
+      rawCoins,
+      // Hapus semua tier lama, masukin yang baru dari form
+      milestones: {
+        deleteMany: {},
+        create: milestones.map((m: any) => ({
+          description: m.description,
+          reward: parseFloat(m.reward),
+        })),
+      },
+    },
+  });
+
+  // Refresh halaman
+  revalidatePath("/katalog");
+  revalidatePath("/");
+  revalidatePath("/admin/edit-game");
 }

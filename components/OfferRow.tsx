@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 import { autoTrackTask } from "@/app/actions";
-import { useRouter } from "next/navigation"; // 1. Import useRouter
+import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 type Milestone = { id: string; description: string; reward: number };
 type Offer = {
   id: string;
   gameName: string;
+  platform: string;
   imageUrl?: string | null;
   offerwall: string;
   usdValue: number;
@@ -26,10 +28,24 @@ export default function OfferRow({
   taskStatus: string | null;
   userEmail: string;
 }) {
-  const router = useRouter(); // 2. Inisialisasi router
+  const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const imgPlaceholder = `https://ui-avatars.com/api/?name=${encodeURIComponent(offer.gameName)}&background=000&color=fff&size=128&bold=true`;
+  const imgPlaceholder = `https://ui-avatars.com/api/?name=${encodeURIComponent(
+    offer.gameName,
+  )}&background=000&color=fff&size=128&bold=true`;
   const displayImage = offer.imageUrl ? offer.imageUrl : imgPlaceholder;
+
+  const combinedProvider = `${offer.platform} - ${offer.offerwall}`;
+
+  // ✅ UPDATE: Fungsi dinamis untuk format USD (2 sampai 4 digit desimal)
+  const formatUSD = (value: number) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 4,
+    }).format(value);
+  };
 
   return (
     <tr
@@ -39,17 +55,25 @@ export default function OfferRow({
       <td className="p-4 border-r-2 border-black dark:border-white border-dashed">
         <div className="flex items-center gap-4">
           <div
-            className={`w-12 h-12 bg-white border-2 border-black dark:border-white flex items-center justify-center overflow-hidden flex-shrink-0 ${taskStatus === "Dropped" ? "grayscale opacity-70" : ""}`}
+            className={`relative w-12 h-12 bg-white border-2 border-black dark:border-white flex items-center justify-center overflow-hidden flex-shrink-0 ${
+              taskStatus === "Dropped" ? "grayscale opacity-70" : ""
+            }`}
           >
-            <img
+            <Image
               src={displayImage}
               alt={offer.gameName}
+              width={48}
+              height={48}
               className="w-full h-full object-cover"
             />
           </div>
           <div>
             <div
-              className={`font-black uppercase text-base transition-colors ${taskStatus === "Dropped" ? "text-slate-500" : "text-black dark:text-white group-hover:underline"}`}
+              className={`font-black uppercase text-base transition-colors ${
+                taskStatus === "Dropped"
+                  ? "text-slate-500"
+                  : "text-black dark:text-white group-hover:underline"
+              }`}
             >
               {offer.gameName}
             </div>
@@ -61,18 +85,24 @@ export default function OfferRow({
       </td>
 
       <td className="p-4 border-r-2 border-black dark:border-white border-dashed">
-        <span className="px-2 py-1 bg-white dark:bg-slate-800 border-2 border-black dark:border-white text-xs font-black uppercase text-black dark:text-white inline-block shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]">
-          {offer.offerwall}
-        </span>
+        <div className="flex flex-col gap-1 items-start">
+          <span className="px-2 py-0.5 bg-black dark:bg-white text-[10px] font-black uppercase text-white dark:text-black inline-block">
+            {offer.platform}
+          </span>
+          <span className="px-2 py-1 bg-white dark:bg-slate-800 border-2 border-black dark:border-white text-xs font-black uppercase text-black dark:text-white inline-block shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]">
+            {offer.offerwall}
+          </span>
+        </div>
       </td>
 
       <td className="p-4 text-sm text-black dark:text-white font-black border-r-2 border-black dark:border-white border-dashed">
-        {offer.rawCoins.toLocaleString()}
+        {/* ✅ UPDATE: Paksa locale en-US biar server & client sama persis */}
+        {offer.rawCoins.toLocaleString("en-US")}
       </td>
 
       <td className="p-4 border-r-2 border-black dark:border-white border-dashed">
         <div className="font-black text-[#059669] dark:text-green-400 text-lg">
-          ${offer.usdValue.toFixed(2)}
+          {formatUSD(offer.usdValue)}
         </div>
         {offer.isHighest && (
           <span className="text-[10px] bg-[#A3E635] text-black border-2 border-black px-2 py-0.5 inline-flex items-center gap-1 mt-1 font-black uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
@@ -89,7 +119,13 @@ export default function OfferRow({
           <button
             disabled
             onClick={(e) => e.stopPropagation()}
-            className={`px-4 py-2 border-2 border-black dark:border-white font-black uppercase text-xs inline-flex items-center gap-1.5 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] cursor-not-allowed ${taskStatus === "Dropped" ? "bg-[#FCA5A5] text-black" : taskStatus === "Completed" ? "bg-[#A3E635] text-black" : "bg-white dark:bg-slate-700 text-black dark:text-white"}`}
+            className={`px-4 py-2 border-2 border-black dark:border-white font-black uppercase text-xs inline-flex items-center gap-1.5 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] cursor-not-allowed ${
+              taskStatus === "Dropped"
+                ? "bg-[#FCA5A5] text-black"
+                : taskStatus === "Completed"
+                  ? "bg-[#A3E635] text-black"
+                  : "bg-white dark:bg-slate-700 text-black dark:text-white"
+            }`}
           >
             {taskStatus === "Dropped"
               ? "Abandoned"
@@ -124,8 +160,11 @@ export default function OfferRow({
             >
               <div className="p-6 border-b-4 border-black dark:border-white flex items-start justify-between bg-[#FCD34D] dark:bg-slate-800">
                 <div className="flex items-center gap-4">
-                  <img
+                  <Image
                     src={displayImage}
+                    alt={offer.gameName}
+                    width={64}
+                    height={64}
                     className="w-16 h-16 object-cover border-4 border-black dark:border-white bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]"
                   />
                   <div>
@@ -133,7 +172,7 @@ export default function OfferRow({
                       {offer.gameName}
                     </h3>
                     <span className="text-[10px] font-black text-black dark:text-white uppercase tracking-widest border-2 border-black dark:border-white px-2 py-0.5 bg-white dark:bg-slate-700 mt-1 inline-block">
-                      {offer.offerwall} EXCLUSIVE
+                      {combinedProvider}
                     </span>
                   </div>
                 </div>
@@ -177,7 +216,7 @@ export default function OfferRow({
                           {m.description}
                         </span>
                         <span className="text-sm font-black text-[#059669] dark:text-green-400">
-                          ${m.reward.toFixed(2)}
+                          {formatUSD(m.reward)}
                         </span>
                       </div>
                     ))
@@ -189,7 +228,11 @@ export default function OfferRow({
                 {taskStatus ? (
                   <button
                     disabled
-                    className={`w-full font-black uppercase py-4 border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] cursor-not-allowed ${taskStatus === "Dropped" ? "bg-[#FCA5A5] text-black" : "bg-slate-200 dark:bg-slate-700 text-slate-500"}`}
+                    className={`w-full font-black uppercase py-4 border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] cursor-not-allowed ${
+                      taskStatus === "Dropped"
+                        ? "bg-[#FCA5A5] text-black"
+                        : "bg-slate-200 dark:bg-slate-700 text-slate-500"
+                    }`}
                   >
                     {taskStatus === "Dropped" ? "Abandoned" : "Already Tracked"}
                   </button>
@@ -197,7 +240,6 @@ export default function OfferRow({
                   <form
                     action={autoTrackTask}
                     onSubmit={(e) => {
-                      // 3. Cek form kalau di table row
                       if (!userEmail) {
                         e.preventDefault();
                         e.stopPropagation();
@@ -217,7 +259,7 @@ export default function OfferRow({
                     <input
                       type="hidden"
                       name="offerwall"
-                      value={offer.offerwall}
+                      value={combinedProvider}
                     />
                     <input
                       type="hidden"

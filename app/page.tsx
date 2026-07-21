@@ -47,38 +47,41 @@ export default async function DashboardPage({
   });
 
   return (
-    // Latar belakang utama: Off-white di light mode, Midnight di dark mode
     <div className="flex min-h-screen bg-[#F4F5F0] dark:bg-[#0B1120] transition-colors duration-300">
       <Sidebar />
       <div className="flex-1 flex flex-col min-w-0">
         <Header title="Overview" />
 
-        <main className="flex-1 p-margin-desktop max-w-container-max mx-auto w-full">
-          {/* STAT CARDS DINAMIS - CLEAN NEO-BRUTALISM */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div className="p-6 bg-[#93C5FD] dark:bg-slate-800 rounded-md border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] transition-all duration-300">
-              <p className="text-black dark:text-slate-300 text-sm mb-2 font-black uppercase tracking-wider">
+        {/* ✅ UPDATE: Padding utama di HP dikecilin jadi p-3 biar ngga banyak ruang kosong terbuang */}
+        <main className="flex-1 p-3 md:p-8 max-w-7xl mx-auto w-full">
+          {/* STAT CARDS */}
+          {/* ✅ UPDATE: Gap antar kotak dikecilin di HP (gap-3) */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6 mb-6 md:mb-8">
+            <div className="p-4 md:p-6 bg-[#93C5FD] dark:bg-slate-800 rounded-md border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+              {/* ✅ UPDATE: Teks label dikecilin banget di HP (text-[10px]) */}
+              <p className="text-[10px] md:text-sm font-black uppercase tracking-widest">
                 Total Task Terlacak
               </p>
-              <p className="text-5xl font-black text-black dark:text-white">
+              {/* ✅ UPDATE: Angka diturunin dari 4xl ke 3xl buat HP */}
+              <p className="text-3xl md:text-5xl font-black mt-1 md:mt-0">
                 {totalTasks}
               </p>
             </div>
 
-            <div className="p-6 bg-[#A3E635] dark:bg-slate-800 rounded-md border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] transition-all duration-300">
-              <p className="text-black dark:text-slate-300 text-sm mb-2 font-black uppercase tracking-wider">
+            <div className="p-4 md:p-6 bg-[#A3E635] dark:bg-slate-800 rounded-md border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+              <p className="text-[10px] md:text-sm font-black uppercase tracking-widest">
                 Offerwall Tersinkronisasi
               </p>
-              <p className="text-5xl font-black text-black dark:text-white">
+              <p className="text-3xl md:text-5xl font-black mt-1 md:mt-0">
                 {offers.length}
               </p>
             </div>
 
-            <div className="p-6 bg-white dark:bg-slate-900 rounded-md border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] transition-all duration-300">
-              <p className="text-black dark:text-slate-400 text-sm mb-2 font-black uppercase tracking-wider">
+            <div className="p-4 md:p-6 bg-white dark:bg-slate-900 rounded-md border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+              <p className="text-[10px] md:text-sm font-black uppercase tracking-widest">
                 Peluang Arbitrase Terbaik
               </p>
-              <p className="text-5xl font-black text-[#059669] dark:text-green-400">
+              <p className="text-3xl md:text-5xl font-black text-[#059669] mt-1 md:mt-0">
                 $
                 {(offers.length >= 2
                   ? offers[0].usdValue - offers[1].usdValue
@@ -88,27 +91,29 @@ export default async function DashboardPage({
             </div>
           </div>
 
-          {/* FILTER & SEARCH SECTION */}
           <DashboardFilters />
 
-          {/* TABLE SECTION - CLEAN NEO-BRUTALISM */}
-          <div className="bg-white dark:bg-slate-900 rounded-md border-2 border-black dark:border-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] overflow-hidden transition-colors duration-300">
-            <table className="w-full text-left border-collapse min-w-[800px]">
+          {/* TABLE */}
+          <div className="bg-white dark:bg-slate-900 rounded-md border-2 border-black dark:border-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] overflow-x-auto">
+            {/* ✅ UPDATE: Tabelnya dibikin agak luwes dikit, min-w-full tapi nahan min-w-[700px] biar scrollnya ngga kejauhan */}
+            <table className="w-full text-left border-collapse min-w-[700px]">
               <thead>
-                <tr className="border-b-2 border-black dark:border-white text-xs uppercase text-black dark:text-slate-300 tracking-wider font-black bg-[#F4F5F0] dark:bg-slate-800">
-                  <th className="p-4 w-1/3 border-r-2 border-black dark:border-white">
+                <tr className="border-b-2 border-black dark:border-white text-[10px] md:text-xs uppercase font-black bg-[#F4F5F0] dark:bg-slate-800">
+                  <th className="p-3 md:p-4 border-r-2 border-black dark:border-white whitespace-nowrap">
                     Task Name
                   </th>
-                  <th className="p-4 border-r-2 border-black dark:border-white">
-                    Offerwall
+                  <th className="p-3 md:p-4 border-r-2 border-black dark:border-white whitespace-nowrap">
+                    Platform / Provider
                   </th>
-                  <th className="p-4 border-r-2 border-black dark:border-white">
+                  <th className="p-3 md:p-4 border-r-2 border-black dark:border-white whitespace-nowrap">
                     Raw Coins
                   </th>
-                  <th className="p-4 border-r-2 border-black dark:border-white">
+                  <th className="p-3 md:p-4 border-r-2 border-black dark:border-white whitespace-nowrap">
                     USD Value
                   </th>
-                  <th className="p-4 text-center">Action</th>
+                  <th className="p-3 md:p-4 text-center whitespace-nowrap">
+                    Action
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y-2 divide-black dark:divide-white bg-white dark:bg-slate-900">
@@ -116,19 +121,22 @@ export default async function DashboardPage({
                   <tr>
                     <td
                       colSpan={5}
-                      className="p-8 text-center font-bold text-black dark:text-slate-400 uppercase"
+                      className="p-8 text-center text-sm font-bold uppercase"
                     >
-                      {searchQuery
-                        ? `Tidak ada tugas yang cocok dengan pencarian "${searchQuery}".`
-                        : "Katalog masih kosong atau tidak ada tugas di kategori ini."}
+                      Tidak ada tugas ditemukan.
                     </td>
                   </tr>
                 ) : (
                   offers.map((offer) => {
+                    const combinedOfferwall = `${offer.platform} - ${offer.offerwall}`;
+
                     const existingTask = trackedTasks.find(
                       (task) =>
-                        task.name === offer.gameName &&
-                        task.offerwall === offer.offerwall,
+                        task.name.toLowerCase() ===
+                          offer.gameName.toLowerCase() &&
+                        task.offerwall === combinedOfferwall &&
+                        (task.status === "In Progress" ||
+                          task.status === "Dropped"),
                     );
 
                     const taskStatus = existingTask

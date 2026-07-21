@@ -10,11 +10,11 @@ export default function TrackButton() {
     <button
       type="submit"
       disabled={pending}
-      className={`px-5 py-2 rounded-lg text-sm font-label-md transition shadow-sm w-full md:w-auto
+      className={`w-full md:w-auto px-6 py-3 font-black uppercase text-sm border-2 border-black dark:border-white transition-all flex justify-center items-center gap-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]
         ${
           pending
-            ? "bg-surface-variant text-on-surface-variant cursor-wait opacity-70"
-            : "bg-primary text-on-primary hover:bg-primary/90 active:scale-95"
+            ? "bg-slate-200 dark:bg-slate-700 text-slate-500 cursor-wait shadow-none translate-y-1"
+            : "bg-[#93C5FD] dark:bg-blue-600 text-black dark:text-white hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] active:translate-y-1 active:shadow-none"
         }
       `}
     >

@@ -109,10 +109,11 @@ export default function ProfilePage() {
       <div className="flex-1 flex flex-col min-w-0">
         <Header title="User Profile" />
 
-        <main className="flex-1 p-6 max-w-[1200px] w-full mx-auto space-y-6">
+        {/* ✅ FIX: Ganti p-6 jadi p-4 md:p-6 biar responsif */}
+        <main className="flex-1 p-4 md:p-6 max-w-[1200px] w-full mx-auto space-y-4 md:space-y-6">
           {/* HERO BANNER - BRUTALISM */}
-          <div className="bg-[#FCD34D] dark:bg-slate-800 rounded-md p-6 border-4 border-black dark:border-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)] flex flex-col md:flex-row items-center gap-6 relative transition-colors duration-300">
-            <div className="relative group w-24 h-24 flex-shrink-0">
+          <div className="bg-[#FCD34D] dark:bg-slate-800 rounded-md p-4 md:p-6 border-4 border-black dark:border-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] md:dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)] flex flex-col md:flex-row items-center gap-4 md:gap-6 relative transition-colors duration-300">
+            <div className="relative group w-20 h-20 md:w-24 md:h-24 flex-shrink-0">
               <img
                 src={profileImage}
                 alt="Profile"
@@ -121,17 +122,17 @@ export default function ProfilePage() {
             </div>
             <div className="flex-1 text-center md:text-left space-y-2 relative z-10">
               <div className="flex flex-col md:flex-row md:items-center gap-2 justify-center md:justify-start">
-                <h2 className="text-3xl font-black uppercase text-black dark:text-white">
+                <h2 className="text-2xl md:text-3xl font-black uppercase text-black dark:text-white">
                   {fullName}
                 </h2>
-                <div className="flex items-center gap-1.5 px-3 py-1 bg-white border-2 border-black text-black text-xs font-black uppercase w-fit mx-auto md:mx-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-                  <span className="material-symbols-outlined text-[16px] font-black">
+                <div className="flex items-center gap-1.5 px-2 py-1 md:px-3 bg-white border-2 border-black text-black text-[10px] md:text-xs font-black uppercase w-fit mx-auto md:mx-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                  <span className="material-symbols-outlined text-[14px] md:text-[16px] font-black">
                     verified
                   </span>
                   Elite Arbitrager
                 </div>
               </div>
-              <p className="text-sm font-bold text-slate-800 dark:text-slate-300 max-w-2xl">
+              <p className="text-xs md:text-sm font-bold text-slate-800 dark:text-slate-300 max-w-2xl leading-relaxed">
                 VERIFIED ARBITASK ACCOUNT. TRACKING AND OPTIMIZING YIELD IN
                 REAL-TIME.
               </p>
@@ -139,44 +140,48 @@ export default function ProfilePage() {
           </div>
 
           {/* STATS GRID ROW */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="p-5 bg-[#A3E635] dark:bg-slate-800 rounded-md border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] flex items-center gap-4 hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] transition-all">
-              <div className="w-12 h-12 rounded-sm bg-white dark:bg-slate-700 border-2 border-black dark:border-white text-black dark:text-white flex items-center justify-center font-black">
-                <span className="material-symbols-outlined">monitoring</span>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
+            <div className="p-4 md:p-5 bg-[#A3E635] dark:bg-slate-800 rounded-md border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] flex items-center gap-3 md:gap-4 hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] transition-all">
+              <div className="w-10 h-10 md:w-12 md:h-12 rounded-sm bg-white dark:bg-slate-700 border-2 border-black dark:border-white text-black dark:text-white flex items-center justify-center font-black">
+                <span className="material-symbols-outlined text-[20px] md:text-[24px]">
+                  monitoring
+                </span>
               </div>
               <div>
-                <p className="text-xs font-black uppercase tracking-wider text-black dark:text-slate-300">
+                <p className="text-[10px] md:text-xs font-black uppercase tracking-wider text-black dark:text-slate-300">
                   Total Yield Tracked
                 </p>
-                <p className="text-3xl font-black text-black dark:text-white">
+                <p className="text-2xl md:text-3xl font-black text-black dark:text-white">
                   ${stats.totalYield.toFixed(2)}
                 </p>
               </div>
             </div>
-            <div className="p-5 bg-white dark:bg-slate-900 rounded-md border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] flex items-center gap-4 hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] transition-all">
-              <div className="w-12 h-12 rounded-sm bg-slate-200 dark:bg-slate-700 border-2 border-black dark:border-white text-black dark:text-white flex items-center justify-center font-black">
-                <span className="material-symbols-outlined">task_alt</span>
+            <div className="p-4 md:p-5 bg-white dark:bg-slate-900 rounded-md border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] flex items-center gap-3 md:gap-4 hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] transition-all">
+              <div className="w-10 h-10 md:w-12 md:h-12 rounded-sm bg-slate-200 dark:bg-slate-700 border-2 border-black dark:border-white text-black dark:text-white flex items-center justify-center font-black">
+                <span className="material-symbols-outlined text-[20px] md:text-[24px]">
+                  task_alt
+                </span>
               </div>
               <div>
-                <p className="text-xs font-black uppercase tracking-wider text-black dark:text-slate-300">
+                <p className="text-[10px] md:text-xs font-black uppercase tracking-wider text-black dark:text-slate-300">
                   Tasks Tracked
                 </p>
-                <p className="text-3xl font-black text-black dark:text-white">
+                <p className="text-2xl md:text-3xl font-black text-black dark:text-white">
                   {stats.taskCount}
                 </p>
               </div>
             </div>
-            <div className="p-5 bg-[#FCA5A5] dark:bg-slate-800 rounded-md border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] flex items-center gap-4 hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] transition-all">
-              <div className="w-12 h-12 rounded-sm bg-white dark:bg-slate-700 border-2 border-black dark:border-white text-black dark:text-white flex items-center justify-center font-black">
-                <span className="material-symbols-outlined">
+            <div className="p-4 md:p-5 bg-[#FCA5A5] dark:bg-slate-800 rounded-md border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] flex items-center gap-3 md:gap-4 hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] transition-all">
+              <div className="w-10 h-10 md:w-12 md:h-12 rounded-sm bg-white dark:bg-slate-700 border-2 border-black dark:border-white text-black dark:text-white flex items-center justify-center font-black">
+                <span className="material-symbols-outlined text-[20px] md:text-[24px]">
                   local_fire_department
                 </span>
               </div>
               <div>
-                <p className="text-xs font-black uppercase tracking-wider text-black dark:text-slate-300">
+                <p className="text-[10px] md:text-xs font-black uppercase tracking-wider text-black dark:text-slate-300">
                   Current Streak
                 </p>
-                <p className="text-3xl font-black text-black dark:text-white uppercase">
+                <p className="text-2xl md:text-3xl font-black text-black dark:text-white uppercase">
                   Active
                 </p>
               </div>
@@ -184,13 +189,14 @@ export default function ProfilePage() {
           </div>
 
           {/* TABS & SETTINGS SECTION */}
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
-            <div className="flex lg:flex-col overflow-x-auto lg:overflow-x-visible gap-2 pb-2 lg:pb-0">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 md:gap-6 items-start">
+            {/* ✅ FIX: Ditambahin whitespace-nowrap biar teks tab nggak kepotong-potong di HP */}
+            <div className="flex lg:flex-col overflow-x-auto lg:overflow-x-visible gap-2 pb-2 lg:pb-0 hide-scrollbar">
               <button
                 onClick={() => setActiveTab("personal")}
-                className={`flex items-center gap-3 px-4 py-3 border-2 border-black dark:border-white font-black uppercase text-sm transition-all w-full text-left ${activeTab === "personal" ? "bg-black dark:bg-white text-white dark:text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)] translate-x-1" : "bg-white dark:bg-slate-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:-translate-y-1"}`}
+                className={`flex items-center gap-2 md:gap-3 px-3 md:px-4 py-2 md:py-3 border-2 border-black dark:border-white font-black uppercase text-xs md:text-sm transition-all whitespace-nowrap w-auto lg:w-full text-left ${activeTab === "personal" ? "bg-black dark:bg-white text-white dark:text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)] translate-x-1" : "bg-white dark:bg-slate-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:-translate-y-1"}`}
               >
-                <span className="material-symbols-outlined text-[20px]">
+                <span className="material-symbols-outlined text-[18px] md:text-[20px]">
                   person
                 </span>{" "}
                 Personal Info
@@ -198,9 +204,9 @@ export default function ProfilePage() {
 
               <button
                 onClick={() => setActiveTab("preferences")}
-                className={`flex items-center gap-3 px-4 py-3 border-2 border-black dark:border-white font-black uppercase text-sm transition-all w-full text-left ${activeTab === "preferences" ? "bg-black dark:bg-white text-white dark:text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)] translate-x-1" : "bg-white dark:bg-slate-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:-translate-y-1"}`}
+                className={`flex items-center gap-2 md:gap-3 px-3 md:px-4 py-2 md:py-3 border-2 border-black dark:border-white font-black uppercase text-xs md:text-sm transition-all whitespace-nowrap w-auto lg:w-full text-left ${activeTab === "preferences" ? "bg-black dark:bg-white text-white dark:text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)] translate-x-1" : "bg-white dark:bg-slate-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:-translate-y-1"}`}
               >
-                <span className="material-symbols-outlined text-[20px]">
+                <span className="material-symbols-outlined text-[18px] md:text-[20px]">
                   palette
                 </span>{" "}
                 Preferences
@@ -208,19 +214,19 @@ export default function ProfilePage() {
 
               <button
                 onClick={() => setActiveTab("security")}
-                className={`flex items-center gap-3 px-4 py-3 border-2 border-black dark:border-white font-black uppercase text-sm transition-all w-full text-left ${activeTab === "security" ? "bg-black dark:bg-white text-white dark:text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)] translate-x-1" : "bg-white dark:bg-slate-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:-translate-y-1"}`}
+                className={`flex items-center gap-2 md:gap-3 px-3 md:px-4 py-2 md:py-3 border-2 border-black dark:border-white font-black uppercase text-xs md:text-sm transition-all whitespace-nowrap w-auto lg:w-full text-left ${activeTab === "security" ? "bg-black dark:bg-white text-white dark:text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)] translate-x-1" : "bg-white dark:bg-slate-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:-translate-y-1"}`}
               >
-                <span className="material-symbols-outlined text-[20px]">
+                <span className="material-symbols-outlined text-[18px] md:text-[20px]">
                   shield
                 </span>{" "}
                 Security
               </button>
               <button
                 onClick={() => setActiveTab("inbox")}
-                className={`flex items-center justify-between px-4 py-3 border-2 border-black dark:border-white font-black uppercase text-sm transition-all w-full text-left ${activeTab === "inbox" ? "bg-black dark:bg-white text-white dark:text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)] translate-x-1" : "bg-white dark:bg-slate-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:-translate-y-1"}`}
+                className={`flex items-center justify-between gap-4 px-3 md:px-4 py-2 md:py-3 border-2 border-black dark:border-white font-black uppercase text-xs md:text-sm transition-all whitespace-nowrap w-auto lg:w-full text-left ${activeTab === "inbox" ? "bg-black dark:bg-white text-white dark:text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)] translate-x-1" : "bg-white dark:bg-slate-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:-translate-y-1"}`}
               >
-                <div className="flex items-center gap-3">
-                  <span className="material-symbols-outlined text-[20px]">
+                <div className="flex items-center gap-2 md:gap-3">
+                  <span className="material-symbols-outlined text-[18px] md:text-[20px]">
                     inbox
                   </span>{" "}
                   Inbox
@@ -235,15 +241,15 @@ export default function ProfilePage() {
               </button>
             </div>
 
-            <div className="lg:col-span-3 space-y-6">
+            <div className="lg:col-span-3 space-y-4 md:space-y-6">
               {/* TAB 1: PERSONAL INFORMATION */}
               {activeTab === "personal" && (
-                <div className="bg-white dark:bg-slate-900 rounded-md p-6 border-2 border-black dark:border-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] space-y-4">
+                <div className="bg-white dark:bg-slate-900 rounded-md p-4 md:p-6 border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] md:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] md:dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] space-y-4">
                   <div>
-                    <h3 className="text-2xl font-black uppercase text-black dark:text-white">
+                    <h3 className="text-xl md:text-2xl font-black uppercase text-black dark:text-white">
                       Personal Information
                     </h3>
-                    <p className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">
+                    <p className="text-[10px] md:text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">
                       Manage basic account details.
                     </p>
                   </div>
@@ -252,41 +258,41 @@ export default function ProfilePage() {
                   <form className="space-y-4" onSubmit={handleSaveChanges}>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="space-y-1.5">
-                        <label className="text-xs font-black uppercase text-black dark:text-white">
+                        <label className="text-[10px] md:text-xs font-black uppercase text-black dark:text-white tracking-widest">
                           First Name
                         </label>
                         <input
                           type="text"
                           value={firstName}
                           onChange={(e) => setFirstName(e.target.value)}
-                          className="w-full px-4 py-3 rounded-sm border-2 border-black dark:border-white bg-[#F4F5F0] dark:bg-slate-800 text-sm font-bold text-black dark:text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] focus:-translate-y-1 transition-all outline-none"
+                          className="w-full px-3 md:px-4 py-2.5 md:py-3 rounded-sm border-2 border-black dark:border-white bg-[#F4F5F0] dark:bg-slate-800 text-xs md:text-sm font-bold text-black dark:text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] focus:-translate-y-1 transition-all outline-none"
                         />
                       </div>
                       <div className="space-y-1.5">
-                        <label className="text-xs font-black uppercase text-black dark:text-white">
+                        <label className="text-[10px] md:text-xs font-black uppercase text-black dark:text-white tracking-widest">
                           Last Name
                         </label>
                         <input
                           type="text"
                           value={lastName}
                           onChange={(e) => setLastName(e.target.value)}
-                          className="w-full px-4 py-3 rounded-sm border-2 border-black dark:border-white bg-[#F4F5F0] dark:bg-slate-800 text-sm font-bold text-black dark:text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] focus:-translate-y-1 transition-all outline-none"
+                          className="w-full px-3 md:px-4 py-2.5 md:py-3 rounded-sm border-2 border-black dark:border-white bg-[#F4F5F0] dark:bg-slate-800 text-xs md:text-sm font-bold text-black dark:text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] focus:-translate-y-1 transition-all outline-none"
                         />
                       </div>
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-xs font-black uppercase text-black dark:text-white">
+                      <label className="text-[10px] md:text-xs font-black uppercase text-black dark:text-white tracking-widest">
                         Email Address
                       </label>
                       <input
                         type="email"
                         value={userEmail}
                         disabled
-                        className="w-full px-4 py-3 rounded-sm border-2 border-black dark:border-white bg-slate-200 dark:bg-slate-700 text-sm font-bold text-slate-500 dark:text-slate-400 cursor-not-allowed shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] outline-none"
+                        className="w-full px-3 md:px-4 py-2.5 md:py-3 rounded-sm border-2 border-black dark:border-white bg-slate-200 dark:bg-slate-700 text-xs md:text-sm font-bold text-slate-500 dark:text-slate-400 cursor-not-allowed shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] outline-none"
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-xs font-black uppercase text-black dark:text-white">
+                      <label className="text-[10px] md:text-xs font-black uppercase text-black dark:text-white tracking-widest">
                         Phone Number
                       </label>
                       <input
@@ -294,20 +300,22 @@ export default function ProfilePage() {
                         placeholder="+62 8xx-xxxx-xxxx"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
-                        className="w-full px-4 py-3 rounded-sm border-2 border-black dark:border-white bg-[#F4F5F0] dark:bg-slate-800 text-sm font-bold text-black dark:text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] focus:-translate-y-1 transition-all outline-none"
+                        className="w-full px-3 md:px-4 py-2.5 md:py-3 rounded-sm border-2 border-black dark:border-white bg-[#F4F5F0] dark:bg-slate-800 text-xs md:text-sm font-bold text-black dark:text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] focus:-translate-y-1 transition-all outline-none"
                       />
                     </div>
 
-                    <div className="flex items-center justify-end gap-3 pt-4">
+                    <div className="flex flex-col sm:flex-row items-center justify-end gap-3 pt-4">
                       {saveMessage && (
-                        <span className="text-xs font-black uppercase text-[#A3E635]">
+                        <span className="text-[10px] md:text-xs font-black uppercase text-[#A3E635]">
                           {saveMessage}
                         </span>
                       )}
+
+                      {/* ✅ FIX: w-full di HP biar gampang ditekan */}
                       <button
                         type="submit"
                         disabled={isSaving}
-                        className="px-6 py-3 bg-[#A3E635] dark:bg-[#A3E635] text-black border-2 border-black font-black uppercase text-sm rounded-sm shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] active:translate-y-0 active:shadow-none transition-all flex items-center gap-2"
+                        className="w-full sm:w-auto px-6 py-3 bg-[#A3E635] dark:bg-[#A3E635] text-black border-2 border-black font-black uppercase text-xs md:text-sm rounded-sm shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] active:translate-y-0 active:shadow-none transition-all flex items-center justify-center gap-2"
                       >
                         {isSaving ? (
                           <span className="material-symbols-outlined animate-spin text-[16px] font-black">
@@ -323,12 +331,12 @@ export default function ProfilePage() {
 
               {/* TAB 2: PREFERENCES (THEME) */}
               {activeTab === "preferences" && (
-                <div className="bg-white dark:bg-slate-900 rounded-md p-6 border-2 border-black dark:border-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] space-y-4">
+                <div className="bg-white dark:bg-slate-900 rounded-md p-4 md:p-6 border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] md:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] md:dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] space-y-4">
                   <div>
-                    <h3 className="text-2xl font-black uppercase text-black dark:text-white">
+                    <h3 className="text-xl md:text-2xl font-black uppercase text-black dark:text-white">
                       Theme Preferences
                     </h3>
-                    <p className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">
+                    <p className="text-[10px] md:text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">
                       Manage your viewing experience.
                     </p>
                   </div>
@@ -336,15 +344,14 @@ export default function ProfilePage() {
 
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-sm bg-[#F4F5F0] dark:bg-slate-800 border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
                     <div>
-                      <p className="text-base font-black uppercase text-black dark:text-white">
+                      <p className="text-sm md:text-base font-black uppercase text-black dark:text-white">
                         Dark / Light Mode
                       </p>
-                      <p className="text-xs font-bold text-slate-500 dark:text-slate-400 mt-0.5 uppercase">
+                      <p className="text-[10px] md:text-xs font-bold text-slate-500 dark:text-slate-400 mt-0.5 uppercase tracking-widest leading-relaxed">
                         Switch between dark and light themes for the dashboard.
                       </p>
                     </div>
 
-                    {/* MEMANGGIL KOMPONEN THEME TOGGLE */}
                     <ThemeToggle />
                   </div>
                 </div>
@@ -352,12 +359,12 @@ export default function ProfilePage() {
 
               {/* TAB 3: SECURITY */}
               {activeTab === "security" && (
-                <div className="bg-white dark:bg-slate-900 rounded-md p-6 border-2 border-black dark:border-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] space-y-4">
+                <div className="bg-white dark:bg-slate-900 rounded-md p-4 md:p-6 border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] md:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] md:dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] space-y-4">
                   <div>
-                    <h3 className="text-2xl font-black uppercase text-black dark:text-white">
+                    <h3 className="text-xl md:text-2xl font-black uppercase text-black dark:text-white">
                       Security & Protection
                     </h3>
-                    <p className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">
+                    <p className="text-[10px] md:text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">
                       Protect your tracking account access.
                     </p>
                   </div>
@@ -365,14 +372,14 @@ export default function ProfilePage() {
 
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-sm bg-[#F4F5F0] dark:bg-slate-800 border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
                     <div>
-                      <p className="text-base font-black uppercase text-black dark:text-white">
+                      <p className="text-sm md:text-base font-black uppercase text-black dark:text-white">
                         Password
                       </p>
-                      <p className="text-xs font-bold text-slate-500 dark:text-slate-400 mt-0.5 uppercase">
+                      <p className="text-[10px] md:text-xs font-bold text-slate-500 dark:text-slate-400 mt-0.5 uppercase tracking-widest leading-relaxed">
                         Set password for manual email login.
                       </p>
                     </div>
-                    <button className="px-4 py-2 bg-white dark:bg-slate-700 border-2 border-black dark:border-white text-black dark:text-white font-black uppercase text-xs rounded-sm hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] active:translate-y-0 active:shadow-none transition-all">
+                    <button className="w-full sm:w-auto px-4 py-3 md:py-2 bg-white dark:bg-slate-700 border-2 border-black dark:border-white text-black dark:text-white font-black uppercase text-[10px] md:text-xs rounded-sm hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] active:translate-y-0 active:shadow-none transition-all text-center">
                       Set Password
                     </button>
                   </div>
@@ -381,20 +388,20 @@ export default function ProfilePage() {
 
               {/* TAB 4: INBOX */}
               {activeTab === "inbox" && (
-                <div className="bg-white dark:bg-slate-900 rounded-md p-6 border-2 border-black dark:border-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] space-y-4">
-                  <div className="flex items-center justify-between">
+                <div className="bg-white dark:bg-slate-900 rounded-md p-4 md:p-6 border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] md:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] md:dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <div>
-                      <h3 className="text-2xl font-black uppercase text-black dark:text-white">
+                      <h3 className="text-xl md:text-2xl font-black uppercase text-black dark:text-white">
                         System Inbox
                       </h3>
-                      <p className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">
+                      <p className="text-[10px] md:text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">
                         Messages & Notifications.
                       </p>
                     </div>
                     {unreadCount > 0 && (
                       <button
                         onClick={handleMarkAllRead}
-                        className="text-xs font-black uppercase text-black dark:text-white border-b-2 border-black dark:border-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                        className="text-[10px] md:text-xs font-black uppercase text-black dark:text-white border-b-2 border-black dark:border-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors w-fit"
                       >
                         Mark all as read
                       </button>
@@ -404,19 +411,19 @@ export default function ProfilePage() {
 
                   <div className="space-y-4">
                     {notifications.length === 0 ? (
-                      <div className="p-8 text-center text-slate-500 dark:text-slate-400 font-bold uppercase text-sm border-2 border-dashed border-black dark:border-white">
+                      <div className="p-8 text-center text-slate-500 dark:text-slate-400 font-bold uppercase text-xs md:text-sm border-2 border-dashed border-black dark:border-white">
                         NO NEW MESSAGES.
                       </div>
                     ) : (
                       notifications.map((notif) => (
                         <div
                           key={notif.id}
-                          className={`p-4 rounded-sm border-2 border-black dark:border-white flex gap-4 items-start shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] transition-colors ${!notif.isRead ? "bg-[#FCD34D] dark:bg-slate-700" : "bg-[#F4F5F0] dark:bg-slate-800 opacity-80"}`}
+                          className={`p-3 md:p-4 rounded-sm border-2 border-black dark:border-white flex flex-col sm:flex-row gap-3 md:gap-4 items-start shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] transition-colors ${!notif.isRead ? "bg-[#FCD34D] dark:bg-slate-700" : "bg-[#F4F5F0] dark:bg-slate-800 opacity-80"}`}
                         >
                           <div
-                            className={`w-12 h-12 rounded-sm border-2 border-black dark:border-white flex items-center justify-center flex-shrink-0 ${!notif.isRead ? "bg-white text-black dark:bg-slate-900 dark:text-white" : "bg-slate-200 dark:bg-slate-900 text-slate-500"}`}
+                            className={`w-10 h-10 md:w-12 md:h-12 rounded-sm border-2 border-black dark:border-white flex items-center justify-center flex-shrink-0 ${!notif.isRead ? "bg-white text-black dark:bg-slate-900 dark:text-white" : "bg-slate-200 dark:bg-slate-900 text-slate-500"}`}
                           >
-                            <span className="material-symbols-outlined text-[24px] font-black">
+                            <span className="material-symbols-outlined text-[20px] md:text-[24px] font-black">
                               {notif.type === "SYSTEM"
                                 ? "settings"
                                 : notif.type === "ACHIEVEMENT"
@@ -424,19 +431,19 @@ export default function ProfilePage() {
                                   : "sync"}
                             </span>
                           </div>
-                          <div className="flex-1">
-                            <div className="flex justify-between items-start mb-1">
-                              <p className="text-base font-black uppercase text-black dark:text-white">
+                          <div className="flex-1 w-full">
+                            <div className="flex justify-between items-start mb-1 gap-2">
+                              <p className="text-sm md:text-base font-black uppercase text-black dark:text-white leading-tight">
                                 {notif.title}
                               </p>
-                              <span className="text-[10px] font-black text-slate-500 uppercase border-2 border-slate-500 px-1">
+                              <span className="text-[8px] md:text-[10px] font-black text-slate-500 uppercase border-2 border-slate-500 px-1 whitespace-nowrap">
                                 {formatDistanceToNow(
                                   new Date(notif.createdAt),
                                   { addSuffix: true, locale: id },
                                 )}
                               </span>
                             </div>
-                            <p className="text-xs font-bold text-slate-700 dark:text-slate-300 leading-relaxed uppercase">
+                            <p className="text-[10px] md:text-xs font-bold text-slate-700 dark:text-slate-300 leading-relaxed uppercase">
                               {notif.message}
                             </p>
                           </div>

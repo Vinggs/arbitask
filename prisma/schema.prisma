@@ -102,7 +102,8 @@ model CatalogOffer {
   gameName    String   
   imageUrl    String?
   category    String   @default("Games") 
-  offerwall   String   
+  platform    String   // ✅ TAMBAHAN: Buat misahin Swagbucks, Freecash, dll
+  offerwall   String   // Tetap ada: Buat misahin Torox, RevU, dll
   rawCoins    Int      
   usdValue    Float    
   requirement String   

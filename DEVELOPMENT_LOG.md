@@ -1,5 +1,10 @@
 # Arbitask Development Log
 
+## [22 Juli 2026] - Mobile Optimization & Security
+- **UI:** Optimized `AddTaskForm`, `EvidenceUploader`, and `DashboardFilters` for mobile screens while maintaining Neo-Brutalism styling.
+- **Security:** Implemented `proxy.ts` (middleware) to restrict `/admin` route access based on strict email authorization.
+- **Admin:** Applied `overflow-x-auto` to data tables in `AdminEditGamePage` and refined responsive layouts in `AddGamePage` to prevent mobile layout breaks.
+
 ## [16 Juli 2026] - Polish & UI Refinement
 - **Feature:** Migrated Theme Toggle to Profile page.
 - **Styling:** Applied Neo-Brutalism theme across components.
