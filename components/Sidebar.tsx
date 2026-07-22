@@ -36,8 +36,9 @@ export default function Sidebar() {
       )}
 
       {/* SIDEBAR UTAMA */}
+      {/* ✅ FIX: Ubah md:relative jadi md:sticky biar sidebar nggak ketinggalan pas di-scroll */}
       <aside
-        className={`fixed md:relative top-0 left-0 h-screen z-[999] md:z-50 bg-[#F4F5F0] dark:bg-[#0B1120] border-r-2 border-black dark:border-white flex flex-col shrink-0 transition-all duration-300
+        className={`fixed md:sticky top-0 left-0 h-screen z-[999] md:z-50 bg-[#F4F5F0] dark:bg-[#0B1120] border-r-2 border-black dark:border-white flex flex-col shrink-0 transition-all duration-300
           ${
             isSidebarOpen
               ? "translate-x-0 w-64" // Terbuka penuh di HP & Laptop

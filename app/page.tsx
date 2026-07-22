@@ -52,7 +52,7 @@ export default async function DashboardPage({
       <div className="flex-1 flex flex-col min-w-0">
         <Header title="Overview" />
 
-        {/* ✅ UPDATE: Padding utama di HP dikecilin jadi p-3 biar ngga banyak ruang kosong terbuang */}
+        {/* ✅ FIX: Tambahan border-x-4 border-dashed dan flex-1 biar garisnya narik sampai bawah pas di-scroll */}
         <main className="flex-1 p-3 md:p-8 max-w-7xl mx-auto w-full">
           {/* STAT CARDS */}
           {/* ✅ UPDATE: Gap antar kotak dikecilin di HP (gap-3) */}
