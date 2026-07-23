@@ -41,34 +41,34 @@ export default function HeaderNotification() {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative p-2 bg-transparent border-2 border-transparent hover:border-black dark:hover:border-white text-black dark:text-white transition-all focus:outline-none"
+        className="relative p-2 bg-transparent border-2 border-transparent hover:border-slate-900 dark:hover:border-slate-700 text-slate-900 dark:text-white transition-all focus:outline-none"
         title="Notifikasi"
       >
         <span className="material-symbols-outlined text-[24px] font-black">
           notifications
         </span>
         {unreadCount > 0 && (
-          <span className="absolute top-1 right-1 w-3 h-3 bg-red-500 border-2 border-black dark:border-white"></span>
+          <span className="absolute top-1 right-1 w-3 h-3 bg-rose-500 border-2 border-slate-900 dark:border-slate-700"></span>
         )}
       </button>
 
-      {/* DROPDOWN MENU KECIL - NEO BRUTALISM (Udah responsif) */}
+      {/* DROPDOWN MENU KECIL */}
       {isOpen && (
-        <div className="absolute right-[-40px] sm:right-0 mt-4 w-[300px] sm:w-80 bg-white dark:bg-slate-900 border-4 border-black dark:border-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)] z-50 transition-all">
-          <div className="p-4 border-b-4 border-black dark:border-white flex justify-between items-center bg-[#FCD34D] dark:bg-slate-800">
-            <h3 className="font-black text-black dark:text-white uppercase text-sm">
+        <div className="absolute right-[-40px] sm:right-0 mt-4 w-[300px] sm:w-80 bg-white dark:bg-slate-900 border-4 border-slate-900 dark:border-slate-700 shadow-brutal-lg dark:shadow-brutal-dark-lg z-50 transition-colors">
+          <div className="p-4 border-b-4 border-slate-900 dark:border-slate-700 flex justify-between items-center bg-amber-300 dark:bg-slate-800">
+            <h3 className="font-black text-slate-900 dark:text-white uppercase text-sm">
               Notifikasi
             </h3>
             {unreadCount > 0 && (
-              <span className="bg-black dark:bg-white text-white dark:text-black text-[10px] font-black uppercase px-2 py-1">
+              <span className="bg-slate-900 dark:bg-slate-200 text-slate-100 dark:text-slate-900 text-[10px] font-black uppercase px-2 py-1">
                 {unreadCount} Baru
               </span>
             )}
           </div>
 
-          <div className="max-h-[300px] overflow-y-auto">
+          <div className="max-h-[300px] overflow-y-auto hide-scrollbar">
             {displayNotifs.length === 0 ? (
-              <div className="p-6 text-center text-xs text-slate-500 font-bold uppercase">
+              <div className="p-6 text-center text-xs text-slate-500 font-bold uppercase border-b-4 border-slate-900 dark:border-slate-700">
                 Belum ada notifikasi.
               </div>
             ) : (
@@ -77,13 +77,13 @@ export default function HeaderNotification() {
                   href="/profile?tab=inbox"
                   key={notif.id}
                   onClick={() => setIsOpen(false)}
-                  className={`block p-4 border-b-2 border-dashed border-black dark:border-white hover:bg-[#F4F5F0] dark:hover:bg-slate-800 transition-colors ${!notif.isRead ? "bg-[#A3E635]/20 dark:bg-green-900/20" : ""}`}
+                  className={`block p-4 border-b-2 border-dashed border-slate-900 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors ${!notif.isRead ? "bg-emerald-400/20 dark:bg-teal-900/40" : ""}`}
                 >
                   <div className="flex justify-between items-start mb-1">
-                    <p className="text-sm font-black text-black dark:text-white uppercase line-clamp-1">
+                    <p className="text-sm font-black text-slate-900 dark:text-white uppercase line-clamp-1">
                       {notif.title}
                     </p>
-                    <span className="text-[10px] text-slate-600 dark:text-slate-400 whitespace-nowrap ml-2 font-bold uppercase border-b-2 border-slate-600">
+                    <span className="text-[10px] text-slate-600 dark:text-slate-400 whitespace-nowrap ml-2 font-bold uppercase border-b-2 border-slate-600 dark:border-slate-400">
                       {formatDistanceToNow(new Date(notif.createdAt), {
                         addSuffix: true,
                         locale: id,
@@ -101,7 +101,7 @@ export default function HeaderNotification() {
           <Link
             href="/profile?tab=inbox"
             onClick={() => setIsOpen(false)}
-            className="block p-4 text-center text-sm font-black uppercase text-black dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors bg-white dark:bg-slate-900"
+            className="block p-4 text-center text-sm font-black uppercase text-slate-900 dark:text-white hover:bg-slate-900 hover:text-white dark:hover:bg-white dark:hover:text-slate-900 transition-colors bg-white dark:bg-slate-900"
           >
             Lihat Semua di Inbox
           </Link>

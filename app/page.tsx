@@ -47,41 +47,37 @@ export default async function DashboardPage({
   });
 
   return (
-    <div className="flex min-h-screen bg-[#F4F5F0] dark:bg-[#0B1120] transition-colors duration-300">
+    <div className="flex min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
       <Sidebar />
       <div className="flex-1 flex flex-col min-w-0">
         <Header title="Overview" />
 
-        {/* ✅ FIX: Tambahan border-x-4 border-dashed dan flex-1 biar garisnya narik sampai bawah pas di-scroll */}
         <main className="flex-1 p-3 md:p-8 max-w-7xl mx-auto w-full">
           {/* STAT CARDS */}
-          {/* ✅ UPDATE: Gap antar kotak dikecilin di HP (gap-3) */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6 mb-6 md:mb-8">
-            <div className="p-4 md:p-6 bg-[#93C5FD] dark:bg-slate-800 rounded-md border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-              {/* ✅ UPDATE: Teks label dikecilin banget di HP (text-[10px]) */}
-              <p className="text-[10px] md:text-sm font-black uppercase tracking-widest">
+            <div className="p-4 md:p-6 bg-blue-300 dark:bg-sky-800 rounded-md border-2 border-slate-900 dark:border-slate-700 shadow-brutal dark:shadow-brutal-dark transition-colors">
+              <p className="text-[10px] md:text-sm font-black uppercase tracking-widest text-slate-900 dark:text-slate-200">
                 Total Task Terlacak
               </p>
-              {/* ✅ UPDATE: Angka diturunin dari 4xl ke 3xl buat HP */}
-              <p className="text-3xl md:text-5xl font-black mt-1 md:mt-0">
+              <p className="text-3xl md:text-5xl font-black mt-1 md:mt-0 text-slate-900 dark:text-white">
                 {totalTasks}
               </p>
             </div>
 
-            <div className="p-4 md:p-6 bg-[#A3E635] dark:bg-slate-800 rounded-md border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-              <p className="text-[10px] md:text-sm font-black uppercase tracking-widest">
+            <div className="p-4 md:p-6 bg-emerald-400 dark:bg-teal-700 rounded-md border-2 border-slate-900 dark:border-slate-700 shadow-brutal dark:shadow-brutal-dark transition-colors">
+              <p className="text-[10px] md:text-sm font-black uppercase tracking-widest text-slate-900 dark:text-slate-200">
                 Offerwall Tersinkronisasi
               </p>
-              <p className="text-3xl md:text-5xl font-black mt-1 md:mt-0">
+              <p className="text-3xl md:text-5xl font-black mt-1 md:mt-0 text-slate-900 dark:text-white">
                 {offers.length}
               </p>
             </div>
 
-            <div className="p-4 md:p-6 bg-white dark:bg-slate-900 rounded-md border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-              <p className="text-[10px] md:text-sm font-black uppercase tracking-widest">
+            <div className="p-4 md:p-6 bg-white dark:bg-slate-900 rounded-md border-2 border-slate-900 dark:border-slate-700 shadow-brutal dark:shadow-brutal-dark transition-colors">
+              <p className="text-[10px] md:text-sm font-black uppercase tracking-widest text-slate-900 dark:text-slate-400">
                 Peluang Arbitrase Terbaik
               </p>
-              <p className="text-3xl md:text-5xl font-black text-[#059669] mt-1 md:mt-0">
+              <p className="text-3xl md:text-5xl font-black text-emerald-600 dark:text-teal-400 mt-1 md:mt-0">
                 $
                 {(offers.length >= 2
                   ? offers[0].usdValue - offers[1].usdValue
@@ -94,21 +90,20 @@ export default async function DashboardPage({
           <DashboardFilters />
 
           {/* TABLE */}
-          <div className="bg-white dark:bg-slate-900 rounded-md border-2 border-black dark:border-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] overflow-x-auto">
-            {/* ✅ UPDATE: Tabelnya dibikin agak luwes dikit, min-w-full tapi nahan min-w-[700px] biar scrollnya ngga kejauhan */}
+          <div className="bg-white dark:bg-slate-900 rounded-md border-2 border-slate-900 dark:border-slate-700 shadow-brutal-lg dark:shadow-brutal-dark-lg overflow-x-auto transition-colors">
             <table className="w-full text-left border-collapse min-w-[700px]">
               <thead>
-                <tr className="border-b-2 border-black dark:border-white text-[10px] md:text-xs uppercase font-black bg-[#F4F5F0] dark:bg-slate-800">
-                  <th className="p-3 md:p-4 border-r-2 border-black dark:border-white whitespace-nowrap">
+                <tr className="border-b-2 border-slate-900 dark:border-slate-700 text-[10px] md:text-xs uppercase font-black bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-200">
+                  <th className="p-3 md:p-4 border-r-2 border-slate-900 dark:border-slate-700 whitespace-nowrap">
                     Task Name
                   </th>
-                  <th className="p-3 md:p-4 border-r-2 border-black dark:border-white whitespace-nowrap">
+                  <th className="p-3 md:p-4 border-r-2 border-slate-900 dark:border-slate-700 whitespace-nowrap">
                     Platform / Provider
                   </th>
-                  <th className="p-3 md:p-4 border-r-2 border-black dark:border-white whitespace-nowrap">
+                  <th className="p-3 md:p-4 border-r-2 border-slate-900 dark:border-slate-700 whitespace-nowrap">
                     Raw Coins
                   </th>
-                  <th className="p-3 md:p-4 border-r-2 border-black dark:border-white whitespace-nowrap">
+                  <th className="p-3 md:p-4 border-r-2 border-slate-900 dark:border-slate-700 whitespace-nowrap">
                     USD Value
                   </th>
                   <th className="p-3 md:p-4 text-center whitespace-nowrap">
@@ -116,12 +111,12 @@ export default async function DashboardPage({
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y-2 divide-black dark:divide-white bg-white dark:bg-slate-900">
+              <tbody className="divide-y-2 divide-slate-900 dark:divide-slate-700 bg-white dark:bg-slate-900">
                 {offers.length === 0 ? (
                   <tr>
                     <td
                       colSpan={5}
-                      className="p-8 text-center text-sm font-bold uppercase"
+                      className="p-8 text-center text-sm font-bold uppercase text-slate-600 dark:text-slate-400"
                     >
                       Tidak ada tugas ditemukan.
                     </td>

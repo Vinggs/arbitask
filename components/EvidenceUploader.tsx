@@ -68,48 +68,46 @@ export default function EvidenceUploader({
         onChange={handleFileChange}
       />
 
-      {/* ✅ FIX: Styling Neo-Brutalism untuk Area Upload */}
       {!uploadedUrl ? (
         <div
           onClick={() => !isUploading && fileInputRef.current?.click()}
-          className={`border-4 border-black dark:border-white border-dashed p-6 flex flex-col items-center justify-center text-center cursor-pointer group mb-6 flex-1 min-h-[200px] transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] ${
+          className={`border-4 border-slate-900 dark:border-slate-700 border-dashed p-6 flex flex-col items-center justify-center text-center cursor-pointer group mb-6 flex-1 min-h-[200px] transition-all shadow-brutal dark:shadow-brutal-dark ${
             isUploading
               ? "bg-slate-200 dark:bg-slate-800 cursor-not-allowed opacity-70"
-              : "bg-[#F4F5F0] dark:bg-slate-800 hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
+              : "bg-slate-50 dark:bg-slate-900 hover:-translate-y-1 hover:shadow-brutal-lg dark:hover:shadow-brutal-dark-lg"
           }`}
         >
-          <div className="w-16 h-16 bg-white dark:bg-slate-700 border-4 border-black dark:border-white flex items-center justify-center mb-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] group-hover:bg-[#93C5FD] transition-colors">
+          <div className="w-16 h-16 bg-white dark:bg-slate-800 border-4 border-slate-900 dark:border-slate-700 flex items-center justify-center mb-4 shadow-brutal dark:shadow-brutal-dark group-hover:bg-blue-300 dark:group-hover:bg-sky-800 transition-colors">
             {isUploading ? (
-              <span className="material-symbols-outlined text-4xl text-black dark:text-white font-black animate-spin">
+              <span className="material-symbols-outlined text-4xl text-slate-900 dark:text-white font-black animate-spin">
                 progress_activity
               </span>
             ) : (
-              <span className="material-symbols-outlined text-4xl text-black dark:text-white font-black">
+              <span className="material-symbols-outlined text-4xl text-slate-900 dark:text-white font-black">
                 add_photo_alternate
               </span>
             )}
           </div>
-          <h4 className="text-sm md:text-base font-black text-black dark:text-white mb-2 uppercase tracking-tight">
+          <h4 className="text-sm md:text-base font-black text-slate-900 dark:text-white mb-2 uppercase tracking-tight">
             {isUploading
               ? "Uploading to Cloud..."
               : "Click to browse or drag file here"}
           </h4>
-          <p className="text-[10px] md:text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest bg-white dark:bg-slate-900 border-2 border-black dark:border-white px-2 py-1">
+          <p className="text-[10px] md:text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest bg-white dark:bg-slate-800 border-2 border-slate-900 dark:border-slate-700 px-2 py-1">
             Supports PNG, JPG up to 5MB.
           </p>
         </div>
       ) : (
-        /* ✅ FIX: Styling Neo-Brutalism untuk Preview Gambar */
-        <div className="relative mb-6 flex-1 min-h-[200px] border-4 border-black dark:border-white overflow-hidden shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] group">
+        <div className="relative mb-6 flex-1 min-h-[200px] border-4 border-slate-900 dark:border-slate-700 overflow-hidden shadow-brutal-lg dark:shadow-brutal-dark-lg group">
           <img
             src={uploadedUrl}
             alt="Uploaded Evidence"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-slate-900/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
+          <div className="absolute inset-0 bg-slate-950/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
             <button
               onClick={() => setUploadedUrl(null)}
-              className="bg-[#FCA5A5] text-black border-2 border-black font-black uppercase text-xs md:text-sm px-4 py-2 flex items-center gap-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] active:translate-y-0 active:shadow-none transition-all"
+              className="bg-red-400 dark:bg-rose-700 text-slate-900 dark:text-white border-2 border-slate-900 dark:border-slate-700 font-black uppercase text-xs md:text-sm px-4 py-2 flex items-center gap-2 shadow-brutal dark:shadow-brutal-dark hover:-translate-y-1 hover:shadow-brutal-lg dark:hover:shadow-brutal-dark-lg active:translate-y-0 active:shadow-none transition-all"
             >
               <span className="material-symbols-outlined text-[18px] font-black">
                 delete
@@ -120,7 +118,6 @@ export default function EvidenceUploader({
         </div>
       )}
 
-      {/* ✅ FIX: Styling Button Submit Brutalist */}
       <button
         disabled={!currentObjectiveId || !uploadedUrl || isUploading}
         onClick={async () => {
@@ -133,7 +130,7 @@ export default function EvidenceUploader({
             alert("Gagal verifikasi tier.");
           }
         }}
-        className="w-full bg-[#A3E635] text-black font-black uppercase py-4 border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all flex items-center justify-center gap-2 mt-auto disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:not(:disabled):-translate-y-1 hover:not(:disabled):shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] active:not(:disabled):translate-y-0 active:not(:disabled):shadow-none"
+        className="w-full bg-emerald-400 dark:bg-teal-600 text-slate-900 dark:text-white font-black uppercase py-4 border-4 border-slate-900 dark:border-slate-700 shadow-brutal-lg dark:shadow-brutal-dark-lg transition-all flex items-center justify-center gap-2 mt-auto disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-brutal-sm dark:disabled:shadow-brutal-dark-sm hover:not(:disabled):-translate-y-1 hover:not(:disabled):shadow-[8px_8px_0px_0px_rgba(15,23,42,1)] dark:hover:not(:disabled):shadow-[8px_8px_0px_0px_rgba(0,0,0,0.4)] active:not(:disabled):translate-y-0 active:not(:disabled):shadow-none"
       >
         <span className="material-symbols-outlined font-black">verified</span>
         {currentObjectiveId ? "Submit for Verification" : "Fully Verified"}

@@ -38,14 +38,14 @@ export default function CatalogGrid({
           return (
             <article
               key={offer.id}
-              className={`bg-white dark:bg-slate-900 border-2 border-black dark:border-white overflow-hidden shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] flex flex-col group relative ${
+              className={`bg-white dark:bg-slate-900 border-2 border-slate-900 dark:border-slate-700 overflow-hidden shadow-brutal dark:shadow-brutal-dark flex flex-col group relative ${
                 existingTask?.status === "Dropped"
                   ? "opacity-75"
-                  : "hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] transition-all"
+                  : "hover:-translate-y-1 hover:shadow-brutal-lg dark:hover:shadow-brutal-dark-lg transition-all"
               }`}
             >
               {offer.isHighest && (
-                <div className="absolute top-3 right-3 z-20 bg-[#A3E635] text-black border-2 border-black px-2 py-1 text-[10px] font-black uppercase tracking-wider flex items-center gap-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                <div className="absolute top-3 right-3 z-20 bg-emerald-400 dark:bg-teal-600 text-slate-900 dark:text-white border-2 border-slate-900 dark:border-slate-700 px-2 py-1 text-[10px] font-black uppercase tracking-wider flex items-center gap-1 shadow-brutal-sm dark:shadow-brutal-dark-sm">
                   <span className="material-symbols-outlined text-[12px] font-black">
                     local_fire_department
                   </span>{" "}
@@ -53,7 +53,7 @@ export default function CatalogGrid({
                 </div>
               )}
 
-              <div className="h-40 relative w-full overflow-hidden border-b-2 border-black dark:border-white bg-black flex items-center justify-center">
+              <div className="h-40 relative w-full overflow-hidden border-b-2 border-slate-900 dark:border-slate-700 bg-black flex items-center justify-center">
                 <img
                   src={displayImage}
                   alt={offer.gameName}
@@ -64,17 +64,17 @@ export default function CatalogGrid({
                   }`}
                 />
                 <div className="absolute top-3 left-3 flex gap-1 z-10">
-                  <span className="bg-black dark:bg-white text-white dark:text-black border-2 border-black dark:border-white px-2 py-1 text-[10px] font-black uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]">
+                  <span className="bg-slate-900 dark:bg-slate-200 text-slate-100 dark:text-slate-900 border-2 border-slate-900 dark:border-slate-700 px-2 py-1 text-[10px] font-black uppercase shadow-brutal-sm dark:shadow-brutal-dark-sm">
                     {offer.platform}
                   </span>
-                  <span className="bg-white dark:bg-slate-800 text-black dark:text-white border-2 border-black dark:border-white px-2 py-1 text-[10px] font-black uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]">
+                  <span className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white border-2 border-slate-900 dark:border-slate-700 px-2 py-1 text-[10px] font-black uppercase shadow-brutal-sm dark:shadow-brutal-dark-sm">
                     {offer.category}
                   </span>
                 </div>
               </div>
 
-              <div className="p-4 md:p-5 flex-1 flex flex-col bg-[#F4F5F0] dark:bg-slate-900">
-                <h3 className="text-lg md:text-xl font-black text-black dark:text-white uppercase line-clamp-1 mb-1">
+              <div className="p-4 md:p-5 flex-1 flex flex-col bg-slate-50 dark:bg-slate-900">
+                <h3 className="text-lg md:text-xl font-black text-slate-900 dark:text-white uppercase line-clamp-1 mb-1">
                   {offer.gameName}
                 </h3>
                 <div className="flex-1">
@@ -89,24 +89,24 @@ export default function CatalogGrid({
                   </p>
                 </div>
 
-                <div className="mt-2 pt-4 border-t-2 border-black dark:border-white border-dashed flex items-center justify-between">
+                <div className="mt-2 pt-4 border-t-2 border-slate-900 dark:border-slate-700 border-dashed flex items-center justify-between">
                   <div>
-                    <p className="text-[9px] md:text-[10px] font-black text-black dark:text-slate-300 uppercase tracking-widest mb-0.5">
+                    <p className="text-[9px] md:text-[10px] font-black text-slate-900 dark:text-slate-300 uppercase tracking-widest mb-0.5">
                       Yield Value
                     </p>
-                    <p className="text-xl md:text-2xl font-black text-[#059669] dark:text-green-400">
+                    <p className="text-xl md:text-2xl font-black text-emerald-600 dark:text-teal-400">
                       ${offer.usdValue.toFixed(2)}
                     </p>
                   </div>
                   {existingTask ? (
                     <button
                       disabled
-                      className={`h-10 px-3 border-2 border-black dark:border-white font-black uppercase text-[10px] shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] cursor-not-allowed ${
+                      className={`h-10 px-3 border-2 border-slate-900 dark:border-slate-700 font-black uppercase text-[10px] shadow-brutal-sm dark:shadow-brutal-dark-sm cursor-not-allowed ${
                         existingTask.status === "Dropped"
-                          ? "bg-[#FCA5A5] text-black"
+                          ? "bg-red-400 dark:bg-rose-800 text-slate-900 dark:text-white"
                           : existingTask.status === "Completed"
-                            ? "bg-[#A3E635] text-black"
-                            : "bg-white dark:bg-slate-800 text-black dark:text-white"
+                            ? "bg-emerald-400 dark:bg-teal-700 text-slate-900 dark:text-white"
+                            : "bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
                       }`}
                     >
                       {existingTask.status === "Dropped"
@@ -118,7 +118,7 @@ export default function CatalogGrid({
                   ) : (
                     <button
                       onClick={() => setSelectedOffer(offer)}
-                      className="h-10 px-4 bg-black dark:bg-white text-white dark:text-black border-2 border-black dark:border-white font-black uppercase text-xs hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] transition-all flex items-center gap-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]"
+                      className="h-10 px-4 bg-slate-900 dark:bg-slate-200 text-slate-100 dark:text-slate-900 border-2 border-slate-900 dark:border-slate-700 font-black uppercase text-xs hover:-translate-y-1 hover:shadow-brutal dark:hover:shadow-brutal-dark transition-all flex items-center gap-1 shadow-brutal-sm dark:shadow-brutal-dark-sm"
                     >
                       Track
                     </button>
@@ -136,11 +136,10 @@ export default function CatalogGrid({
           onClick={() => setSelectedOffer(null)}
         >
           <div
-            className="bg-white dark:bg-slate-900 border-4 border-black dark:border-white w-full max-w-md max-h-[90vh] shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] dark:shadow-[12px_12px_0px_0px_rgba(255,255,255,1)] flex flex-col text-left overflow-hidden"
+            className="bg-white dark:bg-slate-950 border-4 border-slate-900 dark:border-slate-700 w-full max-w-md max-h-[90vh] shadow-brutal-lg dark:shadow-brutal-dark-lg flex flex-col text-left overflow-hidden transition-colors"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* ✅ UPDATE: Modal Padding di HP dikecilin jadi p-4 */}
-            <div className="p-4 md:p-6 border-b-4 border-black dark:border-white flex items-start justify-between bg-[#93C5FD] dark:bg-slate-800">
+            <div className="p-4 md:p-6 border-b-4 border-slate-900 dark:border-slate-700 flex items-start justify-between bg-blue-300 dark:bg-sky-800 transition-colors">
               <div className="flex items-center gap-4">
                 <img
                   src={
@@ -149,20 +148,20 @@ export default function CatalogGrid({
                       selectedOffer.gameName,
                     )}&background=000&color=fff&size=128&bold=true`
                   }
-                  className="w-12 h-12 md:w-16 md:h-16 object-cover border-4 border-black dark:border-white bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]"
+                  className="w-12 h-12 md:w-16 md:h-16 object-cover border-4 border-slate-900 dark:border-slate-700 bg-white shadow-brutal dark:shadow-brutal-dark"
                 />
                 <div>
-                  <h3 className="font-black text-black dark:text-white text-xl md:text-2xl uppercase tracking-tighter line-clamp-1">
+                  <h3 className="font-black text-slate-900 dark:text-white text-xl md:text-2xl uppercase tracking-tighter line-clamp-1">
                     {selectedOffer.gameName}
                   </h3>
-                  <span className="text-[10px] font-black text-black dark:text-white uppercase tracking-widest border-2 border-black dark:border-white px-2 py-0.5 bg-white dark:bg-slate-700 mt-1 inline-block">
+                  <span className="text-[10px] font-black text-slate-900 dark:text-white uppercase tracking-widest border-2 border-slate-900 dark:border-slate-700 px-2 py-0.5 bg-white dark:bg-slate-700 mt-1 inline-block">
                     {selectedOffer.platform} - {selectedOffer.offerwall}
                   </span>
                 </div>
               </div>
               <button
                 onClick={() => setSelectedOffer(null)}
-                className="text-black dark:text-white border-2 border-black dark:border-white w-8 h-8 flex items-center justify-center bg-white dark:bg-slate-700 hover:bg-black hover:text-white transition-colors flex-shrink-0"
+                className="text-slate-900 dark:text-white border-2 border-slate-900 dark:border-slate-700 w-8 h-8 flex items-center justify-center bg-white dark:bg-slate-700 hover:bg-slate-900 hover:text-white transition-colors flex-shrink-0 shadow-brutal-sm dark:shadow-brutal-dark-sm"
               >
                 <span className="material-symbols-outlined text-[20px] font-black">
                   close
@@ -170,15 +169,15 @@ export default function CatalogGrid({
               </button>
             </div>
 
-            <div className="p-4 md:p-6 bg-[#F4F5F0] dark:bg-slate-900 flex-1 overflow-y-auto">
-              <div className="flex items-center gap-2 text-black dark:text-white text-[10px] md:text-xs font-black uppercase mb-4 md:mb-5 bg-[#FCD34D] dark:bg-yellow-600 w-fit px-3 py-1.5 border-2 border-black dark:border-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]">
+            <div className="p-4 md:p-6 bg-slate-50 dark:bg-slate-900 flex-1 overflow-y-auto transition-colors">
+              <div className="flex items-center gap-2 text-slate-900 dark:text-white text-[10px] md:text-xs font-black uppercase mb-4 md:mb-5 bg-amber-300 dark:bg-amber-600 w-fit px-3 py-1.5 border-2 border-slate-900 dark:border-slate-700 shadow-brutal-sm dark:shadow-brutal-dark-sm">
                 <span className="material-symbols-outlined text-[14px] md:text-[16px]">
                   schedule
                 </span>{" "}
                 30 Days Limit
               </div>
 
-              <h4 className="text-[10px] md:text-[12px] font-black text-black dark:text-slate-300 uppercase tracking-widest mb-3">
+              <h4 className="text-[10px] md:text-[12px] font-black text-slate-900 dark:text-slate-300 uppercase tracking-widest mb-3">
                 Milestones
               </h4>
 
@@ -188,22 +187,22 @@ export default function CatalogGrid({
                   selectedOffer.milestones.map((m: any, idx: number) => (
                     <div
                       key={idx}
-                      className="bg-white dark:bg-slate-800 border-2 border-black dark:border-white p-3 md:p-4 flex justify-between items-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] gap-3"
+                      className="bg-white dark:bg-slate-800 border-2 border-slate-900 dark:border-slate-700 p-3 md:p-4 flex justify-between items-center shadow-brutal dark:shadow-brutal-dark gap-3"
                     >
-                      <span className="text-xs md:text-sm font-black uppercase text-black dark:text-white line-clamp-2">
+                      <span className="text-xs md:text-sm font-black uppercase text-slate-900 dark:text-white line-clamp-2">
                         {m.description}
                       </span>
-                      <span className="text-xs md:text-sm font-black text-[#059669] dark:text-green-400 whitespace-nowrap">
+                      <span className="text-xs md:text-sm font-black text-emerald-600 dark:text-teal-400 whitespace-nowrap">
                         ${m.reward.toFixed(2)}
                       </span>
                     </div>
                   ))
                 ) : (
-                  <div className="bg-white dark:bg-slate-800 border-2 border-black dark:border-white p-3 md:p-4 flex justify-between items-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] gap-3">
-                    <span className="text-xs md:text-sm font-black uppercase text-black dark:text-white line-clamp-2">
+                  <div className="bg-white dark:bg-slate-800 border-2 border-slate-900 dark:border-slate-700 p-3 md:p-4 flex justify-between items-center shadow-brutal dark:shadow-brutal-dark gap-3">
+                    <span className="text-xs md:text-sm font-black uppercase text-slate-900 dark:text-white line-clamp-2">
                       {selectedOffer.requirement}
                     </span>
-                    <span className="text-xs md:text-sm font-black text-[#059669] dark:text-green-400 whitespace-nowrap">
+                    <span className="text-xs md:text-sm font-black text-emerald-600 dark:text-teal-400 whitespace-nowrap">
                       ${selectedOffer.usdValue.toFixed(2)}
                     </span>
                   </div>
@@ -211,7 +210,7 @@ export default function CatalogGrid({
               </div>
             </div>
 
-            <div className="p-4 md:p-6 border-t-4 border-black dark:border-white bg-white dark:bg-slate-800">
+            <div className="p-4 md:p-6 border-t-4 border-slate-900 dark:border-slate-700 bg-white dark:bg-slate-800 transition-colors">
               <form
                 action={autoTrackTask}
                 onSubmit={(e) => {
@@ -252,7 +251,7 @@ export default function CatalogGrid({
 
                 <button
                   type="submit"
-                  className="w-full bg-[#A3E635] dark:bg-green-500 text-black dark:text-white font-black uppercase py-3 md:py-4 border-2 border-black dark:border-white hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] transition-all flex justify-center items-center gap-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]"
+                  className="w-full bg-emerald-400 dark:bg-teal-600 text-slate-900 dark:text-white font-black uppercase py-3 md:py-4 border-2 border-slate-900 dark:border-slate-700 hover:-translate-y-1 hover:shadow-brutal-lg dark:hover:shadow-brutal-dark-lg transition-all flex justify-center items-center gap-2 shadow-brutal dark:shadow-brutal-dark"
                 >
                   Start Tracking{" "}
                   <span className="material-symbols-outlined text-[16px] md:text-[18px] font-black">

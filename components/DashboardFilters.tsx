@@ -37,13 +37,13 @@ export default function DashboardFilters() {
   return (
     <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4 md:gap-6">
       <div className="flex flex-col sm:flex-row sm:items-center gap-2 md:gap-4 text-sm w-full md:w-auto">
-        <span className="font-black text-black dark:text-white uppercase tracking-wider text-[10px] md:text-xs">
+        <span className="font-black text-slate-900 dark:text-white uppercase tracking-wider text-[10px] md:text-xs">
           Filters
         </span>
         <select
           value={currentCategory}
           onChange={handleCategoryChange}
-          className="w-full sm:w-auto border-2 border-black dark:border-white px-3 md:px-4 py-2 bg-white dark:bg-slate-800 text-black dark:text-white outline-none font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] hover:-translate-y-px transition-all cursor-pointer text-xs md:text-sm"
+          className="w-full sm:w-auto border-2 border-slate-900 dark:border-slate-700 px-3 md:px-4 py-2 bg-white dark:bg-slate-900 text-slate-900 dark:text-white outline-none font-bold shadow-brutal-sm dark:shadow-brutal-dark-sm hover:-translate-y-px transition-all cursor-pointer text-xs md:text-sm"
         >
           <option value="All">Category: All</option>
           <option value="Games">Games</option>
@@ -54,7 +54,7 @@ export default function DashboardFilters() {
 
       <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
         <div className="relative w-full sm:flex-1 md:w-72">
-          <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-black dark:text-white text-[18px] md:text-[20px] font-black">
+          <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-900 dark:text-slate-400 text-[18px] md:text-[20px] font-black">
             search
           </span>
           <input
@@ -62,13 +62,13 @@ export default function DashboardFilters() {
             defaultValue={currentSearch}
             onChange={handleSearchChange}
             placeholder="Search game name..."
-            className="w-full pl-9 md:pl-10 pr-4 py-2.5 border-2 border-black dark:border-white text-xs md:text-sm focus:outline-none bg-white dark:bg-slate-800 text-black dark:text-white font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] focus:-translate-y-px transition-all placeholder-slate-500"
+            className="w-full pl-9 md:pl-10 pr-4 py-2.5 border-2 border-slate-900 dark:border-slate-700 text-xs md:text-sm focus:outline-none bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-bold shadow-brutal-sm dark:shadow-brutal-dark-sm focus:-translate-y-px transition-all placeholder-slate-400 dark:placeholder-slate-500"
           />
         </div>
 
         <button
           onClick={handleClearFilters}
-          className="w-full sm:w-auto flex items-center justify-center gap-1 text-[10px] md:text-sm font-black text-black dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black border-2 border-transparent hover:border-black dark:hover:border-white px-3 py-2 transition-all uppercase whitespace-nowrap"
+          className="w-full sm:w-auto flex items-center justify-center gap-1 text-[10px] md:text-sm font-black text-slate-900 dark:text-white hover:bg-slate-900 hover:text-white dark:hover:bg-slate-200 dark:hover:text-slate-900 border-2 border-transparent hover:border-slate-900 dark:hover:border-slate-700 px-3 py-2 transition-all uppercase whitespace-nowrap"
         >
           <span className="material-symbols-outlined text-[16px] md:text-[18px] font-black">
             clear_all

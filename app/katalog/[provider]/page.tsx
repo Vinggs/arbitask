@@ -46,7 +46,7 @@ export default async function ProviderDetailPage({
   });
 
   return (
-    <div className="flex min-h-screen bg-[#F4F5F0] dark:bg-[#0B1120] text-black dark:text-white font-body-md antialiased transition-colors duration-300">
+    <div className="flex min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-200 font-body-md antialiased transition-colors duration-300">
       <Sidebar />
 
       <main className="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto">
@@ -57,25 +57,25 @@ export default async function ProviderDetailPage({
             <div className="flex flex-wrap items-center gap-2 font-black uppercase text-[10px] md:text-sm mb-6 transition-colors">
               <Link
                 href="/katalog"
-                className="text-slate-500 hover:text-black dark:hover:text-white transition-colors flex items-center gap-1 bg-white dark:bg-slate-800 border-2 border-black dark:border-white px-2 py-1 md:px-3 md:py-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] hover:-translate-y-px hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none"
+                className="text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors flex items-center gap-1 bg-white dark:bg-slate-800 border-2 border-slate-900 dark:border-slate-700 px-2 py-1 md:px-3 md:py-1 shadow-brutal-sm dark:shadow-brutal-dark-sm hover:-translate-y-px hover:shadow-brutal dark:hover:shadow-brutal-dark active:translate-y-1 active:shadow-none"
               >
                 <span className="material-symbols-outlined text-[14px] md:text-sm font-black">
                   arrow_back
                 </span>
                 Back to Catalog
               </Link>
-              <span className="material-symbols-outlined text-sm font-black text-black dark:text-white">
+              <span className="material-symbols-outlined text-sm font-black text-slate-900 dark:text-slate-400">
                 chevron_right
               </span>
-              <span className="text-black dark:text-black bg-[#FCD34D] px-2 py-1 md:px-3 md:py-1 border-2 border-black dark:border-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]">
+              <span className="text-slate-900 dark:text-slate-100 bg-amber-300 dark:bg-amber-700 px-2 py-1 md:px-3 md:py-1 border-2 border-slate-900 dark:border-slate-700 shadow-brutal-sm dark:shadow-brutal-dark-sm">
                 {providerName}
               </span>
             </div>
 
             <div className="flex flex-col md:flex-row justify-between md:items-end gap-4 md:gap-6">
               <div>
-                <h2 className="text-3xl md:text-4xl font-black text-black dark:text-white tracking-tight mb-3 flex items-center gap-3 md:gap-4 uppercase transition-colors">
-                  <span className="w-12 h-12 md:w-14 md:h-14 bg-white dark:bg-slate-800 flex items-center justify-center text-black dark:text-white text-lg md:text-xl border-4 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] transition-colors">
+                <h2 className="text-3xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight mb-3 flex items-center gap-3 md:gap-4 uppercase transition-colors">
+                  <span className="w-12 h-12 md:w-14 md:h-14 bg-white dark:bg-slate-800 flex items-center justify-center text-slate-900 dark:text-white text-lg md:text-xl border-4 border-slate-900 dark:border-slate-700 shadow-brutal dark:shadow-brutal-dark transition-colors">
                     {providerName === "RevU"
                       ? "RU"
                       : providerName === "ToroX"
@@ -86,14 +86,14 @@ export default async function ProviderDetailPage({
                   </span>
                   {providerName} Games
                 </h2>
-                <p className="text-xs md:text-sm font-bold text-slate-700 dark:text-slate-400 max-w-2xl transition-colors uppercase tracking-wider">
+                <p className="text-xs md:text-sm font-bold text-slate-600 dark:text-slate-400 max-w-2xl transition-colors uppercase tracking-wider">
                   Daftar peluang arbitrase dengan yield tertinggi dari{" "}
                   {providerName}.
                 </p>
               </div>
 
-              <div className="bg-[#A3E635] border-4 border-black dark:border-white px-4 py-2 md:px-5 md:py-3 text-xs md:text-sm font-black text-black uppercase flex items-center justify-center md:justify-start gap-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] md:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-colors w-full md:w-auto mt-2 md:mt-0">
-                <span className="material-symbols-outlined text-black text-[20px] md:text-[24px] font-black">
+              <div className="bg-emerald-400 dark:bg-teal-700 border-4 border-slate-900 dark:border-slate-700 px-4 py-2 md:px-5 md:py-3 text-xs md:text-sm font-black text-slate-900 dark:text-slate-100 uppercase flex items-center justify-center md:justify-start gap-2 shadow-brutal md:shadow-brutal-lg dark:shadow-brutal-dark md:dark:shadow-brutal-dark-lg transition-colors w-full md:w-auto mt-2 md:mt-0">
+                <span className="material-symbols-outlined text-slate-900 dark:text-slate-100 text-[20px] md:text-[24px] font-black">
                   monitoring
                 </span>
                 {offers.length} Active Offers
@@ -102,11 +102,11 @@ export default async function ProviderDetailPage({
           </div>
 
           {offers.length === 0 ? (
-            <div className="bg-white dark:bg-slate-900 border-4 border-black dark:border-white p-8 md:p-12 text-center shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] flex flex-col items-center justify-center mt-6 transition-colors">
-              <span className="material-symbols-outlined text-5xl md:text-6xl text-black dark:text-white mb-4 font-black transition-colors">
+            <div className="bg-white dark:bg-slate-900 border-4 border-slate-900 dark:border-slate-700 p-8 md:p-12 text-center shadow-brutal-lg md:shadow-[8px_8px_0px_0px_rgba(15,23,42,1)] dark:shadow-brutal-dark-lg flex flex-col items-center justify-center mt-6 transition-colors">
+              <span className="material-symbols-outlined text-5xl md:text-6xl text-slate-900 dark:text-slate-400 mb-4 font-black transition-colors">
                 videogame_asset_off
               </span>
-              <h3 className="text-2xl md:text-3xl font-black text-black dark:text-white mb-2 uppercase transition-colors">
+              <h3 className="text-2xl md:text-3xl font-black text-slate-900 dark:text-white mb-2 uppercase transition-colors">
                 Belum ada tawaran aktif
               </h3>
               <p className="text-[10px] md:text-sm font-bold text-slate-600 dark:text-slate-400 uppercase transition-colors">

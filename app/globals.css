@@ -2,31 +2,45 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Light mode (default) - Neo Brutalism Base (Kertas / Off-White) */
+/* Light mode - Diperlembut dengan slate-50 dan text slate-900 */
 body {
-  @apply bg-[#F4F5F0] text-black antialiased transition-colors duration-300;
-  font-family: 'Space Grotesk', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  @apply bg-slate-50 text-slate-900 antialiased transition-colors duration-300;
+  font-family:
+    "Space Grotesk",
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    "Noto Sans",
+    sans-serif,
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
+    "Noto Color Emoji";
 }
 
-/* Dark mode - Midnight Solid */
+/* Dark mode - Midnight Solid (Slate-950) */
 .dark body {
-  @apply bg-[#0B1120] text-white;
+  @apply bg-slate-950 text-slate-200;
 }
 
 ::-webkit-scrollbar {
-  width: 12px; /* Lebih tebal ala brutalism */
+  width: 12px;
 }
 ::-webkit-scrollbar-track {
-  @apply bg-[#F4F5F0] dark:bg-[#0B1120] border-l-2 border-black dark:border-white;
+  @apply bg-slate-50 dark:bg-slate-950 border-l-2 border-slate-900 dark:border-slate-700;
 }
 ::-webkit-scrollbar-thumb {
-  @apply bg-black dark:bg-white rounded-none border-l-2 border-black dark:border-white;
+  @apply bg-slate-900 dark:bg-slate-700 rounded-none border-l-2 border-slate-900 dark:border-slate-700;
 }
 
-/* Optional: Bikin seleksi teks jadi kuning stabilo */
 ::selection {
-  @apply bg-[#A3E635] text-black;
+  @apply bg-emerald-300 text-slate-900;
 }
 .dark ::selection {
-  @apply bg-[#FCD34D] text-black;
+  @apply bg-teal-700 text-slate-100;
 }

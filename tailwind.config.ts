@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  darkMode: "class", // <-- Udah ditambahin koma di sini biar nggak error
+  darkMode: "class",
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -9,6 +9,15 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      // ✅ TAMBAHAN: Custom shadow Neo-Brutalism agar class HTML tidak berantakan
+      boxShadow: {
+        "brutal-sm": "2px 2px 0px 0px rgba(15, 23, 42, 1)", // slate-900
+        brutal: "4px 4px 0px 0px rgba(15, 23, 42, 1)", // slate-900
+        "brutal-lg": "6px 6px 0px 0px rgba(15, 23, 42, 1)", // slate-900
+        "brutal-dark-sm": "2px 2px 0px 0px rgba(0, 0, 0, 0.4)", // softer black for dark mode
+        "brutal-dark": "4px 4px 0px 0px rgba(0, 0, 0, 0.4)",
+        "brutal-dark-lg": "6px 6px 0px 0px rgba(0, 0, 0, 0.4)",
+      },
       colors: {
         "surface-container": "#e5eeff",
         "secondary-container": "#82f5c1",

@@ -22,7 +22,7 @@ export default function DropTaskButton({
       <button
         type="submit"
         onClick={handleConfirm}
-        className="px-5 py-2.5 bg-[#FCA5A5] text-black border-4 border-black dark:border-white font-black uppercase text-sm shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] active:translate-y-0 active:shadow-none transition-all flex items-center gap-2"
+        className="px-5 py-2.5 bg-red-400 dark:bg-rose-700 text-slate-900 dark:text-white border-4 border-slate-900 dark:border-slate-700 font-black uppercase text-sm shadow-brutal dark:shadow-brutal-dark hover:-translate-y-1 hover:shadow-brutal-lg dark:hover:shadow-brutal-dark-lg active:translate-y-0 active:shadow-none transition-all flex items-center gap-2"
       >
         <span className="material-symbols-outlined text-[18px] font-black">
           flag
@@ -32,12 +32,11 @@ export default function DropTaskButton({
     );
   }
 
-  // Tampilan tombol untuk halaman Grid Cards (Dashboard Tracking)
   return (
     <button
       type="submit"
       onClick={handleConfirm}
-      className="text-xs bg-[#FCA5A5] text-black font-black uppercase border-2 border-black hover:-translate-y-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-y-0 active:shadow-none transition-all cursor-pointer px-3 py-1.5 flex items-center gap-1"
+      className="text-xs bg-red-400 dark:bg-rose-700 text-slate-900 dark:text-white font-black uppercase border-2 border-slate-900 dark:border-slate-700 hover:-translate-y-1 shadow-brutal-sm dark:shadow-brutal-dark-sm hover:shadow-brutal dark:hover:shadow-brutal-dark active:translate-y-0 active:shadow-none transition-all cursor-pointer px-3 py-1.5 flex items-center gap-1"
     >
       <span className="material-symbols-outlined text-[14px] font-black">
         flag

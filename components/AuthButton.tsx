@@ -8,7 +8,7 @@ export default function AuthButton() {
 
   if (status === "loading") {
     return (
-      <div className="w-10 h-10 bg-slate-200 dark:bg-slate-700 animate-pulse border-2 border-black dark:border-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]"></div>
+      <div className="w-10 h-10 bg-slate-200 dark:bg-slate-700 animate-pulse border-2 border-slate-900 dark:border-slate-700 shadow-brutal-sm dark:shadow-brutal-dark-sm"></div>
     );
   }
 
@@ -22,7 +22,7 @@ export default function AuthButton() {
       <Link
         href="/profile"
         title="View Profile"
-        className="block w-10 h-10 border-2 border-black dark:border-white bg-white hover:-translate-y-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] transition-all"
+        className="block w-10 h-10 border-2 border-slate-900 dark:border-slate-700 bg-white hover:-translate-y-1 shadow-brutal-sm dark:shadow-brutal-dark-sm hover:shadow-brutal dark:hover:shadow-brutal-dark transition-all"
       >
         <img
           src={profileImage}
@@ -36,7 +36,7 @@ export default function AuthButton() {
   return (
     <button
       onClick={() => signIn()}
-      className="w-10 h-10 flex items-center justify-center bg-black dark:bg-white text-white dark:text-black border-2 border-black dark:border-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] active:translate-y-0 active:shadow-none transition-all"
+      className="w-10 h-10 flex items-center justify-center bg-slate-900 dark:bg-slate-200 text-white dark:text-slate-900 border-2 border-slate-900 dark:border-slate-700 shadow-brutal-sm dark:shadow-brutal-dark-sm hover:-translate-y-1 hover:shadow-brutal dark:hover:shadow-brutal-dark active:translate-y-0 active:shadow-none transition-all"
       title="Sign In"
     >
       <span className="material-symbols-outlined text-[20px] font-black">

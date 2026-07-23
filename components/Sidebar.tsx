@@ -7,9 +7,7 @@ export default function Sidebar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const pathname = usePathname();
 
-  // Otomatis nutup sidebar di HP tiap ganti halaman
   useEffect(() => {
-    // Di layar kecil (mobile), kita tutup sidebar otomatis
     if (window.innerWidth < 768) {
       setIsSidebarOpen(false);
     }
@@ -17,54 +15,52 @@ export default function Sidebar() {
 
   return (
     <>
-      {/* HAMBURGER BUTTON (Hanya muncul di HP) */}
+      {/* HAMBURGER BUTTON */}
       <button
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        className="md:hidden fixed top-5 right-4 z-[999] bg-[#FCD34D] text-black border-2 border-black w-10 h-10 flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-px transition-all"
+        className="md:hidden fixed top-5 right-4 z-[999] bg-amber-300 dark:bg-amber-600 text-slate-900 dark:text-white border-2 border-slate-900 dark:border-slate-700 w-10 h-10 flex items-center justify-center shadow-brutal-sm dark:shadow-brutal-dark-sm hover:-translate-y-px transition-all"
       >
         <span className="material-symbols-outlined font-black">
           {isSidebarOpen ? "close" : "menu"}
         </span>
       </button>
 
-      {/* OVERLAY GELAP UNTUK HP */}
+      {/* OVERLAY GELAP */}
       {isSidebarOpen && (
         <div
-          className="md:hidden fixed inset-0 bg-slate-900/50 z-[998] backdrop-blur-sm"
+          className="md:hidden fixed inset-0 bg-slate-950/60 z-[998] backdrop-blur-sm"
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
 
       {/* SIDEBAR UTAMA */}
-      {/* ✅ FIX: Ubah md:relative jadi md:sticky biar sidebar nggak ketinggalan pas di-scroll */}
       <aside
-        className={`fixed md:sticky top-0 left-0 h-screen z-[999] md:z-50 bg-[#F4F5F0] dark:bg-[#0B1120] border-r-2 border-black dark:border-white flex flex-col shrink-0 transition-all duration-300
+        className={`fixed md:sticky top-0 left-0 h-screen z-[999] md:z-50 bg-slate-50 dark:bg-slate-950 border-r-2 border-slate-900 dark:border-slate-700 flex flex-col shrink-0 transition-all duration-300
           ${
             isSidebarOpen
-              ? "translate-x-0 w-64" // Terbuka penuh di HP & Laptop
-              : "-translate-x-full md:translate-x-0 md:w-20" // Ngumpet di HP, menyusut di Laptop
+              ? "translate-x-0 w-64"
+              : "-translate-x-full md:translate-x-0 md:w-20"
           }
         `}
       >
         <div
-          className="flex items-center h-[80px] min-h-[80px] max-h-[80px] shrink-0 px-6 border-b-2 border-black dark:border-white cursor-pointer box-border overflow-hidden bg-[#A3E635] dark:bg-[#0B1120]"
+          className="flex items-center h-[80px] min-h-[80px] max-h-[80px] shrink-0 px-6 border-b-2 border-slate-900 dark:border-slate-700 cursor-pointer box-border overflow-hidden bg-emerald-400 dark:bg-slate-950 transition-colors"
           onClick={() => {
-            // Kalau di laptop, klik logo buat ngecilin/gedein sidebar
             if (window.innerWidth >= 768) setIsSidebarOpen(!isSidebarOpen);
           }}
         >
-          <div className="font-display-lg text-[24px] font-black uppercase text-black dark:text-white tracking-tighter select-none">
+          <div className="font-display-lg text-[24px] font-black uppercase text-slate-900 dark:text-white tracking-tighter select-none">
             {isSidebarOpen ? "Arbitask." : "A."}
           </div>
         </div>
 
-        <nav className="flex-1 flex flex-col gap-3 px-4 mt-6 overflow-y-auto overflow-x-hidden">
+        <nav className="flex-1 flex flex-col gap-3 px-4 mt-6 overflow-y-auto overflow-x-hidden hide-scrollbar">
           <Link
             href="/"
             className={`flex items-center gap-4 transition-all px-4 py-3 border-2 ${
               pathname === "/"
-                ? "text-black dark:text-white bg-[#93C5FD] dark:bg-slate-800 font-black border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] md:translate-x-1"
-                : "text-slate-700 dark:text-slate-400 border-transparent hover:border-black dark:hover:border-white hover:bg-white dark:hover:bg-slate-900 font-bold"
+                ? "text-slate-900 dark:text-white bg-blue-300 dark:bg-sky-800 font-black border-slate-900 dark:border-slate-700 shadow-brutal dark:shadow-brutal-dark md:translate-x-1"
+                : "text-slate-600 dark:text-slate-400 border-transparent hover:border-slate-900 dark:hover:border-slate-700 hover:bg-white dark:hover:bg-slate-900 font-bold"
             }`}
           >
             <span className="material-symbols-outlined text-xl font-black">
@@ -80,9 +76,9 @@ export default function Sidebar() {
           <Link
             href="/katalog"
             className={`flex items-center gap-4 transition-all px-4 py-3 border-2 ${
-              pathname === "/katalog"
-                ? "text-black dark:text-white bg-[#93C5FD] dark:bg-slate-800 font-black border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] md:translate-x-1"
-                : "text-slate-700 dark:text-slate-400 border-transparent hover:border-black dark:hover:border-white hover:bg-white dark:hover:bg-slate-900 font-bold"
+              pathname.startsWith("/katalog")
+                ? "text-slate-900 dark:text-white bg-blue-300 dark:bg-sky-800 font-black border-slate-900 dark:border-slate-700 shadow-brutal dark:shadow-brutal-dark md:translate-x-1"
+                : "text-slate-600 dark:text-slate-400 border-transparent hover:border-slate-900 dark:hover:border-slate-700 hover:bg-white dark:hover:bg-slate-900 font-bold"
             }`}
           >
             <span className="material-symbols-outlined text-xl font-black">
@@ -98,9 +94,9 @@ export default function Sidebar() {
           <Link
             href="/tracking"
             className={`flex items-center gap-4 transition-all px-4 py-3 border-2 ${
-              pathname === "/tracking"
-                ? "text-black dark:text-white bg-[#93C5FD] dark:bg-slate-800 font-black border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] md:translate-x-1"
-                : "text-slate-700 dark:text-slate-400 border-transparent hover:border-black dark:hover:border-white hover:bg-white dark:hover:bg-slate-900 font-bold"
+              pathname.startsWith("/tracking")
+                ? "text-slate-900 dark:text-white bg-blue-300 dark:bg-sky-800 font-black border-slate-900 dark:border-slate-700 shadow-brutal dark:shadow-brutal-dark md:translate-x-1"
+                : "text-slate-600 dark:text-slate-400 border-transparent hover:border-slate-900 dark:hover:border-slate-700 hover:bg-white dark:hover:bg-slate-900 font-bold"
             }`}
           >
             <span className="material-symbols-outlined text-xl font-black">
@@ -117,8 +113,8 @@ export default function Sidebar() {
             href="/logs"
             className={`flex items-center gap-4 transition-all px-4 py-3 border-2 ${
               pathname === "/logs"
-                ? "text-black dark:text-white bg-[#93C5FD] dark:bg-slate-800 font-black border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] md:translate-x-1"
-                : "text-slate-700 dark:text-slate-400 border-transparent hover:border-black dark:hover:border-white hover:bg-white dark:hover:bg-slate-900 font-bold"
+                ? "text-slate-900 dark:text-white bg-blue-300 dark:bg-sky-800 font-black border-slate-900 dark:border-slate-700 shadow-brutal dark:shadow-brutal-dark md:translate-x-1"
+                : "text-slate-600 dark:text-slate-400 border-transparent hover:border-slate-900 dark:hover:border-slate-700 hover:bg-white dark:hover:bg-slate-900 font-bold"
             }`}
           >
             <span className="material-symbols-outlined text-xl font-black">

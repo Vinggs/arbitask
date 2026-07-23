@@ -37,7 +37,6 @@ export default function OfferRow({
 
   const combinedProvider = `${offer.platform} - ${offer.offerwall}`;
 
-  // ✅ UPDATE: Fungsi dinamis untuk format USD (2 sampai 4 digit desimal)
   const formatUSD = (value: number) => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
@@ -50,12 +49,12 @@ export default function OfferRow({
   return (
     <tr
       onClick={() => setIsModalOpen(true)}
-      className="hover:bg-[#FCD34D] dark:hover:bg-slate-800 transition-colors cursor-pointer group border-b-2 border-black dark:border-white border-dashed last:border-b-0"
+      className="hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-colors cursor-pointer group border-b-2 border-slate-900 dark:border-slate-700 border-dashed last:border-b-0"
     >
-      <td className="p-4 border-r-2 border-black dark:border-white border-dashed">
+      <td className="p-4 border-r-2 border-slate-900 dark:border-slate-700 border-dashed">
         <div className="flex items-center gap-4">
           <div
-            className={`relative w-12 h-12 bg-white border-2 border-black dark:border-white flex items-center justify-center overflow-hidden flex-shrink-0 ${
+            className={`relative w-12 h-12 bg-white border-2 border-slate-900 dark:border-slate-700 flex items-center justify-center overflow-hidden flex-shrink-0 ${
               taskStatus === "Dropped" ? "grayscale opacity-70" : ""
             }`}
           >
@@ -71,8 +70,8 @@ export default function OfferRow({
             <div
               className={`font-black uppercase text-base transition-colors ${
                 taskStatus === "Dropped"
-                  ? "text-slate-500"
-                  : "text-black dark:text-white group-hover:underline"
+                  ? "text-slate-500 dark:text-slate-500"
+                  : "text-slate-900 dark:text-white group-hover:underline"
               }`}
             >
               {offer.gameName}
@@ -84,28 +83,27 @@ export default function OfferRow({
         </div>
       </td>
 
-      <td className="p-4 border-r-2 border-black dark:border-white border-dashed">
+      <td className="p-4 border-r-2 border-slate-900 dark:border-slate-700 border-dashed">
         <div className="flex flex-col gap-1 items-start">
-          <span className="px-2 py-0.5 bg-black dark:bg-white text-[10px] font-black uppercase text-white dark:text-black inline-block">
+          <span className="px-2 py-0.5 bg-slate-900 dark:bg-slate-200 text-[10px] font-black uppercase text-slate-100 dark:text-slate-900 inline-block">
             {offer.platform}
           </span>
-          <span className="px-2 py-1 bg-white dark:bg-slate-800 border-2 border-black dark:border-white text-xs font-black uppercase text-black dark:text-white inline-block shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]">
+          <span className="px-2 py-1 bg-white dark:bg-slate-800 border-2 border-slate-900 dark:border-slate-700 text-xs font-black uppercase text-slate-900 dark:text-white inline-block shadow-brutal-sm dark:shadow-brutal-dark-sm">
             {offer.offerwall}
           </span>
         </div>
       </td>
 
-      <td className="p-4 text-sm text-black dark:text-white font-black border-r-2 border-black dark:border-white border-dashed">
-        {/* ✅ UPDATE: Paksa locale en-US biar server & client sama persis */}
+      <td className="p-4 text-sm text-slate-900 dark:text-white font-black border-r-2 border-slate-900 dark:border-slate-700 border-dashed">
         {offer.rawCoins.toLocaleString("en-US")}
       </td>
 
-      <td className="p-4 border-r-2 border-black dark:border-white border-dashed">
-        <div className="font-black text-[#059669] dark:text-green-400 text-lg">
+      <td className="p-4 border-r-2 border-slate-900 dark:border-slate-700 border-dashed">
+        <div className="font-black text-emerald-600 dark:text-teal-400 text-lg">
           {formatUSD(offer.usdValue)}
         </div>
         {offer.isHighest && (
-          <span className="text-[10px] bg-[#A3E635] text-black border-2 border-black px-2 py-0.5 inline-flex items-center gap-1 mt-1 font-black uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+          <span className="text-[10px] bg-emerald-400 dark:bg-teal-600 text-slate-900 dark:text-white border-2 border-slate-900 dark:border-slate-700 px-2 py-0.5 inline-flex items-center gap-1 mt-1 font-black uppercase shadow-brutal-sm dark:shadow-brutal-dark-sm">
             Highest{" "}
             <span className="material-symbols-outlined text-[12px] font-black">
               local_fire_department
@@ -119,12 +117,12 @@ export default function OfferRow({
           <button
             disabled
             onClick={(e) => e.stopPropagation()}
-            className={`px-4 py-2 border-2 border-black dark:border-white font-black uppercase text-xs inline-flex items-center gap-1.5 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] cursor-not-allowed ${
+            className={`px-4 py-2 border-2 border-slate-900 dark:border-slate-700 font-black uppercase text-xs inline-flex items-center gap-1.5 shadow-brutal-sm dark:shadow-brutal-dark-sm cursor-not-allowed ${
               taskStatus === "Dropped"
-                ? "bg-[#FCA5A5] text-black"
+                ? "bg-red-400 dark:bg-rose-800 text-slate-900 dark:text-white"
                 : taskStatus === "Completed"
-                  ? "bg-[#A3E635] text-black"
-                  : "bg-white dark:bg-slate-700 text-black dark:text-white"
+                  ? "bg-emerald-400 dark:bg-teal-700 text-slate-900 dark:text-white"
+                  : "bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
             }`}
           >
             {taskStatus === "Dropped"
@@ -139,13 +137,12 @@ export default function OfferRow({
               e.stopPropagation();
               setIsModalOpen(true);
             }}
-            className="bg-black dark:bg-white text-white dark:text-black border-2 border-black dark:border-white px-5 py-2 text-sm font-black uppercase hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] transition-all flex items-center justify-center gap-1 w-full max-w-[120px] ml-auto"
+            className="bg-slate-900 dark:bg-slate-200 text-slate-100 dark:text-slate-900 border-2 border-slate-900 dark:border-slate-700 px-5 py-2 text-sm font-black uppercase hover:-translate-y-1 hover:shadow-brutal dark:hover:shadow-brutal-dark transition-all flex items-center justify-center gap-1 w-full max-w-[120px] ml-auto"
           >
             Track
           </button>
         )}
 
-        {/* MODAL NEO-BRUTALISM */}
         {isModalOpen && (
           <div
             className="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm"
@@ -155,23 +152,23 @@ export default function OfferRow({
             }}
           >
             <div
-              className="bg-white dark:bg-slate-900 border-4 border-black dark:border-white w-full max-w-md shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] dark:shadow-[12px_12px_0px_0px_rgba(255,255,255,1)] flex flex-col text-left"
+              className="bg-white dark:bg-slate-950 border-4 border-slate-900 dark:border-slate-700 w-full max-w-md shadow-brutal-lg dark:shadow-brutal-dark-lg flex flex-col text-left"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="p-6 border-b-4 border-black dark:border-white flex items-start justify-between bg-[#FCD34D] dark:bg-slate-800">
+              <div className="p-6 border-b-4 border-slate-900 dark:border-slate-700 flex items-start justify-between bg-amber-300 dark:bg-slate-800">
                 <div className="flex items-center gap-4">
                   <Image
                     src={displayImage}
                     alt={offer.gameName}
                     width={64}
                     height={64}
-                    className="w-16 h-16 object-cover border-4 border-black dark:border-white bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]"
+                    className="w-16 h-16 object-cover border-4 border-slate-900 dark:border-slate-700 bg-white shadow-brutal dark:shadow-brutal-dark"
                   />
                   <div>
-                    <h3 className="font-black text-black dark:text-white text-2xl uppercase tracking-tighter">
+                    <h3 className="font-black text-slate-900 dark:text-white text-2xl uppercase tracking-tighter">
                       {offer.gameName}
                     </h3>
-                    <span className="text-[10px] font-black text-black dark:text-white uppercase tracking-widest border-2 border-black dark:border-white px-2 py-0.5 bg-white dark:bg-slate-700 mt-1 inline-block">
+                    <span className="text-[10px] font-black text-slate-900 dark:text-white uppercase tracking-widest border-2 border-slate-900 dark:border-slate-700 px-2 py-0.5 bg-white dark:bg-slate-700 mt-1 inline-block">
                       {combinedProvider}
                     </span>
                   </div>
@@ -181,7 +178,7 @@ export default function OfferRow({
                     e.stopPropagation();
                     setIsModalOpen(false);
                   }}
-                  className="text-black dark:text-white border-2 border-black dark:border-white w-8 h-8 flex items-center justify-center bg-white dark:bg-slate-700 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors"
+                  className="text-slate-900 dark:text-white border-2 border-slate-900 dark:border-slate-700 w-8 h-8 flex items-center justify-center bg-white dark:bg-slate-700 hover:bg-slate-900 hover:text-white dark:hover:bg-white dark:hover:text-slate-900 transition-colors shadow-brutal-sm dark:shadow-brutal-dark-sm"
                 >
                   <span className="material-symbols-outlined text-[20px] font-black">
                     close
@@ -189,15 +186,15 @@ export default function OfferRow({
                 </button>
               </div>
 
-              <div className="p-6 bg-[#F4F5F0] dark:bg-slate-900 flex-1 max-h-[50vh] overflow-y-auto">
-                <div className="flex items-center gap-2 text-black dark:text-white text-xs font-black uppercase mb-5 bg-[#A3E635] dark:bg-green-600 w-fit px-3 py-1.5 border-2 border-black dark:border-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]">
+              <div className="p-6 bg-slate-50 dark:bg-slate-900 flex-1 max-h-[50vh] overflow-y-auto hide-scrollbar">
+                <div className="flex items-center gap-2 text-slate-900 dark:text-white text-xs font-black uppercase mb-5 bg-emerald-400 dark:bg-teal-600 w-fit px-3 py-1.5 border-2 border-slate-900 dark:border-slate-700 shadow-brutal-sm dark:shadow-brutal-dark-sm">
                   <span className="material-symbols-outlined text-[16px]">
                     schedule
                   </span>{" "}
                   30 Days Limit
                 </div>
 
-                <h4 className="text-[12px] font-black text-black dark:text-slate-300 uppercase tracking-widest mb-3">
+                <h4 className="text-[12px] font-black text-slate-900 dark:text-slate-300 uppercase tracking-widest mb-3">
                   Milestones
                 </h4>
 
@@ -210,12 +207,12 @@ export default function OfferRow({
                     offer.milestones.map((m) => (
                       <div
                         key={m.id}
-                        className="bg-white dark:bg-slate-800 border-2 border-black dark:border-white p-4 flex justify-between items-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]"
+                        className="bg-white dark:bg-slate-800 border-2 border-slate-900 dark:border-slate-700 p-4 flex justify-between items-center shadow-brutal dark:shadow-brutal-dark"
                       >
-                        <span className="text-sm font-black uppercase text-black dark:text-white">
+                        <span className="text-sm font-black uppercase text-slate-900 dark:text-white">
                           {m.description}
                         </span>
-                        <span className="text-sm font-black text-[#059669] dark:text-green-400">
+                        <span className="text-sm font-black text-emerald-600 dark:text-teal-400">
                           {formatUSD(m.reward)}
                         </span>
                       </div>
@@ -224,13 +221,13 @@ export default function OfferRow({
                 </div>
               </div>
 
-              <div className="p-6 border-t-4 border-black dark:border-white bg-white dark:bg-slate-800">
+              <div className="p-6 border-t-4 border-slate-900 dark:border-slate-700 bg-white dark:bg-slate-800">
                 {taskStatus ? (
                   <button
                     disabled
-                    className={`w-full font-black uppercase py-4 border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] cursor-not-allowed ${
+                    className={`w-full font-black uppercase py-4 border-2 border-slate-900 dark:border-slate-700 shadow-brutal dark:shadow-brutal-dark cursor-not-allowed ${
                       taskStatus === "Dropped"
-                        ? "bg-[#FCA5A5] text-black"
+                        ? "bg-red-400 dark:bg-rose-800 text-slate-900 dark:text-white"
                         : "bg-slate-200 dark:bg-slate-700 text-slate-500"
                     }`}
                   >
@@ -284,7 +281,7 @@ export default function OfferRow({
 
                     <button
                       type="submit"
-                      className="w-full bg-[#93C5FD] dark:bg-blue-600 text-black dark:text-white font-black uppercase py-4 border-2 border-black dark:border-white hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] transition-all flex justify-center items-center gap-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]"
+                      className="w-full bg-blue-300 dark:bg-sky-600 text-slate-900 dark:text-white font-black uppercase py-4 border-2 border-slate-900 dark:border-slate-700 hover:-translate-y-1 hover:shadow-brutal-lg dark:hover:shadow-brutal-dark-lg transition-all flex justify-center items-center gap-2 shadow-brutal dark:shadow-brutal-dark"
                     >
                       Start Tracking{" "}
                       <span className="material-symbols-outlined text-[18px] font-black">
