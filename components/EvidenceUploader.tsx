@@ -2,7 +2,7 @@
 
 import { useState, useRef } from "react";
 import { createClient } from "@supabase/supabase-js";
-import { verifyMilestone } from "@/app/actions";
+import { verifyMilestone } from "@/app/[locale]/actions";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,

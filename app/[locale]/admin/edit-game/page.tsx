@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import AdminOfferRow from "@/components/AdminOfferRow";
-import { updateOfferAction } from "@/app/actions";
+import { updateOfferAction } from "@/app/[locale]/actions";
 
 export default async function AdminEditGamePage() {
   const catalogOffers = await prisma.catalogOffer.findMany({

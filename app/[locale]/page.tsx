@@ -1,22 +1,34 @@
-import Sidebar from "../components/Sidebar";
-import Header from "../components/Header";
+import Sidebar from "../../components/Sidebar";
+import Header from "../../components/Header";
 import { prisma } from "@/lib/prisma";
-import DashboardFilters from "../components/DashboardFilters";
-import OfferRow from "../components/OfferRow";
+import DashboardFilters from "../../components/DashboardFilters";
+import OfferRow from "../../components/OfferRow";
 import { getServerSession } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]/route";
+import { authOptions } from "../api/auth/[...nextauth]/route";
+import { getTranslations } from "next-intl/server";
 
 export default async function DashboardPage({
+  params,
   searchParams,
 }: {
+  params: Promise<{ locale: string }>; // <-- Tambahkan parameter ini
   searchParams: Promise<{ category?: string; q?: string }>;
 }) {
   const session = await getServerSession(authOptions);
   const userEmail = session?.user?.email || "";
 
-  const params = await searchParams;
-  const currentCategory = params.category;
-  const searchQuery = params.q;
+  // Await parameter routing (locale) dan search/query parameter
+  const resolvedParams = await params;
+  const sParams = await searchParams;
+
+  const currentCategory = sParams.category;
+  const searchQuery = sParams.q;
+
+  // Inisialisasi translasi dengan mendefinisikan namespace dan locale secara eksplisit
+  const t = await getTranslations({
+    namespace: "Dashboard",
+    locale: resolvedParams.locale,
+  });
 
   const offers = await prisma.catalogOffer.findMany({
     where: {
@@ -50,14 +62,14 @@ export default async function DashboardPage({
     <div className="flex min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
       <Sidebar />
       <div className="flex-1 flex flex-col min-w-0">
-        <Header title="Overview" />
+        <Header title={t("overview")} />
 
         <main className="flex-1 p-3 md:p-8 max-w-7xl mx-auto w-full">
           {/* STAT CARDS */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6 mb-6 md:mb-8">
             <div className="p-4 md:p-6 bg-blue-300 dark:bg-sky-800 rounded-md border-2 border-slate-900 dark:border-slate-700 shadow-brutal dark:shadow-brutal-dark transition-colors">
               <p className="text-[10px] md:text-sm font-black uppercase tracking-widest text-slate-900 dark:text-slate-200">
-                Total Task Terlacak
+                {t("totalTrackedTasks")}
               </p>
               <p className="text-3xl md:text-5xl font-black mt-1 md:mt-0 text-slate-900 dark:text-white">
                 {totalTasks}
@@ -66,7 +78,7 @@ export default async function DashboardPage({
 
             <div className="p-4 md:p-6 bg-emerald-400 dark:bg-teal-700 rounded-md border-2 border-slate-900 dark:border-slate-700 shadow-brutal dark:shadow-brutal-dark transition-colors">
               <p className="text-[10px] md:text-sm font-black uppercase tracking-widest text-slate-900 dark:text-slate-200">
-                Offerwall Tersinkronisasi
+                {t("syncedOfferwalls")}
               </p>
               <p className="text-3xl md:text-5xl font-black mt-1 md:mt-0 text-slate-900 dark:text-white">
                 {offers.length}
@@ -75,7 +87,7 @@ export default async function DashboardPage({
 
             <div className="p-4 md:p-6 bg-white dark:bg-slate-900 rounded-md border-2 border-slate-900 dark:border-slate-700 shadow-brutal dark:shadow-brutal-dark transition-colors">
               <p className="text-[10px] md:text-sm font-black uppercase tracking-widest text-slate-900 dark:text-slate-400">
-                Peluang Arbitrase Terbaik
+                {t("bestArbitrage")}
               </p>
               <p className="text-3xl md:text-5xl font-black text-emerald-600 dark:text-teal-400 mt-1 md:mt-0">
                 $
@@ -95,19 +107,19 @@ export default async function DashboardPage({
               <thead>
                 <tr className="border-b-2 border-slate-900 dark:border-slate-700 text-[10px] md:text-xs uppercase font-black bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-200">
                   <th className="p-3 md:p-4 border-r-2 border-slate-900 dark:border-slate-700 whitespace-nowrap">
-                    Task Name
+                    {t("tableTaskName")}
                   </th>
                   <th className="p-3 md:p-4 border-r-2 border-slate-900 dark:border-slate-700 whitespace-nowrap">
-                    Platform / Provider
+                    {t("tablePlatform")}
                   </th>
                   <th className="p-3 md:p-4 border-r-2 border-slate-900 dark:border-slate-700 whitespace-nowrap">
-                    Raw Coins
+                    {t("tableRawCoins")}
                   </th>
                   <th className="p-3 md:p-4 border-r-2 border-slate-900 dark:border-slate-700 whitespace-nowrap">
-                    USD Value
+                    {t("tableUsdValue")}
                   </th>
                   <th className="p-3 md:p-4 text-center whitespace-nowrap">
-                    Action
+                    {t("tableAction")}
                   </th>
                 </tr>
               </thead>
@@ -118,7 +130,7 @@ export default async function DashboardPage({
                       colSpan={5}
                       className="p-8 text-center text-sm font-bold uppercase text-slate-600 dark:text-slate-400"
                     >
-                      Tidak ada tugas ditemukan.
+                      {t("noTasksFound")}
                     </td>
                   </tr>
                 ) : (

@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { autoTrackTask } from "@/app/actions";
+import { autoTrackTask } from "@/app/[locale]/actions";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useTranslations, useLocale } from "next-intl";
+import { translateDynamicText } from "./translateDynamic"; // Memanggil kamus Regex kita
 
 export default function CatalogGrid({
   offers,
@@ -18,6 +20,9 @@ export default function CatalogGrid({
   const router = useRouter();
   const userEmail = session?.user?.email || "";
   const [selectedOffer, setSelectedOffer] = useState<any | null>(null);
+
+  const t = useTranslations("CatalogGrid");
+  const locale = useLocale();
 
   return (
     <>
@@ -35,6 +40,12 @@ export default function CatalogGrid({
               t.offerwall === combinedProvider,
           );
 
+          // Eksekusi fungsi Regex untuk teks requirement di Grid
+          const translatedRequirement = translateDynamicText(
+            offer.requirement,
+            locale,
+          );
+
           return (
             <article
               key={offer.id}
@@ -49,7 +60,7 @@ export default function CatalogGrid({
                   <span className="material-symbols-outlined text-[12px] font-black">
                     local_fire_department
                   </span>{" "}
-                  Hot
+                  {t("hot")}
                 </div>
               )}
 
@@ -79,20 +90,22 @@ export default function CatalogGrid({
                 </h3>
                 <div className="flex-1">
                   <p className="text-[10px] md:text-xs font-bold text-slate-700 dark:text-slate-400 line-clamp-2 mt-2 uppercase">
-                    {offer.requirement}
+                    {translatedRequirement}
                   </p>
                 </div>
 
                 <div className="mt-2 mb-2">
                   <p className="text-[9px] md:text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">
-                    Reward: {offer.rawCoins.toLocaleString("en-US")} Coins
+                    {t("reward", {
+                      coins: offer.rawCoins.toLocaleString("en-US"),
+                    })}
                   </p>
                 </div>
 
                 <div className="mt-2 pt-4 border-t-2 border-slate-900 dark:border-slate-700 border-dashed flex items-center justify-between">
                   <div>
                     <p className="text-[9px] md:text-[10px] font-black text-slate-900 dark:text-slate-300 uppercase tracking-widest mb-0.5">
-                      Yield Value
+                      {t("yieldValue")}
                     </p>
                     <p className="text-xl md:text-2xl font-black text-emerald-600 dark:text-teal-400">
                       ${offer.usdValue.toFixed(2)}
@@ -110,17 +123,17 @@ export default function CatalogGrid({
                       }`}
                     >
                       {existingTask.status === "Dropped"
-                        ? "Abandoned"
+                        ? t("statusAbandoned")
                         : existingTask.status === "Completed"
-                          ? "Completed"
-                          : "Tracking"}
+                          ? t("statusCompleted")
+                          : t("statusTracking")}
                     </button>
                   ) : (
                     <button
                       onClick={() => setSelectedOffer(offer)}
                       className="h-10 px-4 bg-slate-900 dark:bg-slate-200 text-slate-100 dark:text-slate-900 border-2 border-slate-900 dark:border-slate-700 font-black uppercase text-xs hover:-translate-y-1 hover:shadow-brutal dark:hover:shadow-brutal-dark transition-all flex items-center gap-1 shadow-brutal-sm dark:shadow-brutal-dark-sm"
                     >
-                      Track
+                      {t("trackBtn")}
                     </button>
                   )}
                 </div>
@@ -174,33 +187,41 @@ export default function CatalogGrid({
                 <span className="material-symbols-outlined text-[14px] md:text-[16px]">
                   schedule
                 </span>{" "}
-                30 Days Limit
+                {t("daysLimit")}
               </div>
 
               <h4 className="text-[10px] md:text-[12px] font-black text-slate-900 dark:text-slate-300 uppercase tracking-widest mb-3">
-                Milestones
+                {t("milestones")}
               </h4>
 
               <div className="space-y-3">
                 {selectedOffer.milestones &&
                 selectedOffer.milestones.length > 0 ? (
-                  selectedOffer.milestones.map((m: any, idx: number) => (
-                    <div
-                      key={idx}
-                      className="bg-white dark:bg-slate-800 border-2 border-slate-900 dark:border-slate-700 p-3 md:p-4 flex justify-between items-center shadow-brutal dark:shadow-brutal-dark gap-3"
-                    >
-                      <span className="text-xs md:text-sm font-black uppercase text-slate-900 dark:text-white line-clamp-2">
-                        {m.description}
-                      </span>
-                      <span className="text-xs md:text-sm font-black text-emerald-600 dark:text-teal-400 whitespace-nowrap">
-                        ${m.reward.toFixed(2)}
-                      </span>
-                    </div>
-                  ))
+                  selectedOffer.milestones.map((m: any, idx: number) => {
+                    // Eksekusi fungsi Regex untuk teks milestone di Modal
+                    const translatedMilestone = translateDynamicText(
+                      m.description,
+                      locale,
+                    );
+
+                    return (
+                      <div
+                        key={idx}
+                        className="bg-white dark:bg-slate-800 border-2 border-slate-900 dark:border-slate-700 p-3 md:p-4 flex justify-between items-center shadow-brutal dark:shadow-brutal-dark gap-3"
+                      >
+                        <span className="text-xs md:text-sm font-black uppercase text-slate-900 dark:text-white line-clamp-2">
+                          {translatedMilestone}
+                        </span>
+                        <span className="text-xs md:text-sm font-black text-emerald-600 dark:text-teal-400 whitespace-nowrap">
+                          ${m.reward.toFixed(2)}
+                        </span>
+                      </div>
+                    );
+                  })
                 ) : (
                   <div className="bg-white dark:bg-slate-800 border-2 border-slate-900 dark:border-slate-700 p-3 md:p-4 flex justify-between items-center shadow-brutal dark:shadow-brutal-dark gap-3">
                     <span className="text-xs md:text-sm font-black uppercase text-slate-900 dark:text-white line-clamp-2">
-                      {selectedOffer.requirement}
+                      {translateDynamicText(selectedOffer.requirement, locale)}
                     </span>
                     <span className="text-xs md:text-sm font-black text-emerald-600 dark:text-teal-400 whitespace-nowrap">
                       ${selectedOffer.usdValue.toFixed(2)}
@@ -253,7 +274,7 @@ export default function CatalogGrid({
                   type="submit"
                   className="w-full bg-emerald-400 dark:bg-teal-600 text-slate-900 dark:text-white font-black uppercase py-3 md:py-4 border-2 border-slate-900 dark:border-slate-700 hover:-translate-y-1 hover:shadow-brutal-lg dark:hover:shadow-brutal-dark-lg transition-all flex justify-center items-center gap-2 shadow-brutal dark:shadow-brutal-dark"
                 >
-                  Start Tracking{" "}
+                  {t("startTracking")}{" "}
                   <span className="material-symbols-outlined text-[16px] md:text-[18px] font-black">
                     arrow_forward
                   </span>

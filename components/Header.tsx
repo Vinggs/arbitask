@@ -1,10 +1,17 @@
 import AuthButton from "./AuthButton";
 import HeaderBalance from "./HeaderBalance";
 import HeaderNotification from "./HeaderNotification";
+import { useLocale } from "next-intl";
 
 export default function Header({ title }: { title: string }) {
+  // Ambil locale yang sedang aktif
+  const locale = useLocale();
+
+  // Tentukan format bahasa tanggal berdasarkan locale
+  const dateLocale = locale === "id" ? "id-ID" : "en-US";
+
   const today = new Date();
-  const formattedDate = today.toLocaleDateString("id-ID", {
+  const formattedDate = today.toLocaleDateString(dateLocale, {
     weekday: "long",
     year: "numeric",
     month: "long",

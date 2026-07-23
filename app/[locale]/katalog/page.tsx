@@ -2,8 +2,11 @@ import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { getTranslations } from "next-intl/server";
 
 export default async function KatalogPage() {
+  const t = await getTranslations("Katalog");
+
   const revuCount = await prisma.catalogOffer.count({
     where: { offerwall: { equals: "RevU", mode: "insensitive" } },
   });
@@ -17,18 +20,16 @@ export default async function KatalogPage() {
       <Sidebar />
 
       <div className="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto">
-        <Header title="Katalog Offerwall" />
+        <Header title={t("title")} />
 
         <main className="flex-1 p-4 md:p-margin-desktop max-w-container-max mx-auto w-full">
           <div className="mb-8 flex flex-col md:flex-row md:justify-between md:items-end gap-4">
             <div>
               <h2 className="text-3xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight mb-2 uppercase">
-                Available Offerwalls
+                {t("availableOfferwalls")}
               </h2>
               <p className="text-xs md:text-sm font-bold text-slate-600 dark:text-slate-400 max-w-2xl uppercase tracking-wider">
-                Browse and compare tasks from top-tier provider networks.
-                Discover high-yield opportunities across different platforms to
-                maximize your arbitrage margins.
+                {t("subtitle")}
               </p>
             </div>
 
@@ -39,7 +40,7 @@ export default async function KatalogPage() {
                 </span>
                 <input
                   type="text"
-                  placeholder="Search offerwalls..."
+                  placeholder={t("searchPlaceholder")}
                   className="w-full md:w-64 pl-10 pr-4 py-3 bg-white dark:bg-slate-900 border-2 border-slate-900 dark:border-slate-700 rounded-md text-sm font-bold text-slate-900 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none shadow-brutal dark:shadow-brutal-dark focus:-translate-y-1 focus:shadow-brutal-lg dark:focus:shadow-brutal-dark-lg transition-all"
                 />
               </div>
@@ -57,18 +58,18 @@ export default async function KatalogPage() {
                     <span className="material-symbols-outlined text-[14px]">
                       link
                     </span>{" "}
-                    CONNECTED
+                    {t("connected")}
                   </span>
                 </div>
                 <h3 className="text-xl md:text-2xl font-black text-slate-900 dark:text-white mb-2 uppercase">
                   RevU
                 </h3>
                 <p className="text-xs md:text-sm font-bold text-slate-800 dark:text-slate-200 mb-6 flex-1 leading-relaxed">
-                  Premium surveys and high-paying game tracking tasks.
+                  {t("revuDesc")}
                 </p>
                 <div className="flex items-center justify-between pt-4 border-t-2 border-slate-900 dark:border-slate-700">
                   <span className="text-[10px] md:text-[12px] font-black text-slate-900 dark:text-white uppercase tracking-wider">
-                    {revuCount} ACTIVE TASKS
+                    {revuCount} {t("activeTasks")}
                   </span>
                   <span className="material-symbols-outlined text-slate-900 dark:text-white group-hover:translate-x-1 transition-all">
                     arrow_forward
@@ -87,18 +88,18 @@ export default async function KatalogPage() {
                     <span className="material-symbols-outlined text-[14px]">
                       link
                     </span>{" "}
-                    CONNECTED
+                    {t("connected")}
                   </span>
                 </div>
                 <h3 className="text-xl md:text-2xl font-black text-slate-900 dark:text-white mb-2 uppercase">
                   ToroX
                 </h3>
                 <p className="text-xs md:text-sm font-bold text-slate-800 dark:text-slate-200 mb-6 flex-1 leading-relaxed">
-                  Fast payouts with a focus on mobile app installations.
+                  {t("toroxDesc")}
                 </p>
                 <div className="flex items-center justify-between pt-4 border-t-2 border-slate-900 dark:border-slate-700">
                   <span className="text-[10px] md:text-[12px] font-black text-slate-900 dark:text-white uppercase tracking-wider">
-                    {toroxCount} ACTIVE TASKS
+                    {toroxCount} {t("activeTasks")}
                   </span>
                   <span className="material-symbols-outlined text-slate-900 dark:text-white group-hover:translate-x-1 transition-all">
                     arrow_forward
@@ -113,18 +114,18 @@ export default async function KatalogPage() {
                   AG
                 </div>
                 <span className="bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-black text-[10px] px-2.5 py-1 rounded-sm border-2 border-slate-900 dark:border-slate-700 uppercase tracking-wider">
-                  DISCONNECTED
+                  {t("disconnected")}
                 </span>
               </div>
               <h3 className="text-xl md:text-2xl font-black text-slate-400 dark:text-slate-500 mb-2 uppercase">
                 AdGem
               </h3>
               <p className="text-xs md:text-sm font-bold text-slate-400 dark:text-slate-600 mb-6 flex-1 leading-relaxed">
-                Rewarding engagement with dynamic task walls.
+                {t("adgemDesc")}
               </p>
               <div className="flex items-center justify-between pt-4 border-t-2 border-slate-900/20 dark:border-slate-700/50">
                 <button className="text-slate-900 dark:text-slate-300 font-black text-[10px] md:text-[12px] uppercase tracking-wider w-full text-left flex items-center justify-between hover:translate-x-1 transition-transform">
-                  CONNECT API{" "}
+                  {t("connectApi")}{" "}
                   <span className="material-symbols-outlined text-[16px] md:text-[18px]">
                     add
                   </span>

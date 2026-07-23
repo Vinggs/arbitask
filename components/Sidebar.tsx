@@ -2,10 +2,12 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 export default function Sidebar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const pathname = usePathname();
+  const t = useTranslations("Sidebar");
 
   useEffect(() => {
     if (window.innerWidth < 768) {
@@ -58,7 +60,7 @@ export default function Sidebar() {
           <Link
             href="/"
             className={`flex items-center gap-4 transition-all px-4 py-3 border-2 ${
-              pathname === "/"
+              pathname === "/en" || pathname === "/id" || pathname === "/"
                 ? "text-slate-900 dark:text-white bg-blue-300 dark:bg-sky-800 font-black border-slate-900 dark:border-slate-700 shadow-brutal dark:shadow-brutal-dark md:translate-x-1"
                 : "text-slate-600 dark:text-slate-400 border-transparent hover:border-slate-900 dark:hover:border-slate-700 hover:bg-white dark:hover:bg-slate-900 font-bold"
             }`}
@@ -68,7 +70,7 @@ export default function Sidebar() {
             </span>
             {isSidebarOpen && (
               <span className="text-sm uppercase tracking-wider whitespace-nowrap">
-                Dashboard
+                {t("dashboard")}
               </span>
             )}
           </Link>
@@ -76,7 +78,7 @@ export default function Sidebar() {
           <Link
             href="/katalog"
             className={`flex items-center gap-4 transition-all px-4 py-3 border-2 ${
-              pathname.startsWith("/katalog")
+              pathname.includes("/katalog")
                 ? "text-slate-900 dark:text-white bg-blue-300 dark:bg-sky-800 font-black border-slate-900 dark:border-slate-700 shadow-brutal dark:shadow-brutal-dark md:translate-x-1"
                 : "text-slate-600 dark:text-slate-400 border-transparent hover:border-slate-900 dark:hover:border-slate-700 hover:bg-white dark:hover:bg-slate-900 font-bold"
             }`}
@@ -86,7 +88,7 @@ export default function Sidebar() {
             </span>
             {isSidebarOpen && (
               <span className="text-sm uppercase tracking-wider whitespace-nowrap">
-                Katalog
+                {t("catalog")}
               </span>
             )}
           </Link>
@@ -94,7 +96,7 @@ export default function Sidebar() {
           <Link
             href="/tracking"
             className={`flex items-center gap-4 transition-all px-4 py-3 border-2 ${
-              pathname.startsWith("/tracking")
+              pathname.includes("/tracking")
                 ? "text-slate-900 dark:text-white bg-blue-300 dark:bg-sky-800 font-black border-slate-900 dark:border-slate-700 shadow-brutal dark:shadow-brutal-dark md:translate-x-1"
                 : "text-slate-600 dark:text-slate-400 border-transparent hover:border-slate-900 dark:hover:border-slate-700 hover:bg-white dark:hover:bg-slate-900 font-bold"
             }`}
@@ -104,7 +106,7 @@ export default function Sidebar() {
             </span>
             {isSidebarOpen && (
               <span className="text-sm uppercase tracking-wider whitespace-nowrap">
-                Tracking
+                {t("tracking")}
               </span>
             )}
           </Link>
@@ -112,7 +114,7 @@ export default function Sidebar() {
           <Link
             href="/logs"
             className={`flex items-center gap-4 transition-all px-4 py-3 border-2 ${
-              pathname === "/logs"
+              pathname.includes("/logs")
                 ? "text-slate-900 dark:text-white bg-blue-300 dark:bg-sky-800 font-black border-slate-900 dark:border-slate-700 shadow-brutal dark:shadow-brutal-dark md:translate-x-1"
                 : "text-slate-600 dark:text-slate-400 border-transparent hover:border-slate-900 dark:hover:border-slate-700 hover:bg-white dark:hover:bg-slate-900 font-bold"
             }`}
@@ -122,7 +124,7 @@ export default function Sidebar() {
             </span>
             {isSidebarOpen && (
               <span className="text-sm uppercase tracking-wider whitespace-nowrap">
-                History
+                {t("history")}
               </span>
             )}
           </Link>

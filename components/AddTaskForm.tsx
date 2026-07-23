@@ -1,13 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { addTask } from "@/app/actions";
+import { addTask } from "@/app/[locale]/actions";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 export default function AddTaskForm() {
   const { data: session } = useSession();
   const router = useRouter();
+  const t = useTranslations("AddTaskForm");
+
   const [isOpen, setIsOpen] = useState(false);
   const [milestones, setMilestones] = useState([
     { description: "", reward: "" },
@@ -40,7 +43,7 @@ export default function AddTaskForm() {
         <span className="material-symbols-outlined text-[18px] font-black">
           add
         </span>
-        New Manual Task
+        {t("btnNewTask")}
       </button>
 
       {isOpen && (
@@ -48,7 +51,7 @@ export default function AddTaskForm() {
           <div className="bg-slate-50 dark:bg-slate-950 border-4 border-slate-900 dark:border-slate-700 w-full max-w-md shadow-brutal-lg dark:shadow-brutal-dark-lg relative max-h-[90vh] flex flex-col transition-colors">
             <div className="p-4 md:p-6 border-b-4 border-slate-900 dark:border-slate-700 bg-emerald-400 dark:bg-teal-700 flex justify-between items-center transition-colors">
               <h3 className="text-xl md:text-2xl font-black text-slate-900 dark:text-white uppercase tracking-tighter">
-                Manual Tracking
+                {t("modalTitle")}
               </h3>
               <button
                 onClick={() => setIsOpen(false)}
@@ -88,11 +91,11 @@ export default function AddTaskForm() {
 
                 <div>
                   <label className="text-[10px] md:text-xs font-black text-slate-900 dark:text-white uppercase tracking-widest mb-1.5 block">
-                    Nama Game / Task
+                    {t("labelGame")}
                   </label>
                   <input
                     name="name"
-                    placeholder="ex: Raid Shadow Legends"
+                    placeholder={t("placeholderGame")}
                     className="w-full p-2.5 md:p-3 bg-slate-50 dark:bg-slate-950 border-2 border-slate-900 dark:border-slate-700 text-xs md:text-sm font-bold text-slate-900 dark:text-white focus:outline-none shadow-brutal-sm dark:shadow-brutal-dark-sm"
                     required
                   />
@@ -101,26 +104,26 @@ export default function AddTaskForm() {
                 <div className="flex flex-col sm:flex-row gap-4">
                   <div className="w-full sm:w-1/2">
                     <label className="text-[10px] md:text-xs font-black text-slate-900 dark:text-white uppercase tracking-widest mb-1.5 block">
-                      Platform
+                      {t("labelPlatform")}
                     </label>
                     <input
                       type="text"
                       value={platform}
                       onChange={(e) => setPlatform(e.target.value)}
-                      placeholder="ex: Swagbucks"
+                      placeholder={t("placeholderPlatform")}
                       className="w-full p-2.5 md:p-3 bg-slate-50 dark:bg-slate-950 border-2 border-slate-900 dark:border-slate-700 text-xs md:text-sm font-bold text-slate-900 dark:text-white focus:outline-none shadow-brutal-sm dark:shadow-brutal-dark-sm"
                       required
                     />
                   </div>
                   <div className="w-full sm:w-1/2">
                     <label className="text-[10px] md:text-xs font-black text-slate-900 dark:text-white uppercase tracking-widest mb-1.5 block">
-                      Provider
+                      {t("labelProvider")}
                     </label>
                     <input
                       type="text"
                       value={provider}
                       onChange={(e) => setProvider(e.target.value)}
-                      placeholder="ex: Torox"
+                      placeholder={t("placeholderProvider")}
                       className="w-full p-2.5 md:p-3 bg-slate-50 dark:bg-slate-950 border-2 border-slate-900 dark:border-slate-700 text-xs md:text-sm font-bold text-slate-900 dark:text-white focus:outline-none shadow-brutal-sm dark:shadow-brutal-dark-sm"
                       required
                     />
@@ -130,7 +133,7 @@ export default function AddTaskForm() {
                 <div className="flex flex-col sm:flex-row gap-4">
                   <div className="w-full sm:w-1/2">
                     <label className="text-[10px] md:text-xs font-black text-slate-900 dark:text-white uppercase tracking-widest mb-1.5 block">
-                      Target Total ($)
+                      {t("labelTarget")}
                     </label>
                     <input
                       name="targetValue"
@@ -143,7 +146,7 @@ export default function AddTaskForm() {
                   </div>
                   <div className="w-full sm:w-1/2">
                     <label className="text-[10px] md:text-xs font-black text-slate-900 dark:text-white uppercase tracking-widest mb-1.5 block">
-                      Deadline
+                      {t("labelDeadline")}
                     </label>
                     <input
                       name="deadline"
@@ -157,14 +160,14 @@ export default function AddTaskForm() {
                 <div className="mt-2 md:mt-4 border-t-4 border-slate-900 dark:border-slate-700 border-dashed pt-4 md:pt-5">
                   <div className="flex justify-between items-center mb-4">
                     <span className="text-xs md:text-sm font-black uppercase text-slate-900 dark:text-white">
-                      Target Tiers
+                      {t("targetTiers")}
                     </span>
                     <button
                       type="button"
                       onClick={addMilestone}
                       className="text-[10px] font-black uppercase bg-amber-300 dark:bg-amber-600 text-slate-900 dark:text-white border-2 border-slate-900 dark:border-slate-700 px-3 py-1 shadow-brutal-sm dark:shadow-brutal-dark-sm hover:-translate-y-px transition-all"
                     >
-                      + Add Tier
+                      {t("btnAddTier")}
                     </button>
                   </div>
 
@@ -175,7 +178,7 @@ export default function AddTaskForm() {
                         className="flex flex-wrap sm:flex-nowrap gap-2 items-center bg-slate-50 dark:bg-slate-800 p-2 border-2 border-slate-900 dark:border-slate-700 shadow-brutal-sm dark:shadow-brutal-dark-sm"
                       >
                         <input
-                          placeholder="Level 10"
+                          placeholder={t("placeholderTier")}
                           value={m.description}
                           onChange={(e) =>
                             updateMilestone(i, "description", e.target.value)
@@ -236,7 +239,7 @@ export default function AddTaskForm() {
                   type="submit"
                   className="w-full mt-4 bg-slate-900 dark:bg-slate-200 text-slate-100 dark:text-slate-900 font-black uppercase py-3 md:py-4 border-2 border-slate-900 dark:border-slate-700 hover:-translate-y-1 hover:shadow-brutal-lg dark:hover:shadow-brutal-dark-lg shadow-brutal dark:shadow-brutal-dark transition-all flex justify-center items-center gap-2"
                 >
-                  Start Tracking
+                  {t("btnStart")}
                   <span className="material-symbols-outlined text-[18px] font-black">
                     arrow_forward
                   </span>

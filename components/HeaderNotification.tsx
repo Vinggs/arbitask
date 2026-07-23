@@ -3,15 +3,19 @@
 import { useSession } from "next-auth/react";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { getUserNotifications } from "@/app/profile/actions";
+import { getUserNotifications } from "@/app/[locale]/profile/actions";
 import { formatDistanceToNow } from "date-fns";
-import { id } from "date-fns/locale";
+import { id, enUS } from "date-fns/locale";
+import { useTranslations, useLocale } from "next-intl";
 
 export default function HeaderNotification() {
   const { data: session } = useSession();
   const [notifications, setNotifications] = useState<any[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const t = useTranslations("HeaderNotification");
+  const locale = useLocale();
 
   useEffect(() => {
     if (session?.user?.email) {
@@ -42,7 +46,7 @@ export default function HeaderNotification() {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="relative p-2 bg-transparent border-2 border-transparent hover:border-slate-900 dark:hover:border-slate-700 text-slate-900 dark:text-white transition-all focus:outline-none"
-        title="Notifikasi"
+        title={t("title")}
       >
         <span className="material-symbols-outlined text-[24px] font-black">
           notifications
@@ -57,11 +61,11 @@ export default function HeaderNotification() {
         <div className="absolute right-[-40px] sm:right-0 mt-4 w-[300px] sm:w-80 bg-white dark:bg-slate-900 border-4 border-slate-900 dark:border-slate-700 shadow-brutal-lg dark:shadow-brutal-dark-lg z-50 transition-colors">
           <div className="p-4 border-b-4 border-slate-900 dark:border-slate-700 flex justify-between items-center bg-amber-300 dark:bg-slate-800">
             <h3 className="font-black text-slate-900 dark:text-white uppercase text-sm">
-              Notifikasi
+              {t("title")}
             </h3>
             {unreadCount > 0 && (
               <span className="bg-slate-900 dark:bg-slate-200 text-slate-100 dark:text-slate-900 text-[10px] font-black uppercase px-2 py-1">
-                {unreadCount} Baru
+                {t("newBadge", { count: unreadCount })}
               </span>
             )}
           </div>
@@ -69,7 +73,7 @@ export default function HeaderNotification() {
           <div className="max-h-[300px] overflow-y-auto hide-scrollbar">
             {displayNotifs.length === 0 ? (
               <div className="p-6 text-center text-xs text-slate-500 font-bold uppercase border-b-4 border-slate-900 dark:border-slate-700">
-                Belum ada notifikasi.
+                {t("empty")}
               </div>
             ) : (
               displayNotifs.map((notif) => (
@@ -86,7 +90,7 @@ export default function HeaderNotification() {
                     <span className="text-[10px] text-slate-600 dark:text-slate-400 whitespace-nowrap ml-2 font-bold uppercase border-b-2 border-slate-600 dark:border-slate-400">
                       {formatDistanceToNow(new Date(notif.createdAt), {
                         addSuffix: true,
-                        locale: id,
+                        locale: locale === "id" ? id : enUS,
                       })}
                     </span>
                   </div>
@@ -103,7 +107,7 @@ export default function HeaderNotification() {
             onClick={() => setIsOpen(false)}
             className="block p-4 text-center text-sm font-black uppercase text-slate-900 dark:text-white hover:bg-slate-900 hover:text-white dark:hover:bg-white dark:hover:text-slate-900 transition-colors bg-white dark:bg-slate-900"
           >
-            Lihat Semua di Inbox
+            {t("viewAll")}
           </Link>
         </div>
       )}

@@ -1,6 +1,7 @@
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
 import { prisma } from "@/lib/prisma";
+import { getTranslations } from "next-intl/server";
 
 const getStatusBadge = (status: string) => {
   switch (status) {
@@ -19,6 +20,7 @@ const getStatusBadge = (status: string) => {
 };
 
 export default async function LogHistoryPage() {
+  const t = await getTranslations("LogHistory");
   const tasks = await prisma.task.findMany({
     orderBy: { createdAt: "desc" },
   });
@@ -32,15 +34,15 @@ export default async function LogHistoryPage() {
       hour12: false,
     }).format(new Date(task.createdAt));
 
-    let activityText = "Task Started";
-    let detailsText = `Initiated via ${task.offerwall}`;
+    let activityText = t("activityStart");
+    let detailsText = t("detailInitiated", { offerwall: task.offerwall });
 
     if (task.status === "Dropped") {
-      activityText = "Quest Abandoned";
-      detailsText = "Dropped by user manually";
+      activityText = t("activityDropped");
+      detailsText = t("detailDropped");
     } else if (task.status === "Completed") {
-      activityText = "Quest Cleared";
-      detailsText = "All milestones verified";
+      activityText = t("activityCompleted");
+      detailsText = t("detailCompleted");
     }
 
     return {
@@ -58,17 +60,16 @@ export default async function LogHistoryPage() {
       <Sidebar />
 
       <div className="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto">
-        <Header title="Log History" />
+        <Header title={t("title")} />
 
         <main className="flex-1 p-4 md:p-8 max-w-7xl mx-auto w-full">
           {/* Header Section */}
           <header className="mb-6 md:mb-8">
             <h2 className="text-3xl md:text-4xl font-black text-slate-900 dark:text-white mb-2 uppercase">
-              Log History
+              {t("title")}
             </h2>
             <p className="text-xs md:text-base font-bold text-slate-600 dark:text-slate-400 max-w-2xl uppercase tracking-wider">
-              Track your recent activities, task status updates, and payout
-              history.
+              {t("subtitle")}
             </p>
           </header>
 
@@ -80,7 +81,7 @@ export default async function LogHistoryPage() {
               </span>
               <input
                 type="text"
-                placeholder="Search logs by task or detail..."
+                placeholder={t("searchPlaceholder")}
                 className="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-950 border-2 border-slate-900 dark:border-slate-700 rounded-sm text-xs md:text-sm font-bold text-slate-900 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none shadow-brutal-sm dark:shadow-brutal-dark-sm focus:-translate-y-1 transition-all"
               />
             </div>
@@ -88,10 +89,10 @@ export default async function LogHistoryPage() {
             <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
               <div className="relative w-full sm:w-auto">
                 <select className="w-full sm:w-48 appearance-none bg-amber-300 dark:bg-amber-700 border-2 border-slate-900 dark:border-slate-700 rounded-sm pl-4 pr-10 py-3 text-xs md:text-sm font-black uppercase text-slate-900 dark:text-slate-100 focus:outline-none shadow-brutal-sm dark:shadow-brutal-dark-sm hover:-translate-y-1 hover:shadow-brutal dark:hover:shadow-brutal-dark transition-all cursor-pointer">
-                  <option value="">All Activities</option>
-                  <option value="payout">Payouts</option>
-                  <option value="status">Status Updates</option>
-                  <option value="start">Task Started</option>
+                  <option value="">{t("filterAllActivities")}</option>
+                  <option value="payout">{t("filterPayouts")}</option>
+                  <option value="status">{t("filterStatus")}</option>
+                  <option value="start">{t("filterStart")}</option>
                 </select>
                 <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-900 dark:text-slate-100 font-black pointer-events-none">
                   arrow_drop_down
@@ -99,10 +100,10 @@ export default async function LogHistoryPage() {
               </div>
               <div className="relative w-full sm:w-auto">
                 <select className="w-full sm:w-40 appearance-none bg-blue-300 dark:bg-sky-800 border-2 border-slate-900 dark:border-slate-700 rounded-sm pl-4 pr-10 py-3 text-xs md:text-sm font-black uppercase text-slate-900 dark:text-slate-100 focus:outline-none shadow-brutal-sm dark:shadow-brutal-dark-sm hover:-translate-y-1 hover:shadow-brutal dark:hover:shadow-brutal-dark transition-all cursor-pointer">
-                  <option value="30">Last 30 Days</option>
-                  <option value="7">Last 7 Days</option>
-                  <option value="90">Last 90 Days</option>
-                  <option value="all">All Time</option>
+                  <option value="30">{t("filter30Days")}</option>
+                  <option value="7">{t("filter7Days")}</option>
+                  <option value="90">{t("filter90Days")}</option>
+                  <option value="all">{t("filterAllTime")}</option>
                 </select>
                 <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-900 dark:text-slate-100 font-black pointer-events-none">
                   arrow_drop_down
@@ -118,19 +119,19 @@ export default async function LogHistoryPage() {
                 <thead className="bg-slate-50 dark:bg-slate-800 border-b-2 border-slate-900 dark:border-slate-700 transition-colors">
                   <tr>
                     <th className="px-4 md:px-6 py-3 md:py-4 text-[10px] md:text-xs font-black text-slate-900 dark:text-slate-300 uppercase tracking-wider border-r-2 border-slate-900 dark:border-slate-700 whitespace-nowrap">
-                      Date & Time
+                      {t("thDate")}
                     </th>
                     <th className="px-4 md:px-6 py-3 md:py-4 text-[10px] md:text-xs font-black text-slate-900 dark:text-slate-300 uppercase tracking-wider border-r-2 border-slate-900 dark:border-slate-700 whitespace-nowrap">
-                      Task Name
+                      {t("thTaskName")}
                     </th>
                     <th className="px-4 md:px-6 py-3 md:py-4 text-[10px] md:text-xs font-black text-slate-900 dark:text-slate-300 uppercase tracking-wider border-r-2 border-slate-900 dark:border-slate-700 whitespace-nowrap">
-                      Activity
+                      {t("thActivity")}
                     </th>
                     <th className="px-4 md:px-6 py-3 md:py-4 text-[10px] md:text-xs font-black text-slate-900 dark:text-slate-300 uppercase tracking-wider border-r-2 border-slate-900 dark:border-slate-700 whitespace-nowrap">
-                      Details
+                      {t("thDetails")}
                     </th>
                     <th className="px-4 md:px-6 py-3 md:py-4 text-[10px] md:text-xs font-black text-slate-900 dark:text-slate-300 uppercase tracking-wider text-center whitespace-nowrap">
-                      Status
+                      {t("thStatus")}
                     </th>
                   </tr>
                 </thead>
@@ -141,7 +142,7 @@ export default async function LogHistoryPage() {
                         colSpan={5}
                         className="px-4 md:px-6 py-8 text-center text-slate-500 uppercase"
                       >
-                        Belum ada riwayat aktivitas yang tercatat.
+                        {t("emptyLog")}
                       </td>
                     </tr>
                   ) : (
@@ -181,14 +182,14 @@ export default async function LogHistoryPage() {
             {/* Pagination */}
             <div className="bg-slate-50 dark:bg-slate-900 border-t-2 border-slate-900 dark:border-slate-700 px-4 md:px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4 transition-colors">
               <span className="text-xs md:text-sm font-black uppercase text-slate-900 dark:text-slate-400 tracking-wider">
-                Showing {dynamicLogs.length} entries
+                {t("showingEntries", { count: dynamicLogs.length })}
               </span>
               <div className="flex gap-2 w-full md:w-auto justify-between md:justify-start">
                 <button
                   disabled
                   className="px-4 py-2 bg-slate-200 dark:bg-slate-800 border-2 border-slate-900 dark:border-slate-700 text-slate-500 font-black uppercase text-[10px] md:text-xs rounded-sm opacity-50 cursor-not-allowed"
                 >
-                  Previous
+                  {t("btnPrev")}
                 </button>
                 <button className="px-4 py-2 bg-emerald-400 dark:bg-teal-700 text-slate-900 dark:text-slate-100 border-2 border-slate-900 dark:border-slate-700 font-black uppercase text-[10px] md:text-xs rounded-sm shadow-brutal-sm dark:shadow-brutal-dark-sm">
                   1
@@ -197,7 +198,7 @@ export default async function LogHistoryPage() {
                   disabled
                   className="px-4 py-2 bg-slate-200 dark:bg-slate-800 border-2 border-slate-900 dark:border-slate-700 text-slate-500 font-black uppercase text-[10px] md:text-xs rounded-sm opacity-50 cursor-not-allowed"
                 >
-                  Next
+                  {t("btnNext")}
                 </button>
               </div>
             </div>

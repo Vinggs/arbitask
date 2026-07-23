@@ -3,14 +3,16 @@ import Header from "@/components/Header";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import AddTaskForm from "@/components/AddTaskForm";
-import { dropTask } from "@/app/actions";
+import { dropTask } from "@/app/[locale]/actions";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import DropTaskButton from "@/components/DropTaskButton";
+import { getTranslations } from "next-intl/server";
 
 export default async function TrackingPage() {
   const session = await getServerSession(authOptions);
   const userEmail = session?.user?.email || "";
+  const t = await getTranslations("Tracking");
 
   const tasks = await prisma.task.findMany({
     orderBy: { deadline: "asc" },
@@ -30,23 +32,22 @@ export default async function TrackingPage() {
       <Sidebar />
 
       <main className="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto">
-        <Header title="Tracking" />
+        <Header title={t("title")} />
 
         <div className="p-4 md:p-8 w-full max-w-container-max mx-auto">
           <div className="mb-6 md:mb-8 flex flex-col md:flex-row md:justify-between md:items-end gap-4">
             <div>
               <h2 className="text-3xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight mb-2 uppercase">
-                Active Allocations
+                {t("activeAllocations")}
               </h2>
               <p className="text-xs md:text-base font-bold text-slate-600 dark:text-slate-400 max-w-2xl tracking-wider">
-                Monitor your ongoing tasks, track milestone completions, and
-                project your yields.
+                {t("subtitle")}
               </p>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3 md:gap-4 shrink-0 w-full md:w-auto mt-2 md:mt-0">
               <button className="w-full sm:w-auto px-6 py-3 md:py-2 border-2 border-slate-900 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-md text-xs md:text-sm font-black uppercase shadow-brutal dark:shadow-brutal-dark hover:-translate-y-1 hover:shadow-brutal-lg dark:hover:shadow-brutal-dark-lg active:translate-y-0 active:shadow-none transition-all">
-                Filter
+                {t("filterBtn")}
               </button>
               <div className="w-full sm:w-auto">
                 <AddTaskForm />
@@ -58,7 +59,7 @@ export default async function TrackingPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
             <div className="p-4 md:p-6 bg-blue-300 dark:bg-sky-800 rounded-md border-2 border-slate-900 dark:border-slate-700 shadow-brutal dark:shadow-brutal-dark flex flex-col justify-center hover:-translate-y-1 hover:shadow-brutal-lg dark:hover:shadow-brutal-dark-lg transition-all">
               <p className="text-[10px] md:text-sm font-black text-slate-900 dark:text-slate-200 uppercase tracking-wider mb-1 md:mb-2">
-                In Progress
+                {t("statInProgress")}
               </p>
               <p className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white">
                 {activeTasks.length}
@@ -66,7 +67,7 @@ export default async function TrackingPage() {
             </div>
             <div className="p-4 md:p-6 bg-emerald-400 dark:bg-teal-700 rounded-md border-2 border-slate-900 dark:border-slate-700 shadow-brutal dark:shadow-brutal-dark flex flex-col justify-center hover:-translate-y-1 hover:shadow-brutal-lg dark:hover:shadow-brutal-dark-lg transition-all">
               <p className="text-[10px] md:text-sm font-black text-slate-900 dark:text-slate-200 uppercase tracking-wider mb-1 md:mb-2">
-                Potential Yield
+                {t("statPotentialYield")}
               </p>
               <p className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white">
                 ${totalPotentialYield.toFixed(2)}
@@ -74,7 +75,7 @@ export default async function TrackingPage() {
             </div>
             <div className="p-4 md:p-6 bg-white dark:bg-slate-900 rounded-md border-2 border-slate-900 dark:border-slate-700 shadow-brutal dark:shadow-brutal-dark flex flex-col justify-center hover:-translate-y-1 hover:shadow-brutal-lg dark:hover:shadow-brutal-dark-lg transition-all">
               <p className="text-[10px] md:text-sm font-black text-slate-900 dark:text-slate-400 uppercase tracking-wider mb-1 md:mb-2">
-                Completed
+                {t("statCompleted")}
               </p>
               <p className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white">
                 {completedTasks.length}
@@ -89,10 +90,10 @@ export default async function TrackingPage() {
                 monitoring
               </span>
               <h3 className="text-xl md:text-2xl font-black text-slate-900 dark:text-white mb-2 uppercase">
-                Belum ada task
+                {t("emptyTitle")}
               </h3>
               <p className="text-xs md:text-sm font-bold text-slate-600 dark:text-slate-400">
-                Tambahkan task untuk mulai tracking yield.
+                {t("emptyDesc")}
               </p>
             </div>
           ) : (
@@ -147,10 +148,10 @@ export default async function TrackingPage() {
                         }`}
                       >
                         {isCompleted
-                          ? "COMPLETED"
+                          ? t("badgeCompleted")
                           : isDropped
-                            ? "DROPPED"
-                            : "IN PROGRESS"}
+                            ? t("badgeDropped")
+                            : t("badgeInProgress")}
                       </span>
                     </div>
 
@@ -187,7 +188,7 @@ export default async function TrackingPage() {
                         <div className="flex justify-between items-end bg-slate-50 dark:bg-slate-900 p-3 rounded-sm border-2 border-slate-900 dark:border-slate-700 shadow-brutal-sm dark:shadow-brutal-dark-sm">
                           <div>
                             <p className="text-[8px] md:text-[10px] font-black text-slate-900 dark:text-slate-400 uppercase tracking-widest mb-1">
-                              Current
+                              {t("current")}
                             </p>
                             <p className="text-lg md:text-xl font-black text-slate-900 dark:text-white">
                               ${task.currentValue.toFixed(2)}
@@ -195,7 +196,7 @@ export default async function TrackingPage() {
                           </div>
                           <div className="text-right">
                             <p className="text-[8px] md:text-[10px] font-black text-slate-900 dark:text-slate-400 uppercase tracking-widest mb-1">
-                              Target
+                              {t("target")}
                             </p>
                             <p className="text-lg md:text-xl font-black text-emerald-600 dark:text-teal-400">
                               ${task.targetValue.toFixed(2)}
@@ -206,7 +207,7 @@ export default async function TrackingPage() {
                         <div>
                           <div className="flex justify-between items-center mb-1">
                             <span className="text-[10px] md:text-[11px] font-black uppercase text-slate-900 dark:text-slate-300">
-                              Progress
+                              {t("progress")}
                             </span>
                             <span className="text-[10px] md:text-[11px] font-black text-slate-900 dark:text-slate-300">
                               {claimedMilestones} / {totalMilestones}
@@ -233,12 +234,12 @@ export default async function TrackingPage() {
                     <div className="px-4 md:px-6 py-3 md:py-4 border-t-2 border-slate-900 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 flex justify-between items-center">
                       <div className="font-black text-[10px] md:text-xs uppercase text-slate-900 dark:text-slate-300">
                         {isDropped
-                          ? "Abandoned"
+                          ? t("statusAbandoned")
                           : daysLeft < 0
-                            ? "Overdue"
+                            ? t("statusOverdue")
                             : isCompleted
-                              ? "Done"
-                              : `${daysLeft} Days Left`}
+                              ? t("statusDone")
+                              : t("daysLeft", { days: daysLeft })}
                       </div>
                       {task.status === "In Progress" && (
                         <form action={dropTask}>

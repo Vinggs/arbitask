@@ -4,12 +4,14 @@ import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import CatalogGrid from "@/components/CatalogGrid";
+import { getTranslations } from "next-intl/server";
 
 export default async function ProviderDetailPage({
   params,
 }: {
   params: Promise<{ provider: string }>;
 }) {
+  const t = await getTranslations("ProviderDetail");
   const resolvedParams = await params;
   const providerSlug = resolvedParams.provider.toLowerCase();
 
@@ -50,7 +52,7 @@ export default async function ProviderDetailPage({
       <Sidebar />
 
       <main className="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto">
-        <Header title={`${providerName} Offers`} />
+        <Header title={t("headerTitle", { provider: providerName })} />
 
         <div className="p-4 md:p-margin-desktop w-full max-w-container-max mx-auto">
           <div className="mb-6 md:mb-8">
@@ -62,7 +64,7 @@ export default async function ProviderDetailPage({
                 <span className="material-symbols-outlined text-[14px] md:text-sm font-black">
                   arrow_back
                 </span>
-                Back to Catalog
+                {t("backToCatalog")}
               </Link>
               <span className="material-symbols-outlined text-sm font-black text-slate-900 dark:text-slate-400">
                 chevron_right
@@ -84,11 +86,10 @@ export default async function ProviderDetailPage({
                           ? "AG"
                           : providerName.substring(0, 2).toUpperCase()}
                   </span>
-                  {providerName} Games
+                  {t("title", { provider: providerName })}
                 </h2>
                 <p className="text-xs md:text-sm font-bold text-slate-600 dark:text-slate-400 max-w-2xl transition-colors uppercase tracking-wider">
-                  Daftar peluang arbitrase dengan yield tertinggi dari{" "}
-                  {providerName}.
+                  {t("subtitle", { provider: providerName })}
                 </p>
               </div>
 
@@ -96,7 +97,7 @@ export default async function ProviderDetailPage({
                 <span className="material-symbols-outlined text-slate-900 dark:text-slate-100 text-[20px] md:text-[24px] font-black">
                   monitoring
                 </span>
-                {offers.length} Active Offers
+                {offers.length} {t("activeOffers")}
               </div>
             </div>
           </div>
@@ -107,10 +108,10 @@ export default async function ProviderDetailPage({
                 videogame_asset_off
               </span>
               <h3 className="text-2xl md:text-3xl font-black text-slate-900 dark:text-white mb-2 uppercase transition-colors">
-                Belum ada tawaran aktif
+                {t("noOffersTitle")}
               </h3>
               <p className="text-[10px] md:text-sm font-bold text-slate-600 dark:text-slate-400 uppercase transition-colors">
-                Saat ini belum ada data game yang masuk untuk {providerName}.
+                {t("noOffersDesc", { provider: providerName })}
               </p>
             </div>
           ) : (

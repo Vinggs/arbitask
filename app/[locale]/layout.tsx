@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { Space_Grotesk } from "next/font/google"; // <-- Ganti font ke Space Grotesk
+import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
-import { ThemeProvider } from "@/components/ThemeProvider"; // <-- Import Provider dari next-themes
+import { ThemeProvider } from "@/components/ThemeProvider";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
 
-// Inisialisasi Space Grotesk buat Neo-Brutalism
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-space-grotesk",
@@ -16,26 +17,36 @@ export const metadata: Metadata = {
   description: "Financial Optimization & Offerwall Aggregator",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
+  params,
 }: Readonly<{
   children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 }>) {
+  // Tunggu (await) params selesai di-resolve
+  const resolvedParams = await params;
+  const locale = resolvedParams.locale;
+
+  // Ambil kamus bahasa (messages) dari server
+  const messages = await getMessages();
+
   return (
-    // Tambahin suppressHydrationWarning biar nggak error pas reload di Next.js
-    <html lang="en" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <head>
         <link
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
           rel="stylesheet"
         />
       </head>
-      {/* Terapin class dari spaceGrotesk ke body */}
       <body
         className={`${spaceGrotesk.variable} ${spaceGrotesk.className} font-body-md text-body-md antialiased min-h-screen`}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <Providers>{children}</Providers>
+          {/* Tambahkan props locale ke NextIntlClientProvider */}
+          <NextIntlClientProvider messages={messages} locale={locale}>
+            <Providers>{children}</Providers>
+          </NextIntlClientProvider>
         </ThemeProvider>
       </body>
     </html>

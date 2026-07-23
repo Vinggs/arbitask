@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { addGameToCatalog } from "@/app/actions";
+import { addGameToCatalog } from "@/app/[locale]/actions";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
 

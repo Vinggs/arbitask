@@ -3,10 +3,12 @@
 import { signIn } from "next-auth/react";
 import { useState, FormEvent } from "react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const t = useTranslations("LoginPage");
 
   const handleEmailSignIn = async (e: FormEvent) => {
     e.preventDefault();
@@ -26,10 +28,10 @@ export default function LoginPage() {
             </span>
           </div>
           <h1 className="text-2xl md:text-3xl font-black uppercase text-slate-900 dark:text-white mb-1 transition-colors">
-            Login Arbitask
+            {t("title")}
           </h1>
           <p className="font-bold text-slate-600 dark:text-slate-400 text-[10px] md:text-sm uppercase transition-colors tracking-widest">
-            Pilih metode akses untuk masuk
+            {t("subtitle")}
           </p>
         </div>
 
@@ -44,7 +46,7 @@ export default function LoginPage() {
               alt="Google"
               className="w-5 h-5"
             />
-            Login with Google
+            {t("google")}
           </button>
 
           <button
@@ -59,7 +61,7 @@ export default function LoginPage() {
             >
               <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z" />
             </svg>
-            Login with X (Twitter)
+            {t("twitter")}
           </button>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -92,7 +94,7 @@ export default function LoginPage() {
         <div className="my-6 md:my-8 flex items-center gap-2 md:gap-4">
           <div className="h-1 bg-slate-900 dark:bg-slate-700 flex-1 transition-colors"></div>
           <span className="text-[10px] md:text-xs text-slate-900 dark:text-slate-400 font-black uppercase transition-colors tracking-widest whitespace-nowrap">
-            OR MAGIC LINK
+            {t("magicLink")}
           </span>
           <div className="h-1 bg-slate-900 dark:bg-slate-700 flex-1 transition-colors"></div>
         </div>
@@ -102,7 +104,7 @@ export default function LoginPage() {
           <div>
             <input
               type="email"
-              placeholder="email@kamu.com"
+              placeholder={t("emailPlaceholder")}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full px-4 py-3 bg-white dark:bg-slate-950 border-4 border-slate-900 dark:border-slate-700 font-bold text-sm text-slate-900 dark:text-slate-200 focus:outline-none shadow-brutal dark:shadow-brutal-dark focus:-translate-y-1 transition-all placeholder-slate-400 dark:placeholder-slate-500"
@@ -123,7 +125,7 @@ export default function LoginPage() {
                 mail
               </span>
             )}
-            Send Login Link
+            {t("sendLink")}
           </button>
         </form>
 
@@ -135,7 +137,7 @@ export default function LoginPage() {
             <span className="material-symbols-outlined text-[14px] md:text-[16px] font-black">
               arrow_back
             </span>
-            Back to Dashboard
+            {t("backToDashboard")}
           </Link>
         </div>
       </div>

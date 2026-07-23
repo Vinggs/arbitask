@@ -2,11 +2,15 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useRef } from "react";
+import { useTranslations } from "next-intl";
 
 export default function DashboardFilters() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Panggil hook translasi
+  const t = useTranslations("DashboardFilters");
 
   const currentCategory = searchParams.get("category") || "All";
   const currentSearch = searchParams.get("q") || "";
@@ -38,17 +42,17 @@ export default function DashboardFilters() {
     <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4 md:gap-6">
       <div className="flex flex-col sm:flex-row sm:items-center gap-2 md:gap-4 text-sm w-full md:w-auto">
         <span className="font-black text-slate-900 dark:text-white uppercase tracking-wider text-[10px] md:text-xs">
-          Filters
+          {t("filters")}
         </span>
         <select
           value={currentCategory}
           onChange={handleCategoryChange}
-          className="w-full sm:w-auto border-2 border-slate-900 dark:border-slate-700 px-3 md:px-4 py-2 bg-white dark:bg-slate-900 text-slate-900 dark:text-white outline-none font-bold shadow-brutal-sm dark:shadow-brutal-dark-sm hover:-translate-y-px transition-all cursor-pointer text-xs md:text-sm"
+          className="w-full sm:w-auto border-2 border-slate-900 dark:border-slate-500 px-3 md:px-4 py-2 bg-white dark:bg-slate-900 text-slate-900 dark:text-white outline-none font-bold shadow-brutal-sm dark:shadow-brutal-dark-sm hover:-translate-y-px transition-all cursor-pointer text-xs md:text-sm"
         >
-          <option value="All">Category: All</option>
-          <option value="Games">Games</option>
-          <option value="Surveys">Surveys</option>
-          <option value="Sign Ups">Sign Ups</option>
+          <option value="All">{t("categoryAll")}</option>
+          <option value="Games">{t("categoryGames")}</option>
+          <option value="Surveys">{t("categorySurveys")}</option>
+          <option value="Sign Ups">{t("categorySignUps")}</option>
         </select>
       </div>
 
@@ -61,19 +65,19 @@ export default function DashboardFilters() {
             type="text"
             defaultValue={currentSearch}
             onChange={handleSearchChange}
-            placeholder="Search game name..."
-            className="w-full pl-9 md:pl-10 pr-4 py-2.5 border-2 border-slate-900 dark:border-slate-700 text-xs md:text-sm focus:outline-none bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-bold shadow-brutal-sm dark:shadow-brutal-dark-sm focus:-translate-y-px transition-all placeholder-slate-400 dark:placeholder-slate-500"
+            placeholder={t("searchPlaceholder")}
+            className="w-full pl-9 md:pl-10 pr-4 py-2.5 border-2 border-slate-900 dark:border-slate-500 text-xs md:text-sm focus:outline-none bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-bold shadow-brutal-sm dark:shadow-brutal-dark-sm focus:-translate-y-px transition-all placeholder-slate-400 dark:placeholder-slate-400"
           />
         </div>
 
         <button
           onClick={handleClearFilters}
-          className="w-full sm:w-auto flex items-center justify-center gap-1 text-[10px] md:text-sm font-black text-slate-900 dark:text-white hover:bg-slate-900 hover:text-white dark:hover:bg-slate-200 dark:hover:text-slate-900 border-2 border-transparent hover:border-slate-900 dark:hover:border-slate-700 px-3 py-2 transition-all uppercase whitespace-nowrap"
+          className="w-full sm:w-auto flex items-center justify-center gap-1 text-[10px] md:text-sm font-black text-slate-900 dark:text-white hover:bg-slate-900 hover:text-white dark:hover:bg-slate-200 dark:hover:text-slate-900 border-2 border-transparent hover:border-slate-900 dark:hover:border-slate-500 px-3 py-2 transition-all uppercase whitespace-nowrap"
         >
           <span className="material-symbols-outlined text-[16px] md:text-[18px] font-black">
             clear_all
           </span>
-          Clear
+          {t("clear")}
         </button>
       </div>
     </div>

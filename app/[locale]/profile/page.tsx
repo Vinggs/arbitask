@@ -12,11 +12,14 @@ import {
   markAllNotificationsAsRead,
 } from "./actions";
 import { formatDistanceToNow } from "date-fns";
-import { id } from "date-fns/locale";
+import { id, enUS } from "date-fns/locale";
+import { useTranslations, useLocale } from "next-intl";
 
 export default function ProfilePage() {
   const { data: session, status, update } = useSession();
   const [activeTab, setActiveTab] = useState("personal");
+  const locale = useLocale();
+  const t = useTranslations("ProfilePage");
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -72,9 +75,9 @@ export default function ProfilePage() {
 
     if (result.success) {
       await update({ name: `${firstName} ${lastName}`.trim() });
-      setSaveMessage("SAVED SUCCESSFULLY!");
+      setSaveMessage(t("savedSuccess"));
     } else {
-      setSaveMessage("FAILED TO SAVE.");
+      setSaveMessage(t("savedFail"));
     }
 
     setIsSaving(false);
@@ -107,7 +110,7 @@ export default function ProfilePage() {
       <Sidebar />
 
       <div className="flex-1 flex flex-col min-w-0">
-        <Header title="User Profile" />
+        <Header title={t("title")} />
 
         <main className="flex-1 p-4 md:p-6 max-w-[1200px] w-full mx-auto space-y-4 md:space-y-6">
           {/* HERO BANNER */}
@@ -128,12 +131,11 @@ export default function ProfilePage() {
                   <span className="material-symbols-outlined text-[14px] md:text-[16px] font-black">
                     verified
                   </span>
-                  Elite Arbitrager
+                  {t("badge")}
                 </div>
               </div>
               <p className="text-xs md:text-sm font-bold text-slate-800 dark:text-slate-200 max-w-2xl leading-relaxed">
-                VERIFIED ARBITASK ACCOUNT. TRACKING AND OPTIMIZING YIELD IN
-                REAL-TIME.
+                {t("heroDesc")}
               </p>
             </div>
           </div>
@@ -148,7 +150,7 @@ export default function ProfilePage() {
               </div>
               <div>
                 <p className="text-[10px] md:text-xs font-black uppercase tracking-wider text-slate-900 dark:text-slate-200">
-                  Total Yield Tracked
+                  {t("totalYield")}
                 </p>
                 <p className="text-2xl md:text-3xl font-black text-slate-900 dark:text-white">
                   ${stats.totalYield.toFixed(2)}
@@ -163,7 +165,7 @@ export default function ProfilePage() {
               </div>
               <div>
                 <p className="text-[10px] md:text-xs font-black uppercase tracking-wider text-slate-600 dark:text-slate-400">
-                  Tasks Tracked
+                  {t("tasksTracked")}
                 </p>
                 <p className="text-2xl md:text-3xl font-black text-slate-900 dark:text-white">
                   {stats.taskCount}
@@ -178,10 +180,10 @@ export default function ProfilePage() {
               </div>
               <div>
                 <p className="text-[10px] md:text-xs font-black uppercase tracking-wider text-slate-900 dark:text-slate-200">
-                  Current Streak
+                  {t("currentStreak")}
                 </p>
                 <p className="text-2xl md:text-3xl font-black text-slate-900 dark:text-white uppercase">
-                  Active
+                  {t("active")}
                 </p>
               </div>
             </div>
@@ -197,7 +199,7 @@ export default function ProfilePage() {
                 <span className="material-symbols-outlined text-[18px] md:text-[20px]">
                   person
                 </span>{" "}
-                Personal Info
+                {t("tabPersonal")}
               </button>
 
               <button
@@ -207,7 +209,7 @@ export default function ProfilePage() {
                 <span className="material-symbols-outlined text-[18px] md:text-[20px]">
                   palette
                 </span>{" "}
-                Preferences
+                {t("tabPreferences")}
               </button>
 
               <button
@@ -217,7 +219,7 @@ export default function ProfilePage() {
                 <span className="material-symbols-outlined text-[18px] md:text-[20px]">
                   shield
                 </span>{" "}
-                Security
+                {t("tabSecurity")}
               </button>
               <button
                 onClick={() => setActiveTab("inbox")}
@@ -227,7 +229,7 @@ export default function ProfilePage() {
                   <span className="material-symbols-outlined text-[18px] md:text-[20px]">
                     inbox
                   </span>{" "}
-                  Inbox
+                  {t("tabInbox")}
                 </div>
                 {unreadCount > 0 && (
                   <span
@@ -245,10 +247,10 @@ export default function ProfilePage() {
                 <div className="bg-white dark:bg-slate-900 rounded-md p-4 md:p-6 border-2 border-slate-900 dark:border-slate-700 shadow-brutal md:shadow-brutal-lg dark:shadow-brutal-dark md:dark:shadow-brutal-dark-lg space-y-4 transition-colors">
                   <div>
                     <h3 className="text-xl md:text-2xl font-black uppercase text-slate-900 dark:text-white">
-                      Personal Information
+                      {t("personalTitle")}
                     </h3>
                     <p className="text-[10px] md:text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">
-                      Manage basic account details.
+                      {t("personalDesc")}
                     </p>
                   </div>
                   <div className="h-0.5 bg-slate-900 dark:bg-slate-700 w-full"></div>
@@ -257,7 +259,7 @@ export default function ProfilePage() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="space-y-1.5">
                         <label className="text-[10px] md:text-xs font-black uppercase text-slate-900 dark:text-white tracking-widest">
-                          First Name
+                          {t("firstName")}
                         </label>
                         <input
                           type="text"
@@ -268,7 +270,7 @@ export default function ProfilePage() {
                       </div>
                       <div className="space-y-1.5">
                         <label className="text-[10px] md:text-xs font-black uppercase text-slate-900 dark:text-white tracking-widest">
-                          Last Name
+                          {t("lastName")}
                         </label>
                         <input
                           type="text"
@@ -280,7 +282,7 @@ export default function ProfilePage() {
                     </div>
                     <div className="space-y-1.5">
                       <label className="text-[10px] md:text-xs font-black uppercase text-slate-900 dark:text-white tracking-widest">
-                        Email Address
+                        {t("email")}
                       </label>
                       <input
                         type="email"
@@ -291,11 +293,11 @@ export default function ProfilePage() {
                     </div>
                     <div className="space-y-1.5">
                       <label className="text-[10px] md:text-xs font-black uppercase text-slate-900 dark:text-white tracking-widest">
-                        Phone Number
+                        {t("phone")}
                       </label>
                       <input
                         type="text"
-                        placeholder="+62 8xx-xxxx-xxxx"
+                        placeholder={t("phonePlaceholder")}
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                         className="w-full px-3 md:px-4 py-2.5 md:py-3 rounded-sm border-2 border-slate-900 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-xs md:text-sm font-bold text-slate-900 dark:text-white shadow-brutal-sm dark:shadow-brutal-dark-sm focus:-translate-y-1 transition-all outline-none"
@@ -319,7 +321,7 @@ export default function ProfilePage() {
                             progress_activity
                           </span>
                         ) : null}
-                        Save Changes
+                        {t("saveChanges")}
                       </button>
                     </div>
                   </form>
@@ -331,10 +333,10 @@ export default function ProfilePage() {
                 <div className="bg-white dark:bg-slate-900 rounded-md p-4 md:p-6 border-2 border-slate-900 dark:border-slate-700 shadow-brutal md:shadow-brutal-lg dark:shadow-brutal-dark md:dark:shadow-brutal-dark-lg space-y-4 transition-colors">
                   <div>
                     <h3 className="text-xl md:text-2xl font-black uppercase text-slate-900 dark:text-white">
-                      Theme Preferences
+                      {t("prefTitle")}
                     </h3>
                     <p className="text-[10px] md:text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">
-                      Manage your viewing experience.
+                      {t("prefDesc")}
                     </p>
                   </div>
                   <div className="h-0.5 bg-slate-900 dark:bg-slate-700 w-full"></div>
@@ -342,10 +344,10 @@ export default function ProfilePage() {
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-sm bg-slate-50 dark:bg-slate-950 border-2 border-slate-900 dark:border-slate-700 shadow-brutal dark:shadow-brutal-dark">
                     <div>
                       <p className="text-sm md:text-base font-black uppercase text-slate-900 dark:text-white">
-                        Dark / Light Mode
+                        {t("modeTitle")}
                       </p>
                       <p className="text-[10px] md:text-xs font-bold text-slate-600 dark:text-slate-400 mt-0.5 uppercase tracking-widest leading-relaxed">
-                        Switch between dark and light themes for the dashboard.
+                        {t("modeDesc")}
                       </p>
                     </div>
 
@@ -359,10 +361,10 @@ export default function ProfilePage() {
                 <div className="bg-white dark:bg-slate-900 rounded-md p-4 md:p-6 border-2 border-slate-900 dark:border-slate-700 shadow-brutal md:shadow-brutal-lg dark:shadow-brutal-dark md:dark:shadow-brutal-dark-lg space-y-4 transition-colors">
                   <div>
                     <h3 className="text-xl md:text-2xl font-black uppercase text-slate-900 dark:text-white">
-                      Security & Protection
+                      {t("secTitle")}
                     </h3>
                     <p className="text-[10px] md:text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">
-                      Protect your tracking account access.
+                      {t("secDesc")}
                     </p>
                   </div>
                   <div className="h-0.5 bg-slate-900 dark:bg-slate-700 w-full"></div>
@@ -370,14 +372,14 @@ export default function ProfilePage() {
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-sm bg-slate-50 dark:bg-slate-950 border-2 border-slate-900 dark:border-slate-700 shadow-brutal dark:shadow-brutal-dark">
                     <div>
                       <p className="text-sm md:text-base font-black uppercase text-slate-900 dark:text-white">
-                        Password
+                        {t("passTitle")}
                       </p>
                       <p className="text-[10px] md:text-xs font-bold text-slate-600 dark:text-slate-400 mt-0.5 uppercase tracking-widest leading-relaxed">
-                        Set password for manual email login.
+                        {t("passDesc")}
                       </p>
                     </div>
                     <button className="w-full sm:w-auto px-4 py-3 md:py-2 bg-white dark:bg-slate-800 border-2 border-slate-900 dark:border-slate-700 text-slate-900 dark:text-white font-black uppercase text-[10px] md:text-xs rounded-sm hover:-translate-y-1 hover:shadow-brutal dark:hover:shadow-brutal-dark shadow-brutal-sm dark:shadow-brutal-dark-sm active:translate-y-0 active:shadow-none transition-all text-center">
-                      Set Password
+                      {t("setPassword")}
                     </button>
                   </div>
                 </div>
@@ -389,10 +391,10 @@ export default function ProfilePage() {
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <div>
                       <h3 className="text-xl md:text-2xl font-black uppercase text-slate-900 dark:text-white">
-                        System Inbox
+                        {t("inboxTitle")}
                       </h3>
                       <p className="text-[10px] md:text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">
-                        Messages & Notifications.
+                        {t("inboxDesc")}
                       </p>
                     </div>
                     {unreadCount > 0 && (
@@ -400,7 +402,7 @@ export default function ProfilePage() {
                         onClick={handleMarkAllRead}
                         className="text-[10px] md:text-xs font-black uppercase text-slate-900 dark:text-white border-b-2 border-slate-900 dark:border-slate-700 hover:text-blue-600 dark:hover:text-blue-400 transition-colors w-fit"
                       >
-                        Mark all as read
+                        {t("markAllRead")}
                       </button>
                     )}
                   </div>
@@ -409,7 +411,7 @@ export default function ProfilePage() {
                   <div className="space-y-4">
                     {notifications.length === 0 ? (
                       <div className="p-8 text-center text-slate-500 dark:text-slate-400 font-bold uppercase text-xs md:text-sm border-2 border-dashed border-slate-900 dark:border-slate-700">
-                        NO NEW MESSAGES.
+                        {t("noMessages")}
                       </div>
                     ) : (
                       notifications.map((notif) => (
@@ -436,7 +438,10 @@ export default function ProfilePage() {
                               <span className="text-[8px] md:text-[10px] font-black text-slate-600 dark:text-slate-300 uppercase border-2 border-slate-500 px-1 whitespace-nowrap">
                                 {formatDistanceToNow(
                                   new Date(notif.createdAt),
-                                  { addSuffix: true, locale: id },
+                                  {
+                                    addSuffix: true,
+                                    locale: locale === "id" ? id : enUS,
+                                  },
                                 )}
                               </span>
                             </div>

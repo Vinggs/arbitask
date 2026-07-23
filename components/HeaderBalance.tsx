@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { getUserBalance } from "@/app/actions";
+import { getUserBalance } from "@/app/[locale]/actions";
 
 export default function HeaderBalance() {
   const { data: session, status } = useSession();

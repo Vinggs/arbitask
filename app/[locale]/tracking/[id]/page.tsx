@@ -4,10 +4,11 @@ import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import EvidenceUploader from "@/components/EvidenceUploader";
-import { dropTask } from "@/app/actions";
+import { dropTask } from "@/app/[locale]/actions";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import DropTaskButton from "@/components/DropTaskButton";
+import { getTranslations } from "next-intl/server";
 
 type MilestoneWithEvidence = {
   id: string;
@@ -25,6 +26,7 @@ export default async function TaskDetailPage({
 }) {
   const session = await getServerSession(authOptions);
   const userEmail = session?.user?.email || "";
+  const t = await getTranslations("TaskDetail");
 
   const resolvedParams = await params;
   const taskId = resolvedParams.id;
@@ -56,7 +58,7 @@ export default async function TaskDetailPage({
       <Sidebar />
 
       <main className="flex-1 flex flex-col w-full h-screen overflow-y-auto md:border-l-2 md:border-slate-900 dark:border-slate-700">
-        <Header title="Task Details" />
+        <Header title={t("title")} />
 
         <div className="p-4 md:p-8 w-full max-w-container-max mx-auto space-y-4 md:space-y-6">
           <div>
@@ -66,7 +68,7 @@ export default async function TaskDetailPage({
                   href="/tracking"
                   className="text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors bg-white dark:bg-slate-800 border-2 border-slate-900 dark:border-slate-700 px-2 py-1 md:px-3 md:py-1 shadow-brutal-sm dark:shadow-brutal-dark-sm"
                 >
-                  Tracking
+                  {t("tracking")}
                 </Link>
                 <span className="material-symbols-outlined text-[12px] md:text-sm font-black text-slate-900 dark:text-slate-400">
                   chevron_right
@@ -114,7 +116,7 @@ export default async function TaskDetailPage({
 
                     {task.status === "Dropped" && (
                       <span className="text-[10px] font-black bg-red-400 dark:bg-rose-700 border-2 border-slate-900 dark:border-slate-700 px-2 py-0.5 uppercase text-slate-900 dark:text-white shadow-brutal-sm dark:shadow-brutal-dark-sm">
-                        DROPPED
+                        {t("statusAbandoned")}
                       </span>
                     )}
                   </div>
@@ -124,7 +126,7 @@ export default async function TaskDetailPage({
               <div className="bg-white dark:bg-slate-900 border-4 border-slate-900 dark:border-slate-700 px-4 py-3 md:px-5 md:py-4 flex flex-col w-full md:min-w-[280px] md:w-auto shadow-brutal md:shadow-brutal-lg dark:shadow-brutal-dark md:dark:shadow-brutal-dark-lg transition-colors">
                 <div className="flex justify-between items-center mb-2 md:mb-3">
                   <span className="text-xs md:text-sm font-black uppercase tracking-wider text-slate-900 dark:text-slate-300">
-                    Milestone Progress
+                    {t("progress")}
                   </span>
                   <span className="text-base md:text-lg font-black text-slate-900 dark:text-white">
                     {claimedMilestones} / {totalMilestones}
@@ -150,11 +152,10 @@ export default async function TaskDetailPage({
                     </span>
                   </div>
                   <h3 className="text-2xl md:text-3xl font-black text-slate-900 dark:text-white mb-2 md:mb-3 uppercase">
-                    Quest Abandoned
+                    {t("questAbandoned")}
                   </h3>
                   <p className="text-xs md:text-base font-bold text-slate-800 dark:text-slate-300 max-w-md mx-auto">
-                    Lu udah nyerah sama task ini. Milestone yang udah
-                    diverifikasi tetep aman, tapi nggak bisa lanjut lagi.
+                    {t("abandonedDesc")}
                   </p>
                 </div>
               ) : (
@@ -174,18 +175,20 @@ export default async function TaskDetailPage({
                           <span className="material-symbols-outlined sm:hidden text-2xl font-black">
                             assignment_turned_in
                           </span>
-                          Current Objective
+                          {t("currentObj")}
                         </h3>
                         <p className="text-sm md:text-lg font-bold text-slate-700 dark:text-slate-400 mb-3 md:mb-4">
                           {currentObjective
-                            ? `Submit proof for: ${currentObjective.description}`
-                            : "ALL MILESTONES COMPLETED! GREAT JOB."}
+                            ? t("submitProof", {
+                                desc: currentObjective.description,
+                              })
+                            : t("allCompleted")}
                         </p>
                         <div className="inline-flex items-center gap-1.5 md:gap-2 bg-blue-300 dark:bg-sky-700 text-slate-900 dark:text-slate-100 px-2 py-1 md:px-3 md:py-1.5 border-2 border-slate-900 dark:border-slate-700 text-[10px] md:text-xs font-black uppercase shadow-brutal-sm dark:shadow-brutal-dark-sm">
                           <span className="material-symbols-outlined text-[14px] md:text-[16px] font-black">
                             info
                           </span>
-                          Ensure username is visible
+                          {t("ensureUsername")}
                         </div>
                       </div>
                     </div>
@@ -199,12 +202,12 @@ export default async function TaskDetailPage({
                             {currentObjective ? "cloud_upload" : "verified"}
                           </span>
                           {currentObjective
-                            ? "Evidence Submission"
-                            : "Task Completed"}
+                            ? t("evidenceSub")
+                            : t("taskCompleted")}
                         </h3>
                       </div>
                       <span className="text-[10px] md:text-sm font-black uppercase border-4 border-slate-900 dark:border-slate-700 px-2 py-0.5 md:px-3 md:py-1 bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-brutal-sm dark:shadow-brutal-dark-sm">
-                        {currentObjective ? "REQUIRED" : "DONE"}
+                        {currentObjective ? t("required") : t("done")}
                       </span>
                     </div>
 
@@ -212,8 +215,7 @@ export default async function TaskDetailPage({
                       {currentObjective ? (
                         <>
                           <p className="text-xs md:text-base font-bold text-slate-700 dark:text-slate-400 mb-4 md:mb-6 uppercase">
-                            Upload screenshot evidence of level achievement from
-                            your device.
+                            {t("uploadDesc")}
                           </p>
                           <EvidenceUploader
                             taskId={task.id}
@@ -228,11 +230,10 @@ export default async function TaskDetailPage({
                             </span>
                           </div>
                           <h4 className="text-xl md:text-3xl font-black text-slate-900 dark:text-white uppercase mb-2 md:mb-3">
-                            Maximum Yield Reached! 💸
+                            {t("maxYield")}
                           </h4>
                           <p className="text-xs md:text-base font-bold text-slate-600 dark:text-slate-400 max-w-sm mx-auto uppercase">
-                            All tiers have been successfully verified. Time to
-                            move on to the next game!
+                            {t("maxYieldDesc")}
                           </p>
                         </div>
                       )}
@@ -245,12 +246,12 @@ export default async function TaskDetailPage({
             <div className="lg:col-span-1 space-y-4 md:space-y-6">
               <div className="bg-white dark:bg-slate-900 border-4 border-slate-900 dark:border-slate-700 p-4 md:p-6 shadow-brutal md:shadow-brutal-lg dark:shadow-brutal-dark transition-colors">
                 <h3 className="text-xl md:text-2xl font-black text-slate-900 dark:text-white uppercase mb-4 md:mb-6 border-b-4 border-slate-900 dark:border-slate-700 pb-3 md:pb-4">
-                  Milestone Ledger
+                  {t("ledger")}
                 </h3>
                 <div className="space-y-4 md:space-y-6">
                   {typedMilestones.length === 0 ? (
                     <p className="text-[10px] md:text-sm font-bold uppercase border-2 border-dashed border-slate-400 dark:border-slate-600 p-3 md:p-4 text-center text-slate-600 dark:text-slate-400">
-                      No Tiers Found.
+                      {t("noTiers")}
                     </p>
                   ) : (
                     typedMilestones.map((milestone, index) => {
@@ -287,17 +288,19 @@ export default async function TaskDetailPage({
                           </h4>
                           <p className="text-[10px] md:text-xs font-bold mt-1 text-slate-500 dark:text-slate-400 uppercase border-2 border-slate-300 dark:border-slate-600 inline-block px-1">
                             {isClaimed
-                              ? "Verified"
+                              ? t("statusVerified")
                               : isCurrent
-                                ? "Pending"
+                                ? t("statusPending")
                                 : task.status === "Dropped"
-                                  ? "Abandoned"
-                                  : "Locked"}
+                                  ? t("statusAbandoned")
+                                  : t("statusLocked")}
                           </p>
                           <p
                             className={`text-xs md:text-sm font-black mt-1.5 md:mt-2 ${isClaimed ? "text-emerald-600 dark:text-teal-400" : isCurrent ? "text-blue-600 dark:text-sky-400" : "text-slate-500 dark:text-slate-500"}`}
                           >
-                            YIELD: +${milestone.reward.toFixed(2)}
+                            {t("yieldValue", {
+                              reward: milestone.reward.toFixed(2),
+                            })}
                           </p>
                           {isClaimed && milestone.evidenceUrl && (
                             <a
@@ -309,7 +312,7 @@ export default async function TaskDetailPage({
                               <span className="material-symbols-outlined text-[14px] md:text-[16px] font-black">
                                 image
                               </span>{" "}
-                              Lihat Bukti
+                              {t("viewProof")}
                             </a>
                           )}
                         </div>
@@ -324,13 +327,13 @@ export default async function TaskDetailPage({
                   support_agent
                 </span>
                 <h4 className="text-xl md:text-2xl font-black uppercase text-slate-900 dark:text-white mb-2">
-                  Need Help?
+                  {t("needHelp")}
                 </h4>
                 <p className="text-[10px] md:text-sm font-bold text-slate-900 dark:text-slate-200 mb-4 md:mb-6 uppercase border-2 border-slate-900 dark:border-slate-700 p-2 bg-white/20 dark:bg-black/20">
-                  Compliance team is available 24/7.
+                  {t("helpDesc")}
                 </p>
                 <button className="w-full bg-white dark:bg-slate-900 border-4 border-slate-900 dark:border-slate-700 text-slate-900 dark:text-white font-black uppercase text-xs md:text-sm py-2.5 md:py-3 shadow-brutal dark:shadow-brutal-dark hover:-translate-y-1 hover:shadow-brutal-lg dark:hover:shadow-brutal-dark-lg active:translate-y-0 active:shadow-none transition-all">
-                  Contact Support
+                  {t("contactSupport")}
                 </button>
               </div>
             </div>
