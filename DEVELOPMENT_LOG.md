@@ -1,6 +1,6 @@
 # Arbitask Development Log
 
-## [23 Juli 2026] - Cloudflare Deployment Attempt (Failed) & Vercel Pivot[cite: 1]
+## [23 Juli 2026] - Cloudflare Deployment Attempt (Failed) & Vercel Pivot
 - **Deploy:** Attempted to deploy Next.js App Router to Cloudflare Workers utilizing Open-Next and Prisma Accelerate (`prisma://`) with a Supabase PostgreSQL database.
 - **Bug:** Encountered severe `PrismaClientInitializationError` and TypeScript validation failures during `next build` due to Next.js static rendering conflicting with Edge runtime constraints.
 - **Chore:** Quarantined all Cloudflare configuration hacks, Open-Next setups, and TypeScript type bypasses (`as any`) into a dedicated `experiment-cloudflare` branch to maintain codebase integrity.
