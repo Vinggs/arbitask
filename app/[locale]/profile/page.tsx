@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
 import ThemeToggle from "@/components/ThemeToggle";
+import LanguageToggle from "@/components/LanguageToggle"; // Import komponen bahasa
 import {
   getProfileStats,
   updateUserProfile,
@@ -20,6 +21,7 @@ export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState("personal");
   const locale = useLocale();
   const t = useTranslations("ProfilePage");
+  const tNotif = useTranslations("Notifications"); // Translasi khusus notifikasi
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -350,8 +352,19 @@ export default function ProfilePage() {
                         {t("modeDesc")}
                       </p>
                     </div>
-
                     <ThemeToggle />
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-sm bg-slate-50 dark:bg-slate-950 border-2 border-slate-900 dark:border-slate-700 shadow-brutal dark:shadow-brutal-dark mt-4">
+                    <div>
+                      <p className="text-sm md:text-base font-black uppercase text-slate-900 dark:text-white">
+                        {t("langTitle")}
+                      </p>
+                      <p className="text-[10px] md:text-xs font-bold text-slate-600 dark:text-slate-400 mt-0.5 uppercase tracking-widest leading-relaxed">
+                        {t("langDesc")}
+                      </p>
+                    </div>
+                    <LanguageToggle />
                   </div>
                 </div>
               )}
@@ -433,7 +446,9 @@ export default function ProfilePage() {
                           <div className="flex-1 w-full">
                             <div className="flex justify-between items-start mb-1 gap-2">
                               <p className="text-sm md:text-base font-black uppercase text-slate-900 dark:text-white leading-tight">
-                                {notif.title}
+                                {tNotif.has(notif.title)
+                                  ? tNotif(notif.title)
+                                  : notif.title}
                               </p>
                               <span className="text-[8px] md:text-[10px] font-black text-slate-600 dark:text-slate-300 uppercase border-2 border-slate-500 px-1 whitespace-nowrap">
                                 {formatDistanceToNow(
@@ -446,7 +461,9 @@ export default function ProfilePage() {
                               </span>
                             </div>
                             <p className="text-[10px] md:text-xs font-bold text-slate-700 dark:text-slate-300 leading-relaxed uppercase">
-                              {notif.message}
+                              {tNotif.has(notif.message)
+                                ? tNotif(notif.message)
+                                : notif.message}
                             </p>
                           </div>
                         </div>

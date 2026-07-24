@@ -156,7 +156,9 @@
     "inboxTitle": "Kotak Masuk Sistem",
     "inboxDesc": "Pesan & Notifikasi.",
     "markAllRead": "Tandai semua dibaca",
-    "noMessages": "TIDAK ADA PESAN BARU."
+    "noMessages": "TIDAK ADA PESAN BARU.",
+    "langTitle": "Bahasa / Language",
+    "langDesc": "Pilih bahasa pengantar antarmuka favoritmu."
   },
   "TaskDetail": {
     "title": "Detail Tugas",
@@ -220,5 +222,19 @@
     "newBadge": "{count} Baru",
     "empty": "Belum ada notifikasi.",
     "viewAll": "Lihat Semua di Inbox"
+  },
+  "Notifications": {
+    "manualTitle": "Task Manual Dibuat! 📝",
+    "manualMsg": "Sistem mulai melacak progres lu di game ini.",
+    "dropTitle": "Quest Abandoned! 🏳️",
+    "dropMsg": "Lu memutuskan nge-drop task. Riwayat tersimpan di Log History.",
+    "claimTitle": "Misi Selesai! 🎯",
+    "claimMsg": "Mantap! Lu berhasil nyelesaiin misi dan dapet reward.",
+    "tamatTitle": "Game Tamat! 🏆",
+    "tamatMsg": "GGWP! Lu berhasil namatin semua misi di game ini. Waktunya cairin dolar!",
+    "autoTitle": "Task Baru Terlacak! 🎮",
+    "autoMsg": "Sistem mulai melacak progres lu. Selesaikan misinya sebelum 30 hari!",
+    "verifiedTitle": "Misi Tervalidasi! ✅",
+    "verifiedMsg": "Bukti verifikasi lu udah diterima dan nambah ke saldo."
   }
 }

@@ -35,12 +35,11 @@ export async function addTask(formData: FormData) {
     },
   });
 
-  // 👇 NOTIFIKASI: TASK BARU (MANUAL) 👇
   if (user) {
     await prisma.notification.create({
       data: {
-        title: "Task Manual Dibuat! 📝",
-        message: `Sistem mulai melacak progres lu di game ${newTask.name}.`,
+        title: "manualTitle", // Panggil JSON key
+        message: "manualMsg", // Panggil JSON key
         type: "SYSTEM",
         userId: user.id,
       },
@@ -50,27 +49,23 @@ export async function addTask(formData: FormData) {
   revalidatePath("/tracking");
 }
 
-// 2. Fungsi Drop Task (Pengganti Delete)
+// 2. Fungsi Drop Task
 export async function dropTask(formData: FormData) {
   const id = formData.get("id") as string;
   const userEmail = formData.get("userEmail") as string;
 
-  // Ubah status jadi "Dropped" bukannya dihapus
   const task = await prisma.task.update({
     where: { id },
-    data: {
-      status: "Dropped",
-    },
+    data: { status: "Dropped" },
   });
 
-  // 👇 NOTIFIKASI: TASK DI-DROP 👇
   if (userEmail) {
     const user = await prisma.user.findUnique({ where: { email: userEmail } });
     if (user) {
       await prisma.notification.create({
         data: {
-          title: "Quest Abandoned! 🏳️",
-          message: `Lu memutuskan buat nge-drop task ${task.name}. Tenang aja, riwayatnya masih tersimpan di Log History buat evaluasi nanti.`,
+          title: "dropTitle",
+          message: "dropMsg",
           type: "SYSTEM",
           userId: user.id,
         },
@@ -82,19 +77,17 @@ export async function dropTask(formData: FormData) {
   revalidatePath("/");
 }
 
-// 3. Fungsi Claim Tier (Pengganti updateProgress)
+// 3. Fungsi Claim Tier
 export async function claimMilestone(formData: FormData) {
   const taskId = formData.get("taskId") as string;
   const milestoneId = formData.get("milestoneId") as string;
   const reward = parseFloat(formData.get("reward") as string);
 
-  // Tandai tier udah diambil dan ambil datanya buat notif
   const milestone = await prisma.milestone.update({
     where: { id: milestoneId },
     data: { isClaimed: true },
   });
 
-  // Tambahin duitnya ke Task utama dan ambil daftar tier buat ngecek tamat
   const task = await prisma.task.findUnique({
     where: { id: taskId },
     include: { milestones: true },
@@ -103,8 +96,10 @@ export async function claimMilestone(formData: FormData) {
   if (task) {
     const nilaiBaru = task.currentValue + reward;
 
-    // Cek apakah semua tier sudah terclaim SEKARANG
-    const allMilestonesClaimed = task.milestones.every((m) => m.isClaimed);
+    // Cek tamat (abaikan tier yang di-skip)
+    const activeMilestones = task.milestones.filter((m) => !m.isSkipped);
+    const allMilestonesClaimed =
+      activeMilestones.length > 0 && activeMilestones.every((m) => m.isClaimed);
     const isCompleted = nilaiBaru >= task.targetValue || allMilestonesClaimed;
 
     await prisma.task.update({
@@ -115,22 +110,20 @@ export async function claimMilestone(formData: FormData) {
       },
     });
 
-    // 👇 NOTIFIKASI: MISI SELESAI 👇
     await prisma.notification.create({
       data: {
-        title: "Misi Selesai! 🎯",
-        message: `Mantap! Lu berhasil nyelesaiin misi '${milestone.description}' di ${task.name} dan dapet $${reward.toFixed(2)}.`,
+        title: "claimTitle",
+        message: "claimMsg",
         type: "TASK_UPDATE",
         userId: task.userId,
       },
     });
 
-    // 👇 NOTIFIKASI: GAME TAMAT 👇
     if (isCompleted) {
       await prisma.notification.create({
         data: {
-          title: "Game Tamat! 🏆",
-          message: `GGWP! Lu berhasil namatin semua misi di game ${task.name}. Waktunya withdraw dolar lu ke PayPal atau lanjut gass game lain!`,
+          title: "tamatTitle",
+          message: "tamatMsg",
           type: "ACHIEVEMENT",
           userId: task.userId,
         },
@@ -141,9 +134,7 @@ export async function claimMilestone(formData: FormData) {
   revalidatePath("/tracking");
 }
 
-// -------------------------------------------------
-// 4. FITUR BARU: Auto-Track dari Dashboard
-// -------------------------------------------------
+// 4. Auto-Track dari Dashboard
 export async function autoTrackTask(formData: FormData) {
   const name = formData.get("gameName") as string;
   const imageUrl = formData.get("imageUrl") as string;
@@ -153,7 +144,6 @@ export async function autoTrackTask(formData: FormData) {
 
   if (!userEmail) throw new Error("User belum login!");
 
-  // 1. CEK DUPLIKAT
   const existingTask = await prisma.task.findFirst({
     where: {
       name: name,
@@ -163,10 +153,7 @@ export async function autoTrackTask(formData: FormData) {
     },
   });
 
-  if (existingTask) {
-    console.log("Task sudah ada di tracking, skip pembuatan!");
-    return;
-  }
+  if (existingTask) return;
 
   const user = await prisma.user.findUnique({ where: { email: userEmail } });
 
@@ -190,18 +177,15 @@ export async function autoTrackTask(formData: FormData) {
       currentValue: 0,
       deadline,
       user: { connect: { email: userEmail } },
-      milestones: {
-        create: milestonesToCreate,
-      },
+      milestones: { create: milestonesToCreate },
     },
   });
 
-  // 👇 NOTIFIKASI: TASK BARU (AUTO TRACK) 👇
   if (user) {
     await prisma.notification.create({
       data: {
-        title: "Task Baru Terlacak! 🎮",
-        message: `Sistem mulai melacak progres lu di game ${newTask.name}. Selesaikan misinya sebelum deadline 30 hari!`,
+        title: "autoTitle",
+        message: "autoMsg",
         type: "SYSTEM",
         userId: user.id,
       },
@@ -212,9 +196,7 @@ export async function autoTrackTask(formData: FormData) {
   revalidatePath("/tracking");
 }
 
-// -------------------------------------------------
-// 5. FITUR: Verifikasi Milestone dengan Gambar
-// -------------------------------------------------
+// 5. Verifikasi Milestone dengan Gambar
 export async function verifyMilestone(
   taskId: string,
   milestoneId: string,
@@ -241,7 +223,9 @@ export async function verifyMilestone(
 
   if (task) {
     const nilaiBaru = task.currentValue + milestone.reward;
-    const allMilestonesClaimed = task.milestones.every((m) => m.isClaimed);
+    const activeMilestones = task.milestones.filter((m) => !m.isSkipped);
+    const allMilestonesClaimed =
+      activeMilestones.length > 0 && activeMilestones.every((m) => m.isClaimed);
     const isCompleted = nilaiBaru >= task.targetValue || allMilestonesClaimed;
 
     await prisma.task.update({
@@ -252,22 +236,20 @@ export async function verifyMilestone(
       },
     });
 
-    // 👇 NOTIFIKASI: MISI SELESAI (DENGAN GAMBAR) 👇
     await prisma.notification.create({
       data: {
-        title: "Misi Tervalidasi! ✅",
-        message: `Bukti verifikasi lu buat misi '${milestone.description}' di ${task.name} udah diterima dan nambah $${milestone.reward.toFixed(2)}.`,
+        title: "verifiedTitle",
+        message: "verifiedMsg",
         type: "TASK_UPDATE",
         userId: task.userId,
       },
     });
 
-    // 👇 NOTIFIKASI: GAME TAMAT 👇
     if (isCompleted) {
       await prisma.notification.create({
         data: {
-          title: "Game Tamat! 🏆",
-          message: `GGWP! Lu berhasil namatin semua misi di game ${task.name}. Waktunya withdraw dolar lu ke PayPal atau lanjut gass game lain!`,
+          title: "tamatTitle",
+          message: "tamatMsg",
           type: "ACHIEVEMENT",
           userId: task.userId,
         },
@@ -280,33 +262,24 @@ export async function verifyMilestone(
   revalidatePath("/");
 }
 
-// -------------------------------------------------
-// 6. FITUR BARU: Ambil Total Saldo User
-// -------------------------------------------------
+// 6. Ambil Total Saldo User
 export async function getUserBalance(email: string) {
   try {
     const result = await prisma.task.aggregate({
-      where: {
-        user: { email: email },
-      },
-      _sum: {
-        currentValue: true,
-      },
+      where: { user: { email: email } },
+      _sum: { currentValue: true },
     });
-
     return result._sum.currentValue || 0;
   } catch (error) {
-    console.error("Gagal ngambil saldo:", error);
     return 0;
   }
 }
 
-// -------------------------------------------------
-// 7. FITUR BARU: Tambah Game ke Katalog
-// -------------------------------------------------
+// 7. Tambah Game ke Katalog
 export async function addGameToCatalog(formData: FormData) {
+  // ... (SAMA SEPERTI SEBELUMNYA) ...
   const gameName = formData.get("gameName") as string;
-  const platform = formData.get("platform") as string; // ✅ Tangkapan data platform baru
+  const platform = formData.get("platform") as string;
   const offerwall = formData.get("offerwall") as string;
   const category = formData.get("category") as string;
   const requirement = formData.get("requirement") as string;
@@ -315,22 +288,18 @@ export async function addGameToCatalog(formData: FormData) {
   const rawCoins = parseInt(formData.get("rawCoins") as string, 10);
   const isHighest = formData.get("isHighest") === "true";
 
-  // Parse milestones (kalau ada)
   const milestonesRaw = formData.get("milestones") as string;
   let milestones = [];
   if (milestonesRaw) {
     try {
       milestones = JSON.parse(milestonesRaw);
-    } catch (e) {
-      console.error("Gagal parse milestones");
-    }
+    } catch (e) {}
   }
 
-  // Masukin ke Database pakai Prisma
   await prisma.catalogOffer.create({
     data: {
       gameName,
-      platform, // ✅ Masukin platform ke database
+      platform,
       offerwall,
       category,
       requirement,
@@ -347,15 +316,13 @@ export async function addGameToCatalog(formData: FormData) {
     },
   });
 
-  // Refresh halaman katalog biar game baru langsung muncul
   revalidatePath("/katalog");
   revalidatePath("/");
 }
 
-// -------------------------------------------------
-// 8. FITUR BARU: Update Game di Katalog (Dari Admin)
-// -------------------------------------------------
+// 8. Update Game di Katalog (Dari Admin)
 export async function updateOfferAction(formData: FormData) {
+  // ... (SAMA SEPERTI SEBELUMNYA) ...
   const id = formData.get("id") as string;
   const gameName = formData.get("gameName") as string;
   const platform = formData.get("platform") as string;
@@ -365,18 +332,14 @@ export async function updateOfferAction(formData: FormData) {
   const usdValue = parseFloat(formData.get("usdValue") as string);
   const rawCoins = parseInt(formData.get("rawCoins") as string, 10);
 
-  // Parse milestones dari input hidden
   const milestonesRaw = formData.get("milestones") as string;
   let milestones = [];
   if (milestonesRaw) {
     try {
       milestones = JSON.parse(milestonesRaw);
-    } catch (e) {
-      console.error("Gagal parse milestones di fitur update");
-    }
+    } catch (e) {}
   }
 
-  // Update data ke Database pakai Prisma
   await prisma.catalogOffer.update({
     where: { id: id },
     data: {
@@ -387,7 +350,6 @@ export async function updateOfferAction(formData: FormData) {
       imageUrl: imageUrl || null,
       usdValue,
       rawCoins,
-      // Hapus semua tier lama, masukin yang baru dari form
       milestones: {
         deleteMany: {},
         create: milestones.map((m: any) => ({
@@ -398,8 +360,43 @@ export async function updateOfferAction(formData: FormData) {
     },
   });
 
-  // Refresh halaman
   revalidatePath("/katalog");
   revalidatePath("/");
   revalidatePath("/admin/edit-game");
+}
+
+// 9. FITUR BARU: Skip Milestone
+export async function skipMilestone(taskId: string, milestoneId: string) {
+  await prisma.milestone.update({
+    where: { id: milestoneId },
+    data: { isSkipped: true },
+  });
+
+  const task = await prisma.task.findUnique({
+    where: { id: taskId },
+    include: { milestones: true },
+  });
+
+  if (task) {
+    const activeMilestones = task.milestones.filter((m) => !m.isSkipped);
+    const isCompleted =
+      activeMilestones.length > 0 && activeMilestones.every((m) => m.isClaimed);
+
+    if (isCompleted) {
+      await prisma.task.update({
+        where: { id: taskId },
+        data: { status: "Completed" },
+      });
+      await prisma.notification.create({
+        data: {
+          title: "tamatTitle",
+          message: "tamatMsg",
+          type: "ACHIEVEMENT",
+          userId: task.userId,
+        },
+      });
+    }
+  }
+  revalidatePath(`/tracking/${taskId}`);
+  revalidatePath("/tracking");
 }

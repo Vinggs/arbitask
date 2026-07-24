@@ -92,6 +92,7 @@ model Milestone {
   description String   
   reward      Float    
   isClaimed   Boolean  @default(false)
+  isSkipped   Boolean  @default(false)
   evidenceUrl String?
   taskId      String
   task        Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)

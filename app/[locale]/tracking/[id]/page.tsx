@@ -4,17 +4,20 @@ import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import EvidenceUploader from "@/components/EvidenceUploader";
+import SkipMilestoneButton from "@/components/SkipMilestoneButton";
 import { dropTask } from "@/app/[locale]/actions";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import DropTaskButton from "@/components/DropTaskButton";
 import { getTranslations } from "next-intl/server";
+import SafeImage from "@/components/SafeImage"; // ✅ Import komponen baru
 
 type MilestoneWithEvidence = {
   id: string;
   description: string;
   reward: number;
   isClaimed: boolean;
+  isSkipped: boolean;
   taskId: string;
   evidenceUrl?: string | null;
 };
@@ -43,10 +46,21 @@ export default async function TaskDetailPage({
   const claimedMilestones = typedMilestones.filter((m) => m.isClaimed).length;
   const progressPercentage =
     totalMilestones > 0 ? (claimedMilestones / totalMilestones) * 100 : 0;
-  const currentObjective = typedMilestones.find((m) => !m.isClaimed);
+
+  const currentObjective = typedMilestones.find(
+    (m) => !m.isClaimed && !m.isSkipped,
+  );
 
   const imgPlaceholder = `https://ui-avatars.com/api/?name=${encodeURIComponent(task.name)}&background=000&color=fff&size=128&font-size=0.4&bold=true`;
-  const displayImage = task.imageUrl ? task.imageUrl : imgPlaceholder;
+  const isValidImage =
+    typeof task.imageUrl === "string" &&
+    task.imageUrl !== "null" &&
+    task.imageUrl !== "undefined" &&
+    task.imageUrl.trim() !== "";
+
+  const displayImage = isValidImage
+    ? (task.imageUrl as string)
+    : imgPlaceholder;
 
   const offerwallParts = task.offerwall.split(" - ");
   const platformName = offerwallParts.length > 1 ? offerwallParts[0] : "";
@@ -92,8 +106,10 @@ export default async function TaskDetailPage({
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-6">
               <div className="flex flex-row items-center gap-4">
                 <div className="w-16 h-16 md:w-20 md:h-20 bg-white border-4 border-slate-900 dark:border-slate-700 flex items-center justify-center shadow-brutal md:shadow-brutal-lg dark:shadow-brutal-dark md:dark:shadow-brutal-dark-lg shrink-0 overflow-hidden">
-                  <img
+                  {/* ✅ Pakai SafeImage di sini */}
+                  <SafeImage
                     src={displayImage}
+                    fallbackSrc={imgPlaceholder}
                     alt={task.name}
                     className="w-full h-full object-cover"
                   />
@@ -217,9 +233,17 @@ export default async function TaskDetailPage({
                           <p className="text-xs md:text-base font-bold text-slate-700 dark:text-slate-400 mb-4 md:mb-6 uppercase">
                             {t("uploadDesc")}
                           </p>
+
+                          {/* Komponen Pengunggah Bukti */}
                           <EvidenceUploader
                             taskId={task.id}
                             currentObjectiveId={currentObjective.id}
+                          />
+
+                          {/* Komponen Tombol Skip Custom */}
+                          <SkipMilestoneButton
+                            taskId={task.id}
+                            milestoneId={currentObjective.id}
                           />
                         </>
                       ) : (
@@ -256,6 +280,7 @@ export default async function TaskDetailPage({
                   ) : (
                     typedMilestones.map((milestone, index) => {
                       const isClaimed = milestone.isClaimed;
+                      const isSkipped = milestone.isSkipped;
                       const isCurrent =
                         task.status !== "Dropped" &&
                         currentObjective?.id === milestone.id;
@@ -267,36 +292,42 @@ export default async function TaskDetailPage({
                         >
                           {index !== typedMilestones.length - 1 && (
                             <div
-                              className={`absolute left-0 top-3 bottom-[-30px] md:bottom-[-40px] w-1 ml-2.5 md:ml-3 border-l-4 border-slate-900 dark:border-slate-700 ${isClaimed ? "border-solid" : "border-dashed"}`}
+                              className={`absolute left-0 top-3 bottom-[-30px] md:bottom-[-40px] w-1 ml-2.5 md:ml-3 border-l-4 border-slate-900 dark:border-slate-700 ${isClaimed || isSkipped ? "border-solid" : "border-dashed"}`}
                             ></div>
                           )}
 
                           <div
-                            className={`absolute left-0 top-1 w-6 h-6 md:w-8 md:h-8 border-2 md:border-4 border-slate-900 dark:border-slate-700 flex items-center justify-center transition-colors ${isClaimed ? "bg-emerald-400 dark:bg-teal-600" : isCurrent ? "bg-blue-300 dark:bg-sky-600" : "bg-white dark:bg-slate-800"}`}
+                            className={`absolute left-0 top-1 w-6 h-6 md:w-8 md:h-8 border-2 md:border-4 border-slate-900 dark:border-slate-700 flex items-center justify-center transition-colors ${isClaimed ? "bg-emerald-400 dark:bg-teal-600" : isSkipped ? "bg-slate-400 dark:bg-slate-600" : isCurrent ? "bg-blue-300 dark:bg-sky-600" : "bg-white dark:bg-slate-800"}`}
                           >
                             {isClaimed ? (
                               <span className="material-symbols-outlined text-slate-900 dark:text-white text-[14px] md:text-[20px] font-black">
                                 check
                               </span>
+                            ) : isSkipped ? (
+                              <span className="material-symbols-outlined text-slate-900 dark:text-white text-[14px] md:text-[20px] font-black">
+                                close
+                              </span>
                             ) : null}
                           </div>
 
                           <h4
-                            className={`text-sm md:text-base font-black uppercase ${isClaimed || isCurrent ? "text-slate-900 dark:text-white" : "text-slate-500 dark:text-slate-400"}`}
+                            className={`text-sm md:text-base font-black uppercase ${isClaimed || isCurrent ? "text-slate-900 dark:text-white" : isSkipped ? "text-slate-500 dark:text-slate-500 line-through" : "text-slate-500 dark:text-slate-400"}`}
                           >
                             {milestone.description}
                           </h4>
                           <p className="text-[10px] md:text-xs font-bold mt-1 text-slate-500 dark:text-slate-400 uppercase border-2 border-slate-300 dark:border-slate-600 inline-block px-1">
                             {isClaimed
                               ? t("statusVerified")
-                              : isCurrent
-                                ? t("statusPending")
-                                : task.status === "Dropped"
-                                  ? t("statusAbandoned")
-                                  : t("statusLocked")}
+                              : isSkipped
+                                ? "SKIPPED"
+                                : isCurrent
+                                  ? t("statusPending")
+                                  : task.status === "Dropped"
+                                    ? t("statusAbandoned")
+                                    : t("statusLocked")}
                           </p>
                           <p
-                            className={`text-xs md:text-sm font-black mt-1.5 md:mt-2 ${isClaimed ? "text-emerald-600 dark:text-teal-400" : isCurrent ? "text-blue-600 dark:text-sky-400" : "text-slate-500 dark:text-slate-500"}`}
+                            className={`text-xs md:text-sm font-black mt-1.5 md:mt-2 ${isClaimed ? "text-emerald-600 dark:text-teal-400" : isSkipped ? "text-slate-400 dark:text-slate-500" : isCurrent ? "text-blue-600 dark:text-sky-400" : "text-slate-500 dark:text-slate-500"}`}
                           >
                             {t("yieldValue", {
                               reward: milestone.reward.toFixed(2),

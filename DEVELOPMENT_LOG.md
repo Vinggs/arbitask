@@ -2,8 +2,11 @@
 
 ## [24 Juli 2026] - Full Internationalization (i18n) & Localization Polish
 - **Feature:** Finalized comprehensive multi-language support (English and Indonesian) across all primary modules, including Catalog Grid, Manual Tracking modal forms, and the header notification dropdown.
+- **Feature:** Added dynamic language switcher toggle and fully localized notification system using `next-intl`.
 - **Logic:** Integrated dynamic Regex-based text translation (`translateDynamicText`) for database-driven game requirements and milestones without altering the underlying database schema.
 - **UI & UX:** Standardized translation dictionaries (`en.json` & `id.json`), configured remote image domains (`img.poki-cdn.com`) for seamless game asset rendering, and synchronized localized relative date formatting (`date-fns`) for notifications.
+- **Component:** Implemented `SafeImage` client component for error-proof image rendering, alongside custom Neo-Brutalism modals for `DropTaskButton` and `SkipMilestoneButton` utilizing React Portal.
+- **Bug Fix:** Adjusted `middleware.ts` matcher to bypass API routes, resolving NextAuth `[CLIENT_FETCH_ERROR]` JSON fetch conflicts with next-intl localization.
 
 ## [23 Juli 2026] - Cloudflare Deployment Attempt (Failed) & Vercel Pivot
 - **Deploy:** Attempted to deploy Next.js App Router to Cloudflare Workers utilizing Open-Next and Prisma Accelerate (`prisma://`) with a Supabase PostgreSQL database.

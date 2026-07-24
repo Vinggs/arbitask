@@ -156,7 +156,9 @@
     "inboxTitle": "System Inbox",
     "inboxDesc": "Messages & Notifications.",
     "markAllRead": "Mark all as read",
-    "noMessages": "NO NEW MESSAGES."
+    "noMessages": "NO NEW MESSAGES.",
+    "langTitle": "Language / Bahasa",
+    "langDesc": "Select your preferred interface language."
   },
   "TaskDetail": {
     "title": "Task Details",
@@ -220,5 +222,19 @@
     "newBadge": "{count} New",
     "empty": "No new notifications.",
     "viewAll": "View All in Inbox"
+  },
+  "Notifications": {
+    "manualTitle": "Manual Task Created! 📝",
+    "manualMsg": "System has started tracking your manual task.",
+    "dropTitle": "Quest Abandoned! 🏳️",
+    "dropMsg": "You dropped a task. History is saved for your evaluation.",
+    "claimTitle": "Milestone Cleared! 🎯",
+    "claimMsg": "Awesome! You successfully verified a milestone and earned rewards.",
+    "tamatTitle": "Game Completed! 🏆",
+    "tamatMsg": "GGWP! You cleared all milestones. Ready for the next game!",
+    "autoTitle": "New Task Tracked! 🎮",
+    "autoMsg": "System started tracking your task. Complete it before the 30-day deadline!",
+    "verifiedTitle": "Milestone Verified! ✅",
+    "verifiedMsg": "Your evidence has been accepted and the reward is added to your balance."
   }
 }

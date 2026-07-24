@@ -15,6 +15,7 @@ export default function HeaderNotification() {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const t = useTranslations("HeaderNotification");
+  const tNotif = useTranslations("Notifications"); // Hook untuk terjemahan isi notifikasi
   const locale = useLocale();
 
   useEffect(() => {
@@ -85,7 +86,9 @@ export default function HeaderNotification() {
                 >
                   <div className="flex justify-between items-start mb-1">
                     <p className="text-sm font-black text-slate-900 dark:text-white uppercase line-clamp-1">
-                      {notif.title}
+                      {tNotif.has(notif.title)
+                        ? tNotif(notif.title)
+                        : notif.title}
                     </p>
                     <span className="text-[10px] text-slate-600 dark:text-slate-400 whitespace-nowrap ml-2 font-bold uppercase border-b-2 border-slate-600 dark:border-slate-400">
                       {formatDistanceToNow(new Date(notif.createdAt), {
@@ -95,7 +98,9 @@ export default function HeaderNotification() {
                     </span>
                   </div>
                   <p className="text-xs text-slate-700 dark:text-slate-300 font-bold uppercase line-clamp-2 leading-relaxed">
-                    {notif.message}
+                    {tNotif.has(notif.message)
+                      ? tNotif(notif.message)
+                      : notif.message}
                   </p>
                 </Link>
               ))

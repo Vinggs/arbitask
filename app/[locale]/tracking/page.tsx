@@ -8,6 +8,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import DropTaskButton from "@/components/DropTaskButton";
 import { getTranslations } from "next-intl/server";
+import SafeImage from "@/components/SafeImage"; // ✅ Import komponen baru
 
 export default async function TrackingPage() {
   const session = await getServerSession(authOptions);
@@ -112,11 +113,18 @@ export default async function TrackingPage() {
                   (task.deadline.getTime() - today.getTime()) /
                     (1000 * 3600 * 24),
                 );
-                const displayImage = task.imageUrl
-                  ? task.imageUrl
-                  : `https://ui-avatars.com/api/?name=${encodeURIComponent(
-                      task.name,
-                    )}&background=000&color=fff&size=128&bold=true`;
+
+                const imgPlaceholder = `https://ui-avatars.com/api/?name=${encodeURIComponent(task.name)}&background=000&color=fff&size=128&bold=true`;
+                const isValidImage =
+                  typeof task.imageUrl === "string" &&
+                  task.imageUrl !== "null" &&
+                  task.imageUrl !== "undefined" &&
+                  task.imageUrl.trim() !== "";
+
+                const displayImage = isValidImage
+                  ? (task.imageUrl as string)
+                  : imgPlaceholder;
+
                 const isCompleted = task.status === "Completed";
                 const isDropped = task.status === "Dropped";
 
@@ -161,8 +169,10 @@ export default async function TrackingPage() {
                     >
                       <div className="flex items-center gap-3 md:gap-4 mb-4 md:mb-6 mt-4 md:mt-2">
                         <div className="w-12 h-12 md:w-14 md:h-14 rounded-md border-2 border-slate-900 dark:border-slate-700 bg-white dark:bg-slate-900 flex items-center justify-center shrink-0 overflow-hidden shadow-brutal-sm dark:shadow-brutal-dark-sm">
-                          <img
+                          {/* ✅ Pakai SafeImage di sini */}
+                          <SafeImage
                             src={displayImage}
+                            fallbackSrc={imgPlaceholder}
                             alt={task.name}
                             className="w-full h-full object-cover"
                           />
@@ -231,7 +241,7 @@ export default async function TrackingPage() {
                       </div>
                     </Link>
 
-                    <div className="px-4 md:px-6 py-3 md:py-4 border-t-2 border-slate-900 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 flex justify-between items-center">
+                    <div className="px-4 md:px-6 py-3 md:py-4 border-t-2 border-slate-900 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 flex justify-between items-center items-start">
                       <div className="font-black text-[10px] md:text-xs uppercase text-slate-900 dark:text-slate-300">
                         {isDropped
                           ? t("statusAbandoned")

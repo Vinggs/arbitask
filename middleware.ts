@@ -11,7 +11,7 @@ const intlMiddleware = createIntlMiddleware({
   localePrefix: "always",
 });
 
-// 2. Inisialisasi Middleware Auth (Hapus fungsi onSuccess yang lama)
+// 2. Inisialisasi Middleware Auth
 const authMiddleware = withAuth({
   callbacks: {
     authorized: ({ req, token }) => {
@@ -44,17 +44,16 @@ export default async function middleware(req: NextRequest) {
   // Jalankan next-auth untuk verifikasi sesi
   const authResponse = await (authMiddleware as any)(req);
 
-  // Kalau next-auth menolak (karena belum login) dan memaksa redirect ke /login (status 302/307), jalankan redirect-nya
+  // Kalau next-auth menolak (karena belum login) dan memaksa redirect ke /login, jalankan redirect-nya
   if (authResponse?.status === 307 || authResponse?.status === 302) {
     return authResponse;
   }
 
-  // KUNCI UTAMANYA DI SINI:
-  // Kalau auth tembus, jalankan middleware bahasa di luar.
-  // Ini mencegah next-auth "memakan" header penting milik next-intl.
+  // Kalau auth tembus, jalankan middleware bahasa
   return intlMiddleware(req);
 }
 
 export const config = {
+  // ✅ PENTING: Mengecualikan api, _next, _vercel, dan file statis lainnya dari middleware
   matcher: ["/((?!api|_next|_vercel|.*\\..*).*)"],
 };
