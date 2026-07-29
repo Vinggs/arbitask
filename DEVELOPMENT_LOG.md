@@ -1,4 +1,9 @@
 # Arbitask Development Log
+## [29 Juli 2026] - Data Isolation, Auth Flows & UI Refinements
+- **Security:** Implemented strict `where` filters based on session `userEmail` across Tracking and Log History pages to ensure absolute data isolation between OAuth users.
+- **Feature:** Added native `signOut` logout functionality to the Profile Page using `next-auth/react`.
+- **UI:** Replaced broken external SVG references (SVGRepo hotlinking restriction) for the Discord login button with an optimized inline `<svg>` component.
+- **UX/Logic:** Replaced static `usdValue` database sorting with a client-side Fisher-Yates shuffle algorithm in the Dashboard catalog to dynamically randomize offer placements on page refresh.
 
 ## [24 Juli 2026] - Full Internationalization (i18n) & Localization Polish
 - **Feature:** Finalized comprehensive multi-language support (English and Indonesian) across all primary modules, including Catalog Grid, Manual Tracking modal forms, and the header notification dropdown.
