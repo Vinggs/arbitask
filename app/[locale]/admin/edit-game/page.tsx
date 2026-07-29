@@ -21,7 +21,7 @@ export default async function AdminEditGamePage() {
       <div className="w-full overflow-x-auto border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-white">
         <table className="w-full min-w-[800px] text-left border-collapse">
           <tbody>
-            {catalogOffers.map((offer) => (
+            {catalogOffers.map((offer: any) => (
               <AdminOfferRow
                 key={offer.id}
                 offer={offer}
