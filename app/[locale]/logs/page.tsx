@@ -146,7 +146,7 @@ export default async function LogHistoryPage() {
                       </td>
                     </tr>
                   ) : (
-                    dynamicLogs.map((log) => (
+                    dynamicLogs.map((log: any) => (
                       <tr
                         key={log.id}
                         className="hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-colors"
