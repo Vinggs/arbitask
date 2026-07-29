@@ -24,7 +24,7 @@ export default async function TrackingPage() {
   const activeTasks = tasks.filter((t: any) => t.status === "In Progress");
   const completedTasks = tasks.filter((t: any) => t.status === "Completed");
   const totalPotentialYield = activeTasks.reduce(
-    (acc, curr) => acc + curr.targetValue,
+    (acc: any, curr: any) => acc + curr.targetValue,
     0,
   );
 
