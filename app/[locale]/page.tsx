@@ -134,11 +134,11 @@ export default async function DashboardPage({
                     </td>
                   </tr>
                 ) : (
-                  offers.map((offer) => {
+                  offers.map((offer: any) => {
                     const combinedOfferwall = `${offer.platform} - ${offer.offerwall}`;
 
                     const existingTask = trackedTasks.find(
-                      (task) =>
+                      (task: any) =>
                         task.name.toLowerCase() ===
                           offer.gameName.toLowerCase() &&
                         task.offerwall === combinedOfferwall &&
