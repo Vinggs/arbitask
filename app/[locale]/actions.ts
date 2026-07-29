@@ -224,9 +224,10 @@ export async function verifyMilestone(
 
   if (task) {
     const nilaiBaru = task.currentValue + milestone.reward;
-    const activeMilestones = task.milestones.filter((m) => !m.isSkipped);
+    const activeMilestones = task.milestones.filter((m: any) => !m.isSkipped);
     const allMilestonesClaimed =
-      activeMilestones.length > 0 && activeMilestones.every((m) => m.isClaimed);
+      activeMilestones.length > 0 &&
+      activeMilestones.every((m: any) => m.isClaimed);
     const isCompleted = nilaiBaru >= task.targetValue || allMilestonesClaimed;
 
     await prisma.task.update({
@@ -379,9 +380,10 @@ export async function skipMilestone(taskId: string, milestoneId: string) {
   });
 
   if (task) {
-    const activeMilestones = task.milestones.filter((m) => !m.isSkipped);
+    const activeMilestones = task.milestones.filter((m: any) => !m.isSkipped);
     const isCompleted =
-      activeMilestones.length > 0 && activeMilestones.every((m) => m.isClaimed);
+      activeMilestones.length > 0 &&
+      activeMilestones.every((m: any) => m.isClaimed);
 
     if (isCompleted) {
       await prisma.task.update({
