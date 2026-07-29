@@ -7,13 +7,15 @@ import { useTranslations } from "next-intl";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const t = useTranslations("LoginPage");
 
-  const handleEmailSignIn = async (e: FormEvent) => {
+  const handleCredentialsSignIn = async (e: FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    await signIn("email", { email, callbackUrl: "/" });
+    // Mengubah pemanggilan dari "email" ke "credentials" agar tersambung dengan backend
+    await signIn("credentials", { email, password, callbackUrl: "/" });
     setIsLoading(false);
   };
 
@@ -97,19 +99,29 @@ export default function LoginPage() {
         <div className="my-6 md:my-8 flex items-center gap-2 md:gap-4">
           <div className="h-1 bg-slate-900 dark:bg-slate-700 flex-1 transition-colors"></div>
           <span className="text-[10px] md:text-xs text-slate-900 dark:text-slate-400 font-black uppercase transition-colors tracking-widest whitespace-nowrap">
-            {t("magicLink")}
+            Atau Gunakan Email
           </span>
           <div className="h-1 bg-slate-900 dark:bg-slate-700 flex-1 transition-colors"></div>
         </div>
 
-        {/* Form Email */}
-        <form onSubmit={handleEmailSignIn} className="space-y-4">
+        {/* Form Email & Password */}
+        <form onSubmit={handleCredentialsSignIn} className="space-y-4">
           <div>
             <input
               type="email"
               placeholder={t("emailPlaceholder")}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-4 py-3 bg-white dark:bg-slate-950 border-4 border-slate-900 dark:border-slate-700 font-bold text-sm text-slate-900 dark:text-slate-200 focus:outline-none shadow-brutal dark:shadow-brutal-dark focus:-translate-y-1 transition-all placeholder-slate-400 dark:placeholder-slate-500"
+              required
+            />
+          </div>
+          <div>
+            <input
+              type="password"
+              placeholder="Masukkan Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className="w-full px-4 py-3 bg-white dark:bg-slate-950 border-4 border-slate-900 dark:border-slate-700 font-bold text-sm text-slate-900 dark:text-slate-200 focus:outline-none shadow-brutal dark:shadow-brutal-dark focus:-translate-y-1 transition-all placeholder-slate-400 dark:placeholder-slate-500"
               required
             />
@@ -125,17 +137,18 @@ export default function LoginPage() {
               </span>
             ) : (
               <span className="material-symbols-outlined text-[18px] md:text-[20px] font-black">
-                mail
+                login
               </span>
             )}
-            {t("sendLink")}
+            Sign In
           </button>
         </form>
 
         <div className="mt-6 md:mt-8 text-center">
+          {/* Class inline-flex dan flex disatukan di sini agar tidak konflik */}
           <Link
             href="/"
-            className="text-[10px] md:text-xs font-black uppercase text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 transition-colors flex items-center justify-center gap-1 inline-flex border-b-2 border-transparent hover:border-slate-900 dark:hover:border-slate-200"
+            className="inline-flex items-center justify-center gap-1 text-[10px] md:text-xs font-black uppercase text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 transition-colors border-b-2 border-transparent hover:border-slate-900 dark:hover:border-slate-200"
           >
             <span className="material-symbols-outlined text-[14px] md:text-[16px] font-black">
               arrow_back
