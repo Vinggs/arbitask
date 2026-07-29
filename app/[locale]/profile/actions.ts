@@ -13,7 +13,7 @@ export async function getProfileStats(email: string) {
 
     const taskCount = user.tasks.length;
     const totalYield = user.tasks.reduce(
-      (acc, task) => acc + task.targetValue,
+      (acc: any, task: any) => acc + task.targetValue,
       0,
     );
 
