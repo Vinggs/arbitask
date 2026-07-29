@@ -25,7 +25,7 @@ export default async function LogHistoryPage() {
     orderBy: { createdAt: "desc" },
   });
 
-  const dynamicLogs = tasks.map((task) => {
+  const dynamicLogs = tasks.map((task: any) => {
     const dateStr = new Intl.DateTimeFormat("en-US", {
       month: "short",
       day: "numeric",
