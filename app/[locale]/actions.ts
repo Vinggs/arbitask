@@ -97,9 +97,10 @@ export async function claimMilestone(formData: FormData) {
     const nilaiBaru = task.currentValue + reward;
 
     // Cek tamat (abaikan tier yang di-skip)
-    const activeMilestones = task.milestones.filter((m) => !m.isSkipped);
+    const activeMilestones = task.milestones.filter((m: any) => !m.isSkipped);
     const allMilestonesClaimed =
-      activeMilestones.length > 0 && activeMilestones.every((m) => m.isClaimed);
+      activeMilestones.length > 0 &&
+      activeMilestones.every((m: any) => m.isClaimed);
     const isCompleted = nilaiBaru >= task.targetValue || allMilestonesClaimed;
 
     await prisma.task.update({
