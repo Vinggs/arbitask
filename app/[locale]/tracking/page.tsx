@@ -99,10 +99,10 @@ export default async function TrackingPage() {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6 pb-12">
-              {tasks.map((task) => {
+              {tasks.map((task: any) => {
                 const totalMilestones = task.milestones.length;
                 const claimedMilestones = task.milestones.filter(
-                  (m) => m.isClaimed,
+                  (m: any) => m.isClaimed,
                 ).length;
                 const progressPercent =
                   totalMilestones > 0
