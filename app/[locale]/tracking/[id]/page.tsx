@@ -10,7 +10,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import DropTaskButton from "@/components/DropTaskButton";
 import { getTranslations } from "next-intl/server";
-import SafeImage from "@/components/SafeImage"; // ✅ Import komponen baru
+import SafeImage from "@/components/SafeImage";
 
 type MilestoneWithEvidence = {
   id: string;
@@ -34,8 +34,12 @@ export default async function TaskDetailPage({
   const resolvedParams = await params;
   const taskId = resolvedParams.id;
 
-  const task = await prisma.task.findUnique({
-    where: { id: taskId },
+  // ✅ KUNCI ISOLASI: Ubah findUnique jadi findFirst untuk memfilter userEmail
+  const task = await prisma.task.findFirst({
+    where: {
+      id: taskId,
+      user: { email: userEmail },
+    },
     include: { milestones: { orderBy: { reward: "asc" } } },
   });
 
@@ -106,7 +110,6 @@ export default async function TaskDetailPage({
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-6">
               <div className="flex flex-row items-center gap-4">
                 <div className="w-16 h-16 md:w-20 md:h-20 bg-white border-4 border-slate-900 dark:border-slate-700 flex items-center justify-center shadow-brutal md:shadow-brutal-lg dark:shadow-brutal-dark md:dark:shadow-brutal-dark-lg shrink-0 overflow-hidden">
-                  {/* ✅ Pakai SafeImage di sini */}
                   <SafeImage
                     src={displayImage}
                     fallbackSrc={imgPlaceholder}
@@ -234,13 +237,11 @@ export default async function TaskDetailPage({
                             {t("uploadDesc")}
                           </p>
 
-                          {/* Komponen Pengunggah Bukti */}
                           <EvidenceUploader
                             taskId={task.id}
                             currentObjectiveId={currentObjective.id}
                           />
 
-                          {/* Komponen Tombol Skip Custom */}
                           <SkipMilestoneButton
                             taskId={task.id}
                             milestoneId={currentObjective.id}

@@ -5,12 +5,19 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import CatalogGrid from "@/components/CatalogGrid";
 import { getTranslations } from "next-intl/server";
+// ✅ TAMBAHAN: Import NextAuth
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export default async function ProviderDetailPage({
   params,
 }: {
   params: Promise<{ provider: string }>;
 }) {
+  // ✅ TAMBAHAN: Ambil data sesi user
+  const session = await getServerSession(authOptions);
+  const userEmail = session?.user?.email || "";
+
   const t = await getTranslations("ProviderDetail");
   const resolvedParams = await params;
   const providerSlug = resolvedParams.provider.toLowerCase();
@@ -43,7 +50,9 @@ export default async function ProviderDetailPage({
     orderBy: { usdValue: "desc" },
   });
 
+  // ✅ KUNCI ISOLASI: Filter pencarian status tugas hanya untuk user terkait
   const trackedTasks = await prisma.task.findMany({
+    where: { user: { email: userEmail } },
     select: { name: true, offerwall: true, status: true },
   });
 

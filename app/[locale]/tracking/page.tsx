@@ -8,14 +8,18 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import DropTaskButton from "@/components/DropTaskButton";
 import { getTranslations } from "next-intl/server";
-import SafeImage from "@/components/SafeImage"; // ✅ Import komponen baru
+import SafeImage from "@/components/SafeImage";
 
 export default async function TrackingPage() {
   const session = await getServerSession(authOptions);
   const userEmail = session?.user?.email || "";
   const t = await getTranslations("Tracking");
 
+  // ✅ KUNCI ISOLASI: Filter task berdasarkan email user yang login
   const tasks = await prisma.task.findMany({
+    where: {
+      user: { email: userEmail },
+    },
     orderBy: { deadline: "asc" },
     include: { milestones: { orderBy: { id: "asc" } } },
   });
@@ -169,7 +173,6 @@ export default async function TrackingPage() {
                     >
                       <div className="flex items-center gap-3 md:gap-4 mb-4 md:mb-6 mt-4 md:mt-2">
                         <div className="w-12 h-12 md:w-14 md:h-14 rounded-md border-2 border-slate-900 dark:border-slate-700 bg-white dark:bg-slate-900 flex items-center justify-center shrink-0 overflow-hidden shadow-brutal-sm dark:shadow-brutal-dark-sm">
-                          {/* ✅ Pakai SafeImage di sini */}
                           <SafeImage
                             src={displayImage}
                             fallbackSrc={imgPlaceholder}

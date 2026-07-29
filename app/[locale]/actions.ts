@@ -3,7 +3,9 @@
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
+// -------------------------------------------------
 // 1. Fungsi Tambah Task + Milestones (Manual)
+// -------------------------------------------------
 export async function addTask(formData: FormData) {
   const name = formData.get("name") as string;
   const offerwall = formData.get("offerwall") as string;
@@ -38,8 +40,8 @@ export async function addTask(formData: FormData) {
   if (user) {
     await prisma.notification.create({
       data: {
-        title: "manualTitle", // Panggil JSON key
-        message: "manualMsg", // Panggil JSON key
+        title: "manualTitle",
+        message: "manualMsg",
         type: "SYSTEM",
         userId: user.id,
       },
@@ -49,35 +51,49 @@ export async function addTask(formData: FormData) {
   revalidatePath("/tracking");
 }
 
-// 2. Fungsi Drop Task
+// -------------------------------------------------
+// 2. Fungsi Drop Task (✅ SUDAH DIAMANKAN)
+// -------------------------------------------------
 export async function dropTask(formData: FormData) {
   const id = formData.get("id") as string;
   const userEmail = formData.get("userEmail") as string;
+
+  if (!userEmail) return;
+
+  // ✅ KUNCI ISOLASI: Pastikan task yang di-drop adalah milik email ini
+  const existingTask = await prisma.task.findFirst({
+    where: {
+      id: id,
+      user: { email: userEmail },
+    },
+  });
+
+  if (!existingTask) return; // Jika bukan miliknya, tolak akses
 
   const task = await prisma.task.update({
     where: { id },
     data: { status: "Dropped" },
   });
 
-  if (userEmail) {
-    const user = await prisma.user.findUnique({ where: { email: userEmail } });
-    if (user) {
-      await prisma.notification.create({
-        data: {
-          title: "dropTitle",
-          message: "dropMsg",
-          type: "SYSTEM",
-          userId: user.id,
-        },
-      });
-    }
+  const user = await prisma.user.findUnique({ where: { email: userEmail } });
+  if (user) {
+    await prisma.notification.create({
+      data: {
+        title: "dropTitle",
+        message: "dropMsg",
+        type: "SYSTEM",
+        userId: user.id,
+      },
+    });
   }
 
   revalidatePath("/tracking");
   revalidatePath("/");
 }
 
+// -------------------------------------------------
 // 3. Fungsi Claim Tier
+// -------------------------------------------------
 export async function claimMilestone(formData: FormData) {
   const taskId = formData.get("taskId") as string;
   const milestoneId = formData.get("milestoneId") as string;
@@ -96,7 +112,6 @@ export async function claimMilestone(formData: FormData) {
   if (task) {
     const nilaiBaru = task.currentValue + reward;
 
-    // Cek tamat (abaikan tier yang di-skip)
     const activeMilestones = task.milestones.filter((m: any) => !m.isSkipped);
     const allMilestonesClaimed =
       activeMilestones.length > 0 &&
@@ -135,7 +150,9 @@ export async function claimMilestone(formData: FormData) {
   revalidatePath("/tracking");
 }
 
-// 4. Auto-Track dari Dashboard
+// -------------------------------------------------
+// 4. Auto-Track dari Dashboard (✅ SUDAH DIAMANKAN)
+// -------------------------------------------------
 export async function autoTrackTask(formData: FormData) {
   const name = formData.get("gameName") as string;
   const imageUrl = formData.get("imageUrl") as string;
@@ -145,6 +162,7 @@ export async function autoTrackTask(formData: FormData) {
 
   if (!userEmail) throw new Error("User belum login!");
 
+  // ✅ KUNCI ISOLASI: Sudah aman karena mencari berdasarkan email user
   const existingTask = await prisma.task.findFirst({
     where: {
       name: name,
@@ -197,7 +215,9 @@ export async function autoTrackTask(formData: FormData) {
   revalidatePath("/tracking");
 }
 
+// -------------------------------------------------
 // 5. Verifikasi Milestone dengan Gambar
+// -------------------------------------------------
 export async function verifyMilestone(
   taskId: string,
   milestoneId: string,
@@ -264,7 +284,9 @@ export async function verifyMilestone(
   revalidatePath("/");
 }
 
+// -------------------------------------------------
 // 6. Ambil Total Saldo User
+// -------------------------------------------------
 export async function getUserBalance(email: string) {
   try {
     const result = await prisma.task.aggregate({
@@ -277,9 +299,10 @@ export async function getUserBalance(email: string) {
   }
 }
 
-// 7. Tambah Game ke Katalog
+// -------------------------------------------------
+// 7. Tambah Game ke Katalog (Admin)
+// -------------------------------------------------
 export async function addGameToCatalog(formData: FormData) {
-  // ... (SAMA SEPERTI SEBELUMNYA) ...
   const gameName = formData.get("gameName") as string;
   const platform = formData.get("platform") as string;
   const offerwall = formData.get("offerwall") as string;
@@ -322,9 +345,10 @@ export async function addGameToCatalog(formData: FormData) {
   revalidatePath("/");
 }
 
-// 8. Update Game di Katalog (Dari Admin)
+// -------------------------------------------------
+// 8. Update Game di Katalog (Admin)
+// -------------------------------------------------
 export async function updateOfferAction(formData: FormData) {
-  // ... (SAMA SEPERTI SEBELUMNYA) ...
   const id = formData.get("id") as string;
   const gameName = formData.get("gameName") as string;
   const platform = formData.get("platform") as string;
@@ -367,7 +391,9 @@ export async function updateOfferAction(formData: FormData) {
   revalidatePath("/admin/edit-game");
 }
 
-// 9. FITUR BARU: Skip Milestone
+// -------------------------------------------------
+// 9. Skip Milestone
+// -------------------------------------------------
 export async function skipMilestone(taskId: string, milestoneId: string) {
   await prisma.milestone.update({
     where: { id: milestoneId },
@@ -402,4 +428,81 @@ export async function skipMilestone(taskId: string, milestoneId: string) {
   }
   revalidatePath(`/tracking/${taskId}`);
   revalidatePath("/tracking");
+}
+
+// =================================================
+// 🚀 FUNGSI BARU UNTUK PROFIL & NOTIFIKASI
+// =================================================
+
+// 10. GET PROFILE STATS
+export async function getProfileStats(userEmail: string) {
+  if (!userEmail) return { taskCount: 0, totalYield: 0 };
+
+  const taskCount = await prisma.task.count({
+    where: { user: { email: userEmail } },
+  });
+
+  const completedTasks = await prisma.task.findMany({
+    where: { user: { email: userEmail }, status: "Completed" },
+  });
+
+  const totalYield = completedTasks.reduce(
+    (acc, curr) => acc + curr.targetValue,
+    0,
+  );
+
+  return { taskCount, totalYield };
+}
+
+// 11. UPDATE USER PROFILE
+export async function updateUserProfile(
+  userEmail: string,
+  firstName: string,
+  lastName: string,
+  phone: string,
+) {
+  if (!userEmail) return { success: false };
+
+  try {
+    await prisma.user.update({
+      where: { email: userEmail },
+      data: {
+        name: `${firstName} ${lastName}`.trim(),
+        phone: phone,
+      },
+    });
+    return { success: true };
+  } catch (error) {
+    console.error("Failed to update profile:", error);
+    return { success: false };
+  }
+}
+
+// 12. GET USER NOTIFICATIONS
+export async function getUserNotifications(userEmail: string) {
+  if (!userEmail) return [];
+
+  return await prisma.notification.findMany({
+    where: { user: { email: userEmail } },
+    orderBy: { createdAt: "desc" },
+  });
+}
+
+// 13. MARK ALL NOTIFICATIONS AS READ
+export async function markAllNotificationsAsRead(userEmail: string) {
+  if (!userEmail) return;
+
+  const user = await prisma.user.findUnique({
+    where: { email: userEmail },
+    select: { id: true },
+  });
+
+  if (!user) return;
+
+  await prisma.notification.updateMany({
+    where: { userId: user.id, isRead: false },
+    data: { isRead: true },
+  });
+
+  revalidatePath("/");
 }
