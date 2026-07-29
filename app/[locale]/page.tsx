@@ -11,26 +11,25 @@ export default async function DashboardPage({
   params,
   searchParams,
 }: {
-  params: Promise<{ locale: string }>; // <-- Tambahkan parameter ini
+  params: Promise<{ locale: string }>;
   searchParams: Promise<{ category?: string; q?: string }>;
 }) {
   const session = await getServerSession(authOptions);
   const userEmail = session?.user?.email || "";
 
-  // Await parameter routing (locale) dan search/query parameter
   const resolvedParams = await params;
   const sParams = await searchParams;
 
   const currentCategory = sParams.category;
   const searchQuery = sParams.q;
 
-  // Inisialisasi translasi dengan mendefinisikan namespace dan locale secara eksplisit
   const t = await getTranslations({
     namespace: "Dashboard",
     locale: resolvedParams.locale,
   });
 
-  const offers = await prisma.catalogOffer.findMany({
+  // ✅ UBAH 'const' jadi 'let' agar datanya bisa kita acak
+  let offers = await prisma.catalogOffer.findMany({
     where: {
       category:
         currentCategory && currentCategory !== "All"
@@ -45,9 +44,15 @@ export default async function DashboardPage({
           }
         : {}),
     },
-    orderBy: { usdValue: "desc" },
+    // ✅ HAPUS orderBy statis agar pengacakan bekerja maksimal
     include: { milestones: true },
   });
+
+  // ✅ TAMBAHAN: Logika Pengacak Urutan (Fisher-Yates Shuffle)
+  for (let i = offers.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [offers[i], offers[j]] = [offers[j], offers[i]];
+  }
 
   const totalTasks = await prisma.task.count({
     where: { user: { email: userEmail } },
@@ -92,7 +97,7 @@ export default async function DashboardPage({
               <p className="text-3xl md:text-5xl font-black text-emerald-600 dark:text-teal-400 mt-1 md:mt-0">
                 $
                 {(offers.length >= 2
-                  ? offers[0].usdValue - offers[1].usdValue
+                  ? Math.abs(offers[0].usdValue - offers[1].usdValue) // Diberi Math.abs agar tidak minus karena acakan
                   : 0
                 ).toFixed(2)}
               </p>

@@ -2,6 +2,9 @@ import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
 import { prisma } from "@/lib/prisma";
 import { getTranslations } from "next-intl/server";
+// ✅ TAMBAHAN: Import NextAuth untuk ngambil data user yang login
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 const getStatusBadge = (status: string) => {
   switch (status) {
@@ -20,8 +23,19 @@ const getStatusBadge = (status: string) => {
 };
 
 export default async function LogHistoryPage() {
+  // ✅ TAMBAHAN: Ambil email user dari session
+  const session = await getServerSession(authOptions);
+  const userEmail = session?.user?.email || "";
+
   const t = await getTranslations("LogHistory");
+
+  // ✅ INI KUNCINYA: Filter berdasarkan email user
   const tasks = await prisma.task.findMany({
+    where: {
+      user: {
+        email: userEmail,
+      },
+    },
     orderBy: { createdAt: "desc" },
   });
 

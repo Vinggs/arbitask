@@ -1,6 +1,7 @@
 "use client";
 
-import { useSession } from "next-auth/react";
+// ✅ TAMBAHAN: Import signOut dari next-auth
+import { useSession, signOut } from "next-auth/react";
 import { useState, useEffect } from "react";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
@@ -240,6 +241,17 @@ export default function ProfilePage() {
                     {unreadCount}
                   </span>
                 )}
+              </button>
+
+              {/* ✅ TAMBAHAN: Tombol Logout */}
+              <button
+                onClick={() => signOut({ callbackUrl: "/login" })}
+                className="flex items-center gap-2 md:gap-3 px-3 md:px-4 py-2 md:py-3 border-2 border-slate-900 dark:border-slate-700 font-black uppercase text-xs md:text-sm transition-all whitespace-nowrap w-auto lg:w-full text-left bg-red-400 hover:bg-red-500 dark:bg-rose-700 dark:hover:bg-rose-800 text-slate-900 dark:text-white shadow-brutal dark:shadow-brutal-dark hover:-translate-y-1 lg:mt-6"
+              >
+                <span className="material-symbols-outlined text-[18px] md:text-[20px]">
+                  logout
+                </span>{" "}
+                LOGOUT
               </button>
             </div>
 
